@@ -1,3 +1,4 @@
+/*======RESET======*/
 *,
 *::before,
 *::after {
@@ -5,72 +6,134 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+/*======FONTS SIZE======*/
+/* Font-size variables */
 :root {
-    --font-size: 16px;
-    --primary-color: #008080;
-    --secondary-color: rgb(64, 224, 208);
+    --font-size-body: 24px;
+    --font-size-h1: 30px;
+    --font-size-button: 16px;
+    --font-size-result: 14px;
 }
+
+/*======COLOR PALETTE======*/
+/*------Main------*/
+:root {
+    --white: white;
+    --black: black;
+    --primary-color: #008080;
+    --secondary-color: #209b87;
+    --third-color: #4db686;
+    --fourth-color: rgb(0, 255, 229);
+}
+/*------Background------*/
+:root {
+    --background-color: #f5f5f5;
+}
+/*------Text------*/
+:root {
+    --text-result-color: #004466;
+}
+/*------Border------*/
+:root {
+    --border-width: 2px;
+    --border-style: solid;
+}
+/*------Hover------*/
+:root {
+    --hover-border-color: var(--primary-color);
+}
+/*------Gradient------*/
 :root {
     --gradient-angle: 180deg;
-    --color-start: rgb(0, 128, 128);
-    --color-end: rgb(64, 224, 208);
+    --gradient1: var(--primary-color);
+    --gradient2: var(--fourth-color);
     --start-position: 0%;
     --end-position: 180%;
+    --button-gradient-effect: linear-gradient(315deg, var(--gradient2) 0%, var(--gradient1) 74%);
+}
+/*------Shadows------*/
+:root {
+    --box-shadow-color: rgba(0, 0, 0, 0.7);
+}
+
+/*======SEMANTIC FONTS======*/
+/*------Arial------*/
+:root {
+    --text: 'arial';
+    --text-serif: 'sans-serif';
+    --text-weight-regular: 400;
+    --text-weight-bold: bold;
 }
 
 
-.body-popup {
-    font-family: Arial, sans-serif;
+
+/*======PRESET======*/
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+
+
+/*======APPLY======*/
+/*------Body------*/
+body {
+    font-family: var(--font-size-body) var(--text-serif);
+    font-size: var(--font-size-body);
+    font-weight: var(--text-weight-regular);
+    background-color: var(--background-color);
+    text-align: center;
     margin: 0;
     padding: 20px;
-    text-align: center;
-    background-color: #f9f9f9;
 }
 
-.main-popup {
+/*------Tags------*/
+main {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-bottom: 20px;
 }
-
-.logo {
-    width: 135px;
-    height: auto;
-    margin-bottom: 10px;
-}
-
 h1 {
-    font-size: 18px;
-    margin: 0;
-    color: #333;
-    font-weight: bold;
-    background: linear-gradient(180deg, rgb(0, 128, 128) 0%, rgb(64, 224, 208) 100%);
+    font-size: var(--font-size-h1);
+    font-weight: var(--text-weight-bold);
+    background: linear-gradient(var(--gradient-angle), var(--gradient1) var(--start-position), var(--gradient2) var(--end-position));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    text-fill-color: transparent;
+    color: transparent;
 }
-
-.button-popup {
-    padding: 10px 15px;
-    font-size: var(--font-size);
+button {
     cursor: pointer;
+    font-size: var(--font-size-button);
+    color: var(--white);
+    background-image: var(--button-gradient-effect);
     border: none;
     border-radius: 5px;
-    background-color: var(--primary-color);
-    color: white;
-    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+    padding: 10px 15px;
+    transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
+    box-shadow: 0px 4px 6px -2px var(--box-shadow-color);
+}
+img {
+    width: 135px;
+    height: auto;
+    margin: 10px 0 20px 0;
 }
 
-.button-popup:hover {
-    background-color: var(--secondary-color);
-    color: dimgrey;
-
+/*------Hover------*/
+button:hover {
+    color: var(--primary-color);
+    background-image: none;
+    background-color: var(--white);
+    border: var(--border-width) var(--border-style) var(--hover-border-color);
 }
 
+/*------Ids------*/
 #result {
+    font-size: var(--font-size-result);
+    color: var(--text-result-color);
     margin-top: 20px;
-    font-size: 14px;
-    color: #333;
 }
+
+/*------Classes------*/
