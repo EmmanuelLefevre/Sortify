@@ -1,12 +1,12 @@
-// Effectue des tâches en arrière-plan (gestion des favoris, appels API, logique principale).
+// Effectue des tâches en arrière-plan (gestion des favoris, appels api, logique principale).
 
-// Le fichier background.js est le script d'arrière-plan de l'extension. Il fonctionne en permanence en arrière-plan, gérant la logique principale de l'extension. C'est là que vous pouvez effectuer des tâches de longue durée, comme des appels réseau, la gestion des favoris, ou d'autres processus qui ne nécessitent pas une interaction immédiate avec l'interface utilisateur.
+// Le fichier api.js est le script d'arrière-plan de l'extension. Il fonctionne en permanence en arrière-plan, gérant la logique principale de l'extension. C'est là que vous pouvez effectuer des tâches de longue durée, comme des appels réseau, la gestion des favoris, ou d'autres processus qui ne nécessitent pas une interaction immédiate avec l'interface utilisateur.
 
 // Rôle :
 // Gère la logique principale de l'extension.
 // Peut écouter les événements envoyés par le popup ou le content script et effectuer des actions correspondantes.
-// Effectue des tâches de gestion de l'état, comme l'ajout, la suppression ou la modification des favoris, ou envoi de requêtes API vers des serveurs externes.
-// Peut aussi gérer des actions dans l'onglet (par exemple, récupérer des données de la page via l'API chrome.tabs).
+// Effectue des tâches de gestion de l'état, comme l'ajout, la suppression ou la modification des favoris, ou envoi de requêtes api vers des serveurs externes.
+// Peut aussi gérer des actions dans l'onglet (par exemple, récupérer des données de la page via l'api chrome.tabs).
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'sortBookmarks') {
