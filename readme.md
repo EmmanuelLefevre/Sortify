@@ -11,7 +11,7 @@ Grâce à l'intégration de l'intelligence artificielle, cette extension ne se c
 Cette extension vise à offrir une expérience de gestion des favoris plus fluide et plus intuitive tout en préservant la vie privée de l'utilisateur.
 
 ## CHROME EXTENSIONS SETTINGS
-1. Ouvrir l'URL
+1. Ouvrir l'URL ci dessous dans le navigateur Chrome
 ```bash
 chrome://extensions/
 ```
