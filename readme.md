@@ -38,10 +38,10 @@ Dans le dossier courant du projet
 py -m http.server <PORT>
 ```
 ```bash
-ssh -R 80:localhost:666 serveo.net
+ssh -R 80:localhost:<PORT> serveo.net
 ```
 ```bash
-ssh -R sortify.com:80:localhost:666 serveo.net
+ssh -R sortify.com:80:localhost:<PORT> serveo.net
 ```
 Créer paire de clés RSA 4096 bits
 ```powershell
