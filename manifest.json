@@ -3,7 +3,16 @@
   "name": "Sortify",
   "version": "1.0",
   "description": "Extension de tri automatique des favoris",
-  "permissions": ["storage", "activeTab", "bookmarks", "notifications"],
+  "permissions": [
+    "storage",
+    "activeTab",
+    "bookmarks",
+    "notifications"
+  ],
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
   "background": {
     "service_worker": "api.js"
   },
