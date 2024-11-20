@@ -15,7 +15,7 @@
     --color-start: rgb(0, 128, 128);
     --color-end: rgb(64, 224, 208);
     --start-position: 0%;
-    --end-position: 100%;
+    --end-position: 180%;
 }
 
 
@@ -45,7 +45,7 @@ h1 {
     margin: 0;
     color: #333;
     font-weight: bold;
-    background: linear-gradient(var(--gradient-angle), var(--color-start), var(--start-position), var(--color-end), var(--end-position));
+    background: linear-gradient(180deg, rgb(0, 128, 128) 0%, rgb(64, 224, 208) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
