@@ -1,0 +1,172 @@
+LLM pour catégoriser les favoris
+Utiliser l'URL et envoyer le scrapping de la page au LLM
+Extraire les favoris
+
+=============================================================================================================
+
+AUTORISATION "bookmarks", "storage", "activeTab"
+
+=============================================================================================================
+
+Structure de base des fichiers =>
+extension/
+|-- manifest.json
+|-- popup.html (facultatif)
+|-- popup.js (facultatif)
+|-- background.js (facultatif)
+|-- content.js (facultatif)
+|-- styles.css (facultatif)
+|-- icon.png (facultatif)
+
+=============================================================================================================
+
+interface utilisateur (popup.html) =>
+
+Développer une extension Chrome implique de créer des fichiers spécifiques, comme un fichier manifest.json, et éventuellement d'autres fichiers (HTML, CSS, JS) pour définir le comportement et l'interface. Voici une méthode pour commencer :
+
+=============================================================================================================
+
+Structure de base des fichiers
+Crée un répertoire pour l'extension avec la structure suivante :
+
+extension/
+|-- manifest.json
+|-- popup.html (facultatif)
+|-- popup.js (facultatif)
+|-- background.js (facultatif)
+|-- content.js (facultatif)
+|-- styles.css (facultatif)
+|-- icon.png (facultatif)
+
+=============================================================================================================
+
+Fichier manifest.json
+
+Ce fichier est obligatoire et contient les métadonnées de l'extension. Exemple de contenu :
+
+{
+  "manifest_version": 3,
+  "name": "Nom de l'extension",
+  "version": "1.0",
+  "description": "Une brève description de l'extension",
+  "permissions": ["storage", "activeTab"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icon.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  }
+}
+
+=============================================================================================================
+
+Créer une interface utilisateur (optionnel)
+Si tu veux une interface accessible via une icône dans la barre d'outils, crée un fichier popup.html :
+
+popup.html
+html
+Copier le code
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Popup</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Extension Chrome</h1>
+  <button id="actionButton">Cliquez-moi</button>
+  <script src="popup.js"></script>
+</body>
+</html>
+
+popup.js
+document.getElementById("sortBtn").addEventListener("click", () => {
+  chrome.runtime.sendMessage({ action: "sortBookmarks" }, (response) => {
+    if (response.success) {
+      alert("Favoris triés avec succès !");
+    }
+  });
+});
+
+=============================================================================================================
+
+Ajouter des scripts d’arrière-plan et de contenu =>
+
+background.js
+chrome.runtime.onInstalled.addListener(() => {
+  console.log("Extension installée : Tri automatique des favoris.");
+});
+
+function sortBookmarks(parentId) {
+  chrome.bookmarks.getChildren(parentId, (children) => {
+    const sorted = children.sort((a, b) => a.title.localeCompare(b.title));
+    sorted.forEach((bookmark, index) => {
+      chrome.bookmarks.move(bookmark.id, { parentId: parentId, index: index });
+    });
+  });
+}
+
+chrome.action.onClicked.addListener(() => {
+  chrome.bookmarks.getTree((nodes) => {
+    nodes.forEach((node) => sortBookmarks(node.id));
+  });
+  console.log("Favoris triés !");
+});
+
+chrome.runtime.onInstalled.addListener(() => {
+  console.log("Extension installée");
+});
+
+content.js
+document.body.style.border = "5px solid red";
+console.log("Content script exécuté sur la page!");
+
+=============================================================================================================
+
+Charger l’extension dans Chrome
+Ouvre Chrome et accède à chrome://extensions/.
+Active le mode développeur.
+Clique sur Charger l'extension non empaquetée.
+Sélectionne le répertoire contenant les fichiers de ton extension.
+
+Étapes suivantes
+Ajouter des fonctionnalités avancées : appels API, notifications, gestion des permissions, etc.
+Packager et publier ton extension via le Chrome Web Store Developer Dashboard.
+
+=============================================================================================================
+normes pour le Chrome Web Store
+
+Normes techniques :
+
+Utiliser manifest_version: 3 (obligatoire depuis janvier 2023).
+Respecter les permissions strictes : demander seulement celles nécessaires (bookmarks, storage ici).
+Pas d'exécution de code inline (<script> dans HTML interdit).
+Politiques de contenu :
+
+Fournir une description claire.
+Ne pas inclure de fonctionnalités trompeuses ou cachées.
+Respecter la vie privée des utilisateurs : ne pas collecter d’informations personnelles sauf si nécessaire, et avec consentement explicite.
+Soumettre l'extension :
+
+Créer un compte développeur sur la console des extensions Chrome.
+Payer les frais uniques de 5 $.
+Suivre le processus de validation automatique, puis manuelle.
+
+Préparer la soumission
+Empaqueter l’extension en un fichier ZIP :
+Exclure les fichiers inutiles comme .git ou les fichiers temporaires.
+Tester l’extension sur plusieurs versions de Chrome et sur des profils utilisateur différents.
+Créer une capture d’écran (1280x800) et un icône de présentation pour la boutique.
