@@ -1,0 +1,76 @@
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+:root {
+    --font-size: 16px;
+    --primary-color: #008080;
+    --secondary-color: rgb(64, 224, 208);
+}
+:root {
+    --gradient-angle: 180deg;
+    --color-start: rgb(0, 128, 128);
+    --color-end: rgb(64, 224, 208);
+    --start-position: 0%;
+    --end-position: 100%;
+}
+
+
+.body-popup {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+    background-color: #f9f9f9;
+}
+
+.main-popup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.logo {
+    width: 135px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+h1 {
+    font-size: 18px;
+    margin: 0;
+    color: #333;
+    font-weight: bold;
+    background: linear-gradient(var(--gradient-angle), var(--color-start), var(--start-position), var(--color-end), var(--end-position));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+
+.button-popup {
+    padding: 10px 15px;
+    font-size: var(--font-size);
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--primary-color);
+    color: white;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.button-popup:hover {
+    background-color: var(--secondary-color);
+    color: dimgrey;
+
+}
+
+#result {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #333;
+}
