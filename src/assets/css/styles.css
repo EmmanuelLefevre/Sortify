@@ -45,12 +45,15 @@
 }
 /*------Gradient------*/
 :root {
-    --gradient-angle: 180deg;
+    --gradient-angle1: 180deg;
+    --gradient-angle2: 315deg;
     --gradient1: var(--primary-color);
     --gradient2: var(--fourth-color);
     --start-position: 0%;
-    --end-position: 180%;
-    --button-gradient-effect: linear-gradient(315deg, var(--gradient2) 0%, var(--gradient1) 74%);
+    --end-position1: 150%;
+    --end-position2: 74%;
+    --button-gradient-effect: linear-gradient(var(--gradient-angle2), var(--gradient2) var(--start-position), var(--gradient1) var(--end-position2));
+    --h1-gradient-effect: linear-gradient(var(--gradient-angle1), var(--gradient1) var(--start-position), var(--gradient2) var(--end-position1));
 }
 /*------Shadows------*/
 :root {
@@ -98,7 +101,7 @@ main {
 h1 {
     font-size: var(--font-size-h1);
     font-weight: var(--text-weight-bold);
-    background: linear-gradient(var(--gradient-angle), var(--gradient1) var(--start-position), var(--gradient2) var(--end-position));
+    background: var(--h1-gradient-effect);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
