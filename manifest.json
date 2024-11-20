@@ -19,9 +19,9 @@
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
-      "16": "assets/toolbar/toolbar_icon_16.png",
-      "48": "assets/toolbar/toolbar_icon_48.png",
-      "128": "assets/toolbar/toolbar_icon_128.png"
+      "16": "assets/icons/icon_16.png",
+      "48": "assets/icons/icon_48.png",
+      "128": "assets/icons/icon_128.png"
     },
     "default_title": "Cliquez ici pour gérer vos favoris"
   },
@@ -33,8 +33,8 @@
     }
   ],
   "icons": {
-    "16": "assets/web_store/web_store_icon_16.png",
-    "48": "assets/web_store/web_store_icon_48.png",
-    "128": "assets/web_store/web_store_icon_128.png"
+    "16": "assets/icons/icon_16.png",
+    "48": "assets/icons/icon_48.png",
+    "128": "assets/icons/icon_128.png"
   }
 }
