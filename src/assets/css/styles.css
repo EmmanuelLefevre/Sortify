@@ -11,8 +11,9 @@
 /* Font-size variables */
 :root {
     --font-size-body: 24px;
-    --font-size-h1: 30px;
     --font-size-button: 16px;
+    --font-size-h1: 30px;
+    --font-size-p: 14px;
     --font-size-result: 14px;
 }
 
@@ -106,7 +107,7 @@ h1 {
     color: transparent;
     padding-top: 5px;
 }
-button {
+button#sort-btn {
     cursor: pointer;
     font-size: var(--font-size-button);
     color: var(--white);
@@ -114,9 +115,16 @@ button {
     border: none;
     border-radius: 5px;
     padding: 10px 15px;
+    margin-bottom: 25px;
     transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
     box-shadow: 0px 4px 6px -2px var(--box-shadow-color);
     outline: var(--border-width) var(--border-style) rgba(0, 0, 0, 0);
+}
+button#enable-notifs {
+    cursor: pointer;
+    font-size: var(--font-size-p);
+    color: var(--primary-color);
+    border: none;
 }
 img {
     width: 135px;
@@ -125,11 +133,14 @@ img {
 }
 
 /*------Hover------*/
-button:hover {
+button#sort-btn:hover {
     color: var(--primary-color);
     background-image: none;
     background-color: var(--white);
     outline-color: var(--hover-border-color);
+}
+button#enable-notifs:hover {
+    text-decoration: underline;
 }
 
 /*------Ids------*/
