@@ -8,9 +8,9 @@
 // Il peut également interagir avec d'autres parties de l'extension, en envoyant des messages vers le api.js ou le popup.js.
 
 // Exemple d'injection d'un bouton dans la page
-let button = document.createElement('button');
-button.textContent = 'Trier mes favoris';
-document.body.appendChild(button);
+// let button = document.createElement('button');
+// button.textContent = 'Trier mes favoris';
+// document.body.appendChild(button);
 
 // Ajouter un événement à ce bouton
 button.addEventListener('click', function() {
