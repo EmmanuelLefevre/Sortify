@@ -4,10 +4,6 @@
   "version": "1.0",
   "description": "Extension de tri automatique des favoris",
   "permissions": [
-    "storage",
-    "tabs",
-    "activeTab",
-    "bookmarks",
     "notifications"
   ],
   "host_permissions": [
