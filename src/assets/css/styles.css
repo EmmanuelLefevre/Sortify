@@ -7,6 +7,7 @@
     box-sizing: border-box;
 }
 
+
 /*======FONTS SIZE======*/
 /* Font-size variables */
 :root {
@@ -71,33 +72,26 @@
 }
 
 
-
-/*======PRESET======*/
-html, body {
-    width: 250px;
-}
-
-
-
 /*======APPLY======*/
-/*------Body------*/
-body {
+/*------Tags------*/
+div.sortify-app-content {
     font-family: var(--font-size-body) var(--text-serif);
     font-size: var(--font-size-body);
     font-weight: var(--text-weight-regular);
+}
+div.sortify-app {
     background-color: var(--background-color);
-    text-align: center;
-    padding: 20px;
+    width: 250px;
+    height: fit-content;
 }
-
-/*------Tags------*/
-main {
+div.sortify-content {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    margin-bottom: 0;
+    flex-direction: column;
+    width: 100%;
 }
-h1 {
+h1.sortify-title {
     font-size: var(--font-size-h1);
     font-weight: var(--text-weight-bold);
     background: var(--h1-gradient-effect);
@@ -124,9 +118,11 @@ button#enable-notifs {
     cursor: pointer;
     font-size: var(--font-size-p);
     color: var(--primary-color);
+    background-color: var(--background-color);
     border: none;
+    padding-bottom: 20px;
 }
-img {
+img.sortify-logo {
     width: 135px;
     height: auto;
     margin: 10px 0 20px 0;
@@ -144,7 +140,8 @@ button#enable-notifs:hover {
 }
 
 /*------Ids------*/
-#result {
+div#request-result {
+    display: none;
     font-size: var(--font-size-result);
     color: var(--text-result-color);
     margin-top: 20px;

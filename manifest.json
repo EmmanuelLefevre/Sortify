@@ -4,15 +4,10 @@
   "version": "1.0",
   "description": "Extension de tri automatique des favoris",
   "permissions": [
-    "notifications"
+    "notifications",
+    "scripting",
+    "activeTab"
   ],
-  "host_permissions": [
-    "http://*/*",
-    "https://*/*"
-  ],
-  "background": {
-    "service_worker": "src/api/api.js"
-  },
   "action": {
     "default_popup": "src/popup/popup.html",
     "default_icon": {
@@ -22,12 +17,19 @@
     },
     "default_title": "Cliquez ici pour gérer vos favoris"
   },
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
+  "background": {
+    "service_worker": "src/api/api.js"
+  },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
       "css": ["src/assets/css/styles.css"],
       "js": [
-        "src/assets/js//browser.js"
+        "src/assets/js/browser.js"
       ]
     }
   ],
