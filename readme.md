@@ -15,6 +15,10 @@ Cette extension vise à offrir une expérience de gestion des favoris plus fluid
 ```bash
 chrome://extensions/
 ```
+2. Vérifier que les permissions d'extension Chrome
+```bash
+chrome://settings/content/notifications
+```
 2. Activer mode développeur
 3. Repérer le bouton "Charger l'extension non empaquetée"
 
