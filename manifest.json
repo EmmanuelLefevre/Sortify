@@ -31,7 +31,7 @@
       "matches": ["<all_urls>"],
       "css": ["src/assets/css/styles.css"],
       "js": [
-        "src/popup/content.js"
+        "src/assets/js//browser.js"
       ]
     }
   ],
