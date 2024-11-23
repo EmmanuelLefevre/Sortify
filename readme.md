@@ -19,8 +19,8 @@ chrome://extensions/
 ```bash
 chrome://settings/content/notifications
 ```
-2. Activer mode développeur
-3. Repérer le bouton "Charger l'extension non empaquetée"
+3. Activer mode développeur
+4. Repérer le bouton "Charger l'extension non empaquetée"
 
 
 ![Chrome extension settings](https://github.com/EmmanuelLefevre/Settings/blob/main/MarkdownImg/chrome_settings.png)
