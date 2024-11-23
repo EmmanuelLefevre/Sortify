@@ -5,6 +5,7 @@
   "description": "Extension de tri automatique des favoris",
   "permissions": [
     "storage",
+    "tabs",
     "activeTab",
     "bookmarks",
     "notifications"
