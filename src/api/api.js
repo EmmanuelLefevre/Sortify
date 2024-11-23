@@ -8,6 +8,10 @@
 // Effectue des tâches de gestion de l'état, comme l'ajout, la suppression ou la modification des favoris, ou envoi de requêtes api vers des serveurs externes.
 // Peut aussi gérer des actions dans l'onglet (par exemple, récupérer des données de la page via l'api chrome.tabs).
 
+
+console.log('Service worker api.js démarré avec succès!');
+
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'sortBookmarks') {
     // Logique pour trier les favoris
