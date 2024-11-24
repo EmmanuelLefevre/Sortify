@@ -8,11 +8,12 @@
     "scripting",
     "activeTab"
   ],
+  "optional_permissions": [],
   "action": {
     "default_icon": {
-      "16": "src/assets/icons/icon_16.png",
-      "48": "src/assets/icons/icon_48.png",
-      "128": "src/assets/icons/icon_128.png"
+      "16": "src/assets/icons/success_16.png",
+      "48": "src/assets/icons/success_48.png",
+      "128": "src/assets/icons/success_128.png"
     },
     "default_popup": "src/popup/popup.html",
     "default_title": "Cliquez ici pour gérer vos favoris"
@@ -34,8 +35,8 @@
     }
   ],
   "icons": {
-    "16": "src/assets/icons/icon_16.png",
-    "48": "src/assets/icons/icon_48.png",
-    "128": "src/assets/icons/icon_128.png"
+    "16": "src/assets/icons/logo_16.png",
+    "48": "src/assets/icons/logo_48.png",
+    "128": "src/assets/icons/logo_128.png"
   }
 }
