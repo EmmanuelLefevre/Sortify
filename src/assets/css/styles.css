@@ -115,7 +115,6 @@ button#sort-btn {
     outline: var(--border-width) var(--border-style) rgba(0, 0, 0, 0);
 }
 button#enable-notifs {
-    display: none;
     cursor: pointer;
     font-size: var(--font-size-p);
     color: var(--primary-color);
