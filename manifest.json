@@ -23,7 +23,8 @@
     "https://*/*"
   ],
   "background": {
-    "service_worker": "src/api/api.js"
+    "service_worker": "src/api/api.js",
+    "persistent": true
   },
   "commands": {
     "_execute_action": {
