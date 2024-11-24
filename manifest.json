@@ -2,19 +2,19 @@
   "manifest_version": 3,
   "name": "Sortify",
   "version": "1.0",
-  "description": "Extension de tri automatique des favoris",
+  "description": "Extension Chrome de tri automatique des favoris",
   "permissions": [
     "notifications",
     "scripting",
     "activeTab"
   ],
   "action": {
-    "default_popup": "src/popup/popup.html",
     "default_icon": {
       "16": "src/assets/icons/icon_16.png",
       "48": "src/assets/icons/icon_48.png",
       "128": "src/assets/icons/icon_128.png"
     },
+    "default_popup": "src/popup/popup.html",
     "default_title": "Cliquez ici pour gérer vos favoris"
   },
   "host_permissions": [

@@ -9,32 +9,32 @@ const createNotification = (type) => {
     case 'success':
       message = 'Notifications activées';
       body = '🚀🚀🚀 Notifications activées! 🚀🚀🚀';
-      icon = 'success-icon.png';  // Exemple d'icône pour succès
+      icon = 'src/assets/icons/success_icon.png';
       break;
     case 'already_success':
       message = 'Notifications déjà activées';
       body = '🚀🚀🚀 Notifications déjà activées! 🚀🚀🚀';
-      icon = 'success-icon.png';  // Exemple d'icône pour succès
+      icon = 'src/assets/icons/success_icon.png';
       break;
     case 'denied':
       message = 'Notification refusée';
       body = '🤬🤬🤬 Notifications refusées! 🤬🤬🤬';
-      icon = 'denied-icon.png';   // Exemple d'icône pour refus
+      icon = 'src/assets/icons/denied_icon.png';
       break;
     case 'error':
       message = 'Erreur';
       body = '⚠️ Erreur lors de la demande des permissions! ⚠️';
-      icon = 'error-icon.png';    // Exemple d'icône pour erreur
+      icon = 'src/assets/icons/error_icon.png';
       break;
     case 'info':
       message = 'Information';
-      body = 'ℹ️ Notifications en cours de vérification... ℹ️';
-      icon = 'info-icon.png';     // Exemple d'icône pour information
+      body = 'ℹ️ Notifications en cours de vérification... ℹ';
+      icon = 'src/assets/icons/info_icon.png';
       break;
     default:
       message = 'Notification par défaut';
       body = '🔔 Vous avez une nouvelle notification! 🔔';
-      icon = 'default-icon.png';  // Icône par défaut
+      icon = 'src/assets/icons/default_icon.png';
       break;
   }
 
@@ -78,8 +78,22 @@ const handleNotificationPermissions = (enableNotifsButton) => {
     // Afficher le bouton si les notifications sont refusées
     case "denied":
       updateButtonVisibility(enableNotifsButton, true);
-      createNotification('denied');
-      break;
+      enableNotifsButton.addEventListener('click', () => {
+        // Demander la permission de notifications lors du clic
+        Notification.requestPermission().then((permission) => {
+          if (permission === "granted") {
+            createNotification('success');
+            updateButtonVisibility(enableNotifsButton, false);
+          }
+          else {
+            createNotification('denied');
+          }
+        }).catch((err) => {
+          console.error("Erreur lors de la demande des permissions : ", err);
+          createNotification('error');
+        });
+      });
+    break;
   }
 };
 
