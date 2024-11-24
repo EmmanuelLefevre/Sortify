@@ -1,53 +1,94 @@
-// Chargement de l'extension
-document.addEventListener('DOMContentLoaded', () => {
-  const enableNotifsButton = document.getElementById("enable-notifs");
+// Fonction pour créer une notification personnalisée en fonction du type
+const createNotification = (type) => {
+  let message;
+  let body;
+  let icon;
 
-  // Fonction pour mettre à jour l'état du bouton
-  const updateButtonVisibility = (shouldShow) => {
-    enableNotifsButton.style.display = shouldShow ? 'block' : 'none';
-  };
-
-  // Vérifer si le navigateur prend en charge les notifications
-  if (!("Notification" in window)) {
-    alert("Ce navigateur ne prend pas en charge les notifications de bureau!");
+  // Utilisation d'un switch pour déterminer le type de notification
+  switch (type) {
+    case 'success':
+      message = 'Notifications activées';
+      body = '🚀🚀🚀 Notifications activées! 🚀🚀🚀';
+      icon = 'success-icon.png';  // Exemple d'icône pour succès
+      break;
+    case 'already_success':
+      message = 'Notifications déjà activées';
+      body = '🚀🚀🚀 Notifications déjà activées! 🚀🚀🚀';
+      icon = 'success-icon.png';  // Exemple d'icône pour succès
+      break;
+    case 'denied':
+      message = 'Notification refusée';
+      body = '🤬🤬🤬 Notifications refusées! 🤬🤬🤬';
+      icon = 'denied-icon.png';   // Exemple d'icône pour refus
+      break;
+    case 'error':
+      message = 'Erreur';
+      body = '⚠️ Erreur lors de la demande des permissions! ⚠️';
+      icon = 'error-icon.png';    // Exemple d'icône pour erreur
+      break;
+    case 'info':
+      message = 'Information';
+      body = 'ℹ️ Notifications en cours de vérification... ℹ️';
+      icon = 'info-icon.png';     // Exemple d'icône pour information
+      break;
+    default:
+      message = 'Notification par défaut';
+      body = '🔔 Vous avez une nouvelle notification! 🔔';
+      icon = 'default-icon.png';  // Icône par défaut
+      break;
   }
 
-  // Gérer les différents états des permissions
+  // Créer la notification
+  new Notification(message, {
+    body: body,
+    icon: icon
+  });
+};
+
+// Fonction pour mettre à jour l'état du bouton de notifications
+const updateButtonVisibility = (button, shouldShow) => {
+  button.style.display = shouldShow ? 'block' : 'none';
+};
+
+// Fonction pour gérer l'état des permissions notifications et de son bouton
+const handleNotificationPermissions = (enableNotifsButton) => {
   switch (Notification.permission) {
+    // Masquer le bouton si les notifications sont déjà acceptées
     case "granted":
-      updateButtonVisibility(false);
-      new Notification('Test', {
-        body: '🚀🚀🚀 Notifications déjà activées! 🚀🚀🚀'
-      });
+      updateButtonVisibility(enableNotifsButton, false);
+      createNotification('already_success');
       break;
 
     // Si la permission n'est pas encore déterminée, demander à l'utilisateur
     case "default":
       Notification.requestPermission().then((permission) => {
-        updateButtonVisibility(permission === "denied");
+        updateButtonVisibility(enableNotifsButton, permission === "denied");
         if (permission === "granted") {
-          new Notification('Test', {
-            body: '🚀🚀🚀 Notifications activées! 🚀🚀🚀'
-          });
+          createNotification('success');
         }
         else {
-          new Notification('Test', {
-            body: '🤬🤬🤬 Notifications refusées! 🤬🤬🤬'
-          });
+          createNotification('denied');
         }
       }).catch((err) => {
         console.error("Erreur lors de la demande des permissions : ", err);
-        new Notification('Test', {
-          body: '⚠️ Erreur lors de la demande des permissions! ⚠️'
-        });
+        createNotification('error');
       });
       break;
 
     // Afficher le bouton si les notifications sont refusées
     case "denied":
-      updateButtonVisibility(true);
+      updateButtonVisibility(enableNotifsButton, true);
+      createNotification('denied');
       break;
   }
+};
+
+// Chargement du DOM
+document.addEventListener('DOMContentLoaded', () => {
+  const enableNotifsButton = document.getElementById("enable-notifs");
+
+  // Appeler la gestion des permissions de notifications
+  handleNotificationPermissions(enableNotifsButton);
 });
 
 
