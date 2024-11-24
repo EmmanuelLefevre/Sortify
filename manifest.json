@@ -4,9 +4,9 @@
   "version": "1.0",
   "description": "Extension Chrome de tri automatique des favoris",
   "permissions": [
-    "notifications",
     "scripting",
-    "activeTab"
+    "activeTab",
+    "tabs"
   ],
   "optional_permissions": [],
   "action": {
