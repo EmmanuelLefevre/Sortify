@@ -1,11 +1,16 @@
 // Chargement de l'extension
 document.addEventListener('DOMContentLoaded', () => {
+  const enableNotifsButton = document.getElementById("enable-notifs");
+  // Masquer le bouton par défaut
+  enableNotifsButton.style.display = 'none';
+
   // Vérifer si le navigateur prend en charge les notifications
   if (!("Notification" in window)) {
     alert("Ce navigateur ne prend pas en charge les notifications de bureau!");
   }
   // Vérifier l'état des permissions de notifications
   else if (Notification.permission === "granted") {
+    enableNotifsButton.style.display = 'none';
     new Notification('Test',{
       body : '🚀🚀🚀 Notifications déjà activées! 🚀🚀🚀'
     });
@@ -14,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
   else if (Notification.permission === "default") {
     Notification.requestPermission().then((permission) => {
       if (permission === "granted") {
+        enableNotifsButton.style.display = 'none';
         new Notification('Test', {
           body: '🚀🚀🚀 Notifications activées! 🚀🚀🚀'
         });
@@ -30,9 +36,9 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error("Erreur lors de la demande des permissions : ", err);
     });
   }
-  // Spamming
+  // Afficher le bouton si les notifications sont refusées
   else if (Notification.permission === "denied") {
-    alert("Veuillez activer les notifications dans les paramètres du navigateur svp!");
+    enableNotifsButton.style.display = 'block';
   }
 });
 
