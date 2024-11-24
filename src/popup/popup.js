@@ -9,32 +9,32 @@ const createNotification = (type) => {
     case 'success':
       message = 'Notifications activées';
       body = '🚀🚀🚀 Notifications activées! 🚀🚀🚀';
-      icon = 'src/assets/icons/success_icon.png';
+      // icon = 'src/assets/icons/success_icon.png';
       break;
     case 'already_success':
       message = 'Notifications déjà activées';
       body = '🚀🚀🚀 Notifications déjà activées! 🚀🚀🚀';
-      icon = 'src/assets/icons/success_icon.png';
+      // icon = 'src/assets/icons/success_icon.png';
       break;
     case 'denied':
       message = 'Notification refusée';
       body = '🤬🤬🤬 Notifications refusées! 🤬🤬🤬';
-      icon = 'src/assets/icons/denied_icon.png';
+      // icon = 'src/assets/icons/denied_icon.png';
       break;
     case 'error':
       message = 'Erreur';
       body = '⚠️ Erreur lors de la demande des permissions! ⚠️';
-      icon = 'src/assets/icons/error_icon.png';
+      // icon = 'src/assets/icons/error_icon.png';
       break;
     case 'info':
       message = 'Information';
       body = 'ℹ️ Notifications en cours de vérification... ℹ';
-      icon = 'src/assets/icons/info_icon.png';
+      // icon = 'src/assets/icons/info_icon.png';
       break;
     default:
       message = 'Notification par défaut';
       body = '🔔 Vous avez une nouvelle notification! 🔔';
-      icon = 'src/assets/icons/default_icon.png';
+      // icon = 'src/assets/icons/default_icon.png';
       break;
   }
 
