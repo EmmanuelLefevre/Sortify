@@ -111,5 +111,9 @@ document.getElementById('sort-btn').addEventListener('click', () => {
     if (response.success) {
       console.log("Favoris triés avec succès !");
     }
+    else {
+      console.error("Échec du tri des favoris");
+      createNotification('error');
+    }
   });
 });
