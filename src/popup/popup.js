@@ -8,17 +8,7 @@ const createNotification = (type) => {
   switch (type) {
     case 'success':
       message = 'Sortify';
-      body = '🚀 Notifications activées!';
-      icon = '../assets/logo/logo.png';
-      break;
-    case 'already_success':
-      message = 'Sortify';
-      body = '🚀 Vos notifications sont déjà activées!';
-      icon = '../assets/logo/logo.png';
-      break;
-    case 'denied':
-      message = 'Sortify';
-      body = '🤬 Notifications refusées!';
+      body = '🚀 Les notifications sont activées!';
       icon = '../assets/logo/logo.png';
       break;
     case 'error':
@@ -31,21 +21,20 @@ const createNotification = (type) => {
       body = 'ℹ️ Notifications en cours de vérification...';
       icon = '../assets/logo/logo.png';
       break;
-    default:
-      message = 'Sortify';
-      body = '🔔 Vous avez une nouvelle notification!';
-      icon = '../assets/logo/logo.png';
-      break;
   }
 
-  // Créer la notification
-  new Notification(message, {
-    body: body,
-    icon: icon,
-    vibrate: [200, 100, 200],
-    silent: true,
-    badge: 'src/assets/icons/success_16.png'
-  });
+  // Vérifier si les notifications sont supportées par le navigateur avant de les créer
+  if ("Notification" in window) {
+    new Notification(message, {
+      body: body,
+      icon: icon,
+      silent: true,
+      badge: 'src/assets/icons/success_48.png'
+    });
+  }
+  else {
+    setTimeout(() => alert("💀💀💀 Les notifications ne sont pas supportées par ce navigateur!"), 2000);
+  }
 };
 
 // Fonction pour mettre à jour l'état du bouton de notifications
@@ -53,90 +42,58 @@ const updateButtonVisibility = (button, shouldShow) => {
   button.style.display = shouldShow ? 'block' : 'none';
 };
 
-// Fonction pour gérer l'état des permissions notifications et de son bouton
-const handleNotificationPermissions = (enableNotifsButton) => {
-  switch (Notification.permission) {
-    // Masquer le bouton si les notifications sont déjà acceptées
-    case "granted":
-      updateButtonVisibility(enableNotifsButton, false);
-      createNotification('already_success');
-      break;
+// Fonction pour gérer l'état initial des permissions notifications et de son bouton
+const initializeNotificationPermissions = (enableNotifsButton) => {
+  Notification.permission === "granted"
+    ? (createNotification('success'), updateButtonVisibility(enableNotifsButton, false))
+    : updateButtonVisibility(enableNotifsButton, true);
+};
 
-    // Si la permission n'est pas encore déterminée, demander à l'utilisateur
-    case "default":
-      Notification.requestPermission().then((permission) => {
-        updateButtonVisibility(enableNotifsButton, permission === "denied");
-        if (permission === "granted") {
+// Fonction pour gérer les clics sur le bouton de notifications
+const handleNotificationButtonClick = (enableNotifsButton) => {
+  enableNotifsButton.addEventListener('click', async (_event) => {
+    try {
+      // Ouvrir l'onglet des paramètres de notifications de Chrome
+      chrome.tabs.create({ url: 'chrome://settings/content/notifications' });
+
+      // Vérifier si l'autorisation a changé
+      const checkPermission = setInterval(() => {
+        if (Notification.permission === 'granted') {
+          clearInterval(checkPermission);
           createNotification('success');
+          updateButtonVisibility(enableNotifsButton, false);
         }
-        else {
-          createNotification('denied');
-        }
-      }).catch((err) => {
-        console.error("Erreur lors de la demande des permissions : ", err);
-        createNotification('error');
-      });
-      break;
+      }, 1000);
+    }
+    catch (err) {
+      console.error("Erreur: ", err);
+      createNotification('error');
+    }
+  });
+};
 
-    // Afficher le bouton si les notifications sont refusées
+// Fonction pour afficher une alerte selon l'état des permissions
+const showAlertForPermission = () => {
+  switch (Notification.permission) {
+    case "default":
+      setTimeout(() => alert("Activer vos notifications svp 👉👉👉"), 2000);
+      break;
     case "denied":
-      updateButtonVisibility(enableNotifsButton, true);
-      enableNotifsButton.addEventListener('click', () => {
-        // Demander la permission de notifications lors du clic
-        Notification.requestPermission().then((permission) => {
-          if (permission === "granted") {
-            createNotification('success');
-            updateButtonVisibility(enableNotifsButton, false);
-          }
-          else {
-            createNotification('denied');
-          }
-        }).catch((err) => {
-          console.error("Erreur lors de la demande des permissions : ", err);
-          createNotification('error');
-        });
-      });
-    break;
+      setTimeout(() => alert("🤬🤬🤬 Notifications refusées! 🤬🤬🤬"), 2000);
+      break;
   }
 };
 
-document.getElementById('sort-btn').addEventListener('click', (event) => {
-  // Demander la permission pour les notifications
-  Notification.requestPermission().then((permission) => {
-    if (permission === 'granted') {
-      createNotification('success');
-    }
-    else if (permission === 'default') {
-      // demander la permission à l'utilisateur via une popup
-    }
-    else {
-      createNotification('denied');
-    }
-  }).catch((error) => {
-    console.error("Erreur lors de la demande de permission de notification", error);
-    createNotification('error');
-  });
-});
-
-
-// Chargement du DOM
+// CHARGEMENT DU DOM
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('État actuel des notifications:', Notification.permission);
   const enableNotifsButton = document.getElementById("enable-notifs");
 
-  // Appeler la gestion des permissions de notifications
-  handleNotificationPermissions(enableNotifsButton);
+  // Initialiser l'état des permissions
+  initializeNotificationPermissions(enableNotifsButton);
+
+  // Gérer les clics sur le bouton des permissions de notifications
+  handleNotificationButtonClick(enableNotifsButton);
+
+  // Afficher une alerte selon l'état actuel des permissions
+  showAlertForPermission();
 });
-
-
-// document.getElementById('sort-btn').addEventListener('click', () => {
-//   chrome.runtime.sendMessage({ action: "sortBookmarks" }, (response) => {
-//     if (response.success) {
-//       console.log("Favoris triés avec succès !");
-//     }
-//     else {
-//       console.error("Échec du tri des favoris");
-//       createNotification('error');
-//     }
-//   });
-// });
