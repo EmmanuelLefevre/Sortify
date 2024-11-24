@@ -1,4 +1,4 @@
-// Fonction pour créer une notification personnalisée en fonction du type
+// Fonction pour créer une notification desktop personnalisée en fonction du type
 const createNotification = (type) => {
   let message;
   let body;
@@ -7,41 +7,44 @@ const createNotification = (type) => {
   // Utilisation d'un switch pour déterminer le type de notification
   switch (type) {
     case 'success':
-      message = 'Notifications activées';
-      body = '🚀🚀🚀 Notifications activées! 🚀🚀🚀';
-      // icon = 'src/assets/icons/success_icon.png';
+      message = 'Sortify';
+      body = '🚀 Notifications activées!';
+      icon = '../assets/logo/logo.png';
       break;
     case 'already_success':
-      message = 'Notifications déjà activées';
-      body = '🚀🚀🚀 Notifications déjà activées! 🚀🚀🚀';
-      // icon = 'src/assets/icons/success_icon.png';
+      message = 'Sortify';
+      body = '🚀 Vos notifications sont déjà activées!';
+      icon = '../assets/logo/logo.png';
       break;
     case 'denied':
-      message = 'Notification refusée';
-      body = '🤬🤬🤬 Notifications refusées! 🤬🤬🤬';
-      // icon = 'src/assets/icons/denied_icon.png';
+      message = 'Sortify';
+      body = '🤬 Notifications refusées!';
+      icon = '../assets/logo/logo.png';
       break;
     case 'error':
-      message = 'Erreur';
-      body = '⚠️ Erreur lors de la demande des permissions! ⚠️';
-      // icon = 'src/assets/icons/error_icon.png';
+      message = 'Sortify';
+      body = '⚠️ Erreur lors de la demande des permissions!';
+      icon = '../assets/logo/logo.png';
       break;
     case 'info':
-      message = 'Information';
-      body = 'ℹ️ Notifications en cours de vérification... ℹ';
-      // icon = 'src/assets/icons/info_icon.png';
+      message = 'Sortify';
+      body = 'ℹ️ Notifications en cours de vérification...';
+      icon = '../assets/logo/logo.png';
       break;
     default:
-      message = 'Notification par défaut';
-      body = '🔔 Vous avez une nouvelle notification! 🔔';
-      // icon = 'src/assets/icons/default_icon.png';
+      message = 'Sortify';
+      body = '🔔 Vous avez une nouvelle notification!';
+      icon = '../assets/logo/logo.png';
       break;
   }
 
   // Créer la notification
   new Notification(message, {
     body: body,
-    icon: icon
+    icon: icon,
+    vibrate: [200, 100, 200],
+    silent: true,
+    badge: 'src/assets/icons/success_16.png'
   });
 };
 
@@ -97,8 +100,28 @@ const handleNotificationPermissions = (enableNotifsButton) => {
   }
 };
 
+document.getElementById('sort-btn').addEventListener('click', (event) => {
+  // Demander la permission pour les notifications
+  Notification.requestPermission().then((permission) => {
+    if (permission === 'granted') {
+      createNotification('success');
+    }
+    else if (permission === 'default') {
+      // demander la permission à l'utilisateur via une popup
+    }
+    else {
+      createNotification('denied');
+    }
+  }).catch((error) => {
+    console.error("Erreur lors de la demande de permission de notification", error);
+    createNotification('error');
+  });
+});
+
+
 // Chargement du DOM
 document.addEventListener('DOMContentLoaded', () => {
+  console.log('État actuel des notifications:', Notification.permission);
   const enableNotifsButton = document.getElementById("enable-notifs");
 
   // Appeler la gestion des permissions de notifications
@@ -106,14 +129,14 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-document.getElementById('sort-btn').addEventListener('click', () => {
-  chrome.runtime.sendMessage({ action: "sortBookmarks" }, (response) => {
-    if (response.success) {
-      console.log("Favoris triés avec succès !");
-    }
-    else {
-      console.error("Échec du tri des favoris");
-      createNotification('error');
-    }
-  });
-});
+// document.getElementById('sort-btn').addEventListener('click', () => {
+//   chrome.runtime.sendMessage({ action: "sortBookmarks" }, (response) => {
+//     if (response.success) {
+//       console.log("Favoris triés avec succès !");
+//     }
+//     else {
+//       console.error("Échec du tri des favoris");
+//       createNotification('error');
+//     }
+//   });
+// });
