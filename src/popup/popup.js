@@ -92,6 +92,7 @@ const initializeNotificationPermissions = (enableNotifsButton) => {
   // Afficher le bouton si l'état est à "default" ou "denied"
   else {
     updateButtonVisibility(enableNotifsButton, true);
+    updateNotificationStatus(false);
   }
 };
 
