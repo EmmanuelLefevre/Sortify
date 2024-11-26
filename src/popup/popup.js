@@ -1,10 +1,10 @@
-// Fonctions pour gérer le cookie Sortify (JSON)
-// Fonctions gettter
+// ########## Fonctions pour gérer le cookie Sortify (JSON) ########## //
+// Settter
 const setCookie = (name, properties, days) => {
   const expires = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toUTCString();
   document.cookie = `${name}=${encodeURIComponent(JSON.stringify(properties))}; expires=${expires}; path=/`;
 };
-// Fonctions settter
+// Gettter
 const getCookie = (name) => {
   const cookies = document.cookie.split('; ');
   const targetCookie = cookies.find((cookie) => cookie.startsWith(`${name}=`));
@@ -23,7 +23,7 @@ const initializeSortifyCookie = () => {
   return cookie;
 };
 
-// Fonction pour créer une notification desktop personnalisée en fonction du type
+// ########## Fonction pour créer une notification desktop personnalisée en fonction du type ########## //
 const createNotification = (type) => {
   let message;
   let body;
@@ -62,12 +62,12 @@ const createNotification = (type) => {
   }
 };
 
-// Fonction pour mettre à jour l'état du bouton de notifications
+// ########## Fonction pour mettre à jour l'état du bouton de notifications ########## //
 const updateButtonVisibility = (button, shouldShow) => {
   button.style.display = shouldShow ? 'block' : 'none';
 };
 
-// Fonction pour gérer l'état initial des permissions notifications et de son bouton
+// ########## Fonction pour gérer l'état initial des permissions notifications et de son bouton ########## //
 const initializeNotificationPermissions = (enableNotifsButton) => {
   // Récupérer ou initialiser le cookie
   const sortifyCookie = initializeSortifyCookie();
@@ -85,7 +85,7 @@ const initializeNotificationPermissions = (enableNotifsButton) => {
   }
 };
 
-// Fonction pour gérer les clics sur le bouton de notifications
+// ########## Fonction pour gérer les clics sur le bouton de notifications ########## //
 const handleNotificationButtonClick = (enableNotifsButton) => {
   enableNotifsButton.addEventListener('click', async (_event) => {
     try {
@@ -115,7 +115,7 @@ const handleNotificationButtonClick = (enableNotifsButton) => {
   });
 };
 
-// Fonction pour afficher une alerte selon l'état des permissions
+// ########## Fonction pour afficher une alerte selon l'état des permissions ########## //
 const showAlertForPermission = () => {
   switch (Notification.permission) {
     case "default":
@@ -127,7 +127,7 @@ const showAlertForPermission = () => {
   }
 };
 
-// CHARGEMENT DU DOM
+// ########## Chargement du DOM ########## //
 document.addEventListener('DOMContentLoaded', () => {
   const enableNotifsButton = document.getElementById("enable-notifs");
 
