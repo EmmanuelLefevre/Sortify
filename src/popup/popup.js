@@ -1,3 +1,28 @@
+// Fonctions pour gérer le cookie Sortify (JSON)
+// Fonctions gettter
+const setCookie = (name, properties, days) => {
+  const expires = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toUTCString();
+  document.cookie = `${name}=${encodeURIComponent(JSON.stringify(properties))}; expires=${expires}; path=/`;
+};
+// Fonctions settter
+const getCookie = (name) => {
+  const cookies = document.cookie.split('; ');
+  const targetCookie = cookies.find((cookie) => cookie.startsWith(`${name}=`));
+  return targetCookie ? JSON.parse(decodeURIComponent(targetCookie.split('=')[1])) : null;
+};
+// Initialiser le cookie
+const initializeSortifyCookie = () => {
+  const defaultCookie = { notif: false };
+  const cookie = getCookie("Sortify");
+
+  // Créer un cookie par défaut si inexistant
+  if (!cookie) {
+    setCookie("Sortify", defaultCookie, 7);
+    return defaultCookie;
+  }
+  return cookie;
+};
+
 // Fonction pour créer une notification desktop personnalisée en fonction du type
 const createNotification = (type) => {
   let message;
@@ -44,9 +69,20 @@ const updateButtonVisibility = (button, shouldShow) => {
 
 // Fonction pour gérer l'état initial des permissions notifications et de son bouton
 const initializeNotificationPermissions = (enableNotifsButton) => {
-  Notification.permission === "granted"
-    ? (createNotification('success'), updateButtonVisibility(enableNotifsButton, false))
-    : updateButtonVisibility(enableNotifsButton, true);
+  // Récupérer ou initialiser le cookie
+  const sortifyCookie = initializeSortifyCookie();
+
+  if (Notification.permission === "granted") {
+    if (!sortifyCookie.notif) {
+      createNotification('success');
+      sortifyCookie.notif = true;
+      setCookie("Sortify", sortifyCookie, 7);
+    }
+    updateButtonVisibility(enableNotifsButton, false);
+  }
+  else {
+    updateButtonVisibility(enableNotifsButton, true);
+  }
 };
 
 // Fonction pour gérer les clics sur le bouton de notifications
@@ -60,7 +96,14 @@ const handleNotificationButtonClick = (enableNotifsButton) => {
       const checkPermission = setInterval(() => {
         if (Notification.permission === 'granted') {
           clearInterval(checkPermission);
-          createNotification('success');
+
+          const sortifyCookie = getCookie("Sortify");
+          if (!sortifyCookie.notif) {
+            createNotification('success');
+            sortifyCookie.notif = true;
+            setCookie("Sortify", sortifyCookie, 7);
+          }
+
           updateButtonVisibility(enableNotifsButton, false);
         }
       }, 1000);
