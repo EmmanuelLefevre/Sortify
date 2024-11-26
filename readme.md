@@ -26,10 +26,7 @@ chrome-extension://mphajpdnlknfhohmjkdkljjjkgdfello/
 3. Activer mode développeur
 4. Repérer le bouton "Charger l'extension non empaquetée"
 
-
 ![Chrome extension settings](https://github.com/EmmanuelLefevre/MarkdownImg/blob/main/chrome_settings.png)
-
-## 
 
 
 ## SERVEO CONFIGURATION
