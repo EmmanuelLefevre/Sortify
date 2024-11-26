@@ -1,26 +1,36 @@
-// ########## Fonctions pour gérer le cookie Sortify (JSON) ########## //
-// Settter
-const setCookie = (name, properties, days) => {
-  const expires = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toUTCString();
-  document.cookie = `${name}=${encodeURIComponent(JSON.stringify(properties))}; expires=${expires}; path=/`;
+// ########## Fonctions pour gérer le local storage Sortify (JSON) ########## //
+// Setter
+const setLocalStorage = (key, value) => {
+  localStorage.setItem(key, JSON.stringify(value));
 };
-// Gettter
-const getCookie = (name) => {
-  const cookies = document.cookie.split('; ');
-  const targetCookie = cookies.find((cookie) => cookie.startsWith(`${name}=`));
-  return targetCookie ? JSON.parse(decodeURIComponent(targetCookie.split('=')[1])) : null;
+// Getter
+const getLocalStorage = (key) => {
+  const value = localStorage.getItem(key);
+  return value ? JSON.parse(value) : null;
 };
-// Initialiser le cookie
-const initializeSortifyCookie = () => {
-  const defaultCookie = { notif: false };
-  const cookie = getCookie("Sortify");
+// Initialiser le local storage
+const initializeSortifyLocalStorage = () => {
+  const defaultNotificationPermission = { notif: false };
+  const sortifyLocalStorage = getLocalStorage("Sortify");
 
-  // Créer un cookie par défaut si inexistant
-  if (!cookie) {
-    setCookie("Sortify", defaultCookie, 7);
-    return defaultCookie;
+  if (!sortifyLocalStorage) {
+    setLocalStorage("Sortify", defaultNotificationPermission);
+    return defaultNotificationPermission;
   }
-  return cookie;
+  return sortifyLocalStorage;
+};
+// Fonction pour mettre à jour l'état des notifications dans le local storage
+const updateNotificationStatus = (status) => {
+  const sortifyLocalStorage = getLocalStorage("Sortify");
+
+  // Mise à jour de l'état des notifications (true ou false)
+  sortifyLocalStorage.notif = status;
+  setLocalStorage("Sortify", sortifyLocalStorage);
+
+  // Créer la notification uniquement lorsque les notifications sont activées
+  if (status) {
+    createNotification('success');
+  }
 };
 
 // ########## Fonction pour créer une notification desktop personnalisée en fonction du type ########## //
@@ -70,16 +80,16 @@ const updateButtonVisibility = (button, shouldShow) => {
 // ########## Fonction pour gérer l'état initial des permissions notifications et de son bouton ########## //
 const initializeNotificationPermissions = (enableNotifsButton) => {
   // Récupérer ou initialiser le cookie
-  const sortifyCookie = initializeSortifyCookie();
+  const sortifyLocalStorage = initializeSortifyLocalStorage();
 
+  // Masquer le bouton si permission accordée
   if (Notification.permission === "granted") {
-    if (!sortifyCookie.notif) {
-      createNotification('success');
-      sortifyCookie.notif = true;
-      setCookie("Sortify", sortifyCookie, 7);
+    if (!sortifyLocalStorage.notif) {
+      updateNotificationStatus(true);
     }
     updateButtonVisibility(enableNotifsButton, false);
   }
+  // Afficher le bouton si l'état est à "default" ou "denied"
   else {
     updateButtonVisibility(enableNotifsButton, true);
   }
@@ -96,14 +106,7 @@ const handleNotificationButtonClick = (enableNotifsButton) => {
       const checkPermission = setInterval(() => {
         if (Notification.permission === 'granted') {
           clearInterval(checkPermission);
-
-          const sortifyCookie = getCookie("Sortify");
-          if (!sortifyCookie.notif) {
-            createNotification('success');
-            sortifyCookie.notif = true;
-            setCookie("Sortify", sortifyCookie, 7);
-          }
-
+          updateNotificationStatus(true);
           updateButtonVisibility(enableNotifsButton, false);
         }
       }, 1000);
