@@ -23,7 +23,7 @@ chrome://settings/content/notifications
 4. Repérer le bouton "Charger l'extension non empaquetée"
 
 
-![Chrome extension settings](https://github.com/EmmanuelLefevre/Settings/blob/main/MarkdownImg/chrome_settings.png)
+![Chrome extension settings](https://github.com/EmmanuelLefevre/MarkdownImg/blob/main/chrome_settings.png)
 
 ## 
 
