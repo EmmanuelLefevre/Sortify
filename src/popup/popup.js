@@ -68,6 +68,11 @@ const createNotification = (type) => {
       body = '⚠️ Une erreur est survenue!';
       icon = '../assets/logo/logo.png';
       break;
+    case 'chrome':
+      message = 'Sortify';
+      body = '🛜 API Chrome non disponible!';
+      icon = '../assets/logo/logo.png';
+      break;
     case 'info':
       message = 'Sortify';
       body = 'ℹ️ Informations string...';
@@ -131,7 +136,12 @@ const initializeNotificationPermissions = (enableNotifsButton) => {
     default:
       updateButtonVisibility(enableNotifsButton, true);
       updateNotificationStatus(false);
-      showAlert("⚠️ Une erreur est survenue!");
+      if ("Notification" in window && Notification.permission === "granted") {
+        createNotification('error');
+      }
+      else {
+        showAlert("⚠️ Une erreur est survenue!");
+      }
       break;
   }
 };
@@ -140,10 +150,18 @@ const initializeNotificationPermissions = (enableNotifsButton) => {
 const handleNotificationButtonClick = (enableNotifsButton) => {
   enableNotifsButton.addEventListener('click', async (_event) => {
     try {
-      // Ouvrir l'onglet des paramètres de notifications de Chrome
-      chrome.tabs.create({ url: 'chrome://settings/content/notifications' });
+      // Vérifier si l'API chrome.tabs.create est disponible
+      if (chrome.tabs && chrome.tabs.create) {
+        // Ouvrir l'onglet des paramètres de notifications de Chrome
+        chrome.tabs.create({ url: 'chrome://settings/content/notifications' });
+      }
+      else {
+        console.warn("API chrome.tabs non supportée");
+        createNotification('chrome');
+        return;
+      }
 
-      // Vérifier si l'autorisation a changé
+      // Vérifier si l'autorisation a changée
       const checkPermission = setInterval(() => {
         if (Notification.permission === 'granted') {
           clearInterval(checkPermission);
@@ -151,6 +169,9 @@ const handleNotificationButtonClick = (enableNotifsButton) => {
           updateButtonVisibility(enableNotifsButton, false);
         }
       }, 1000);
+
+      // Arrêter la vérification après 20 secondes si la permission n'est pas accordée
+      setTimeout(() => clearInterval(checkPermission), 20000);
     }
     catch (err) {
       console.error("Erreur: ", err);
