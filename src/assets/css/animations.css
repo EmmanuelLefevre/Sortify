@@ -17,5 +17,7 @@
 
 .lightSpeedInLeft {
   animation-name: lightSpeedInLeft;
+  animation-duration: 1s;
   animation-timing-function: ease-out;
+  animation-fill-mode: both;
 }
