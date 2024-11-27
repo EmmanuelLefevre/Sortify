@@ -4,6 +4,7 @@
 - [INTRODUCTION](#introduction)
 - [CHROME EXTENSIONS SETTINGS](#chrome-extensions-settings)
 - [SERVEO CONFIGURATION](#serveo-configuration)
+- [LIENS UTILES](#liens-utiles)
 
 ## INTRODUCTION
 La gestion des favoris dans un navigateur peut devenir complexe à mesure que le nombre de liens enregistrés augmente. Afin de simplifier cette organisation Sortify utilise un Large Language Model (LLM) pour automatiser et optimiser le tri des favoris dans Chrome.  
@@ -61,3 +62,8 @@ Ou ECDSA 521 bits
 ssh-keygen -t ecdsa -b 521 -f "$env:USERPROFILE\.ssh\serveo_ecdsa"
 ```
 Se logger dans serveo avec son compte Github
+
+## LIENS UTILES
+[Chrome extension documentation](https://developer.chrome.com/docs/extensions/reference?hl=fr)
+[Manifest documentation](https://developer.chrome.com/docs/extensions/reference/manifest?hl=fr)
+[Chrome permission](https://developer.chrome.com/docs/extensions/reference/api/permissions?hl=fr)
