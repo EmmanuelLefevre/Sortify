@@ -1,7 +1,12 @@
-// ########## Fonctions pour gérer le local storage Sortify (JSON) ########## //
+// ########## Utilitaires pour le local storage Sortify (JSON) ########## //
 // Setter
 const setLocalStorage = (key, value) => {
-  localStorage.setItem(key, JSON.stringify(value));
+  if (localStorage) {
+    localStorage.setItem(key, JSON.stringify(value));
+  }
+  else {
+    console.warn("Local storage inaccessible!");
+  }
 };
 // Getter avec fallback en cas de données invalides
 const getLocalStorage = (key) => {
@@ -15,29 +20,76 @@ const getLocalStorage = (key) => {
     return null;
   }
 };
-// Initialiser le local storage
-const initializeSortifyLocalStorage = () => {
-  const defaultNotificationPermission = { notif: false };
-  const sortifyLocalStorage = getLocalStorage("Sortify");
 
-  if (!sortifyLocalStorage) {
-    setLocalStorage("Sortify", defaultNotificationPermission);
+
+// ########## Initialiser les JSON du local storage ########## //
+// Initialiser les données des notifications
+const initializeNotificationsStorage = () => {
+  const defaultNotificationPermission = { notifications: false };
+  const notifData = getLocalStorage("SortifyNotifications");
+
+  if (!notifData) {
+    setLocalStorage("SortifyNotifications", defaultNotificationPermission);
     return defaultNotificationPermission;
   }
-  return sortifyLocalStorage;
+  return notifData;
 };
-// Mettre à jour l'état des notifications dans le local storage
-const updateNotificationStatus = (status) => {
-  const sortifyLocalStorage = getLocalStorage("Sortify");
+// Initialiser les données des alertes
+const initializeAlertStorage = () => {
+  const defaultAlertSettings = {
+    denied_notifications: true,
+    default_notifications: true,
+    unsupported_notifications: true
+  };
+  const alertData = getLocalStorage("SortifyAlerts");
 
-  if (sortifyLocalStorage) {
+  if (!alertData) {
+    setLocalStorage("SortifyAlerts", defaultAlertSettings);
+    return defaultAlertSettings;
+  }
+  return alertData;
+};
+
+
+// ########## Gestion des alertes ########## //
+// Afficher une alerte personnalisée si elle n'a pas déjà été affichée
+const showAlert = (key, message, timeout = 2000) => {
+  // Récupérer l'état des alertes depuis le localStorage ou initialiser un objet vide en guise de fallback si données inexistantes
+  const alertStatus = getLocalStorage("SortifyAlerts") || {};
+
+  // Vérifier si l'alerte a déjà été affichée
+  if (!alertStatus[key]) return;
+
+  // Afficher l'alerte après le délai spécifié
+  setTimeout(() => alert(message), timeout);
+
+  // Désactiver l'alerte après l'affichage
+  alertStatus[key] = false;
+  setLocalStorage("SortifyAlerts", alertStatus);
+};
+// Réactiver une alerte spécifique
+const resetAlertStatus = (key) => {
+  const alertStatus = getLocalStorage("SortifyAlerts") || {};
+  alertStatus[key] = true;
+  setLocalStorage("SortifyAlerts", alertStatus);
+};
+
+
+// ########## Gérer la mise à jour de l'état des notifications ########## //
+const updateNotificationStatus = (status) => {
+  const notifData = getLocalStorage("SortifyNotifications");
+
+  if (notifData) {
     // Mise à jour de l'état des notifications (true ou false)
-    sortifyLocalStorage.notif = status;
-    setLocalStorage("Sortify", sortifyLocalStorage);
+    notifData.notif = status;
+    setLocalStorage("SortifyNotifications", notifData);
 
     // Créer notification uniquement lorsque les notifications sont activées
     if (status) {
       createNotification('success');
+    }
+    else {
+      resetAlertStatus("denied_notifications");
     }
   }
   else {
@@ -45,23 +97,8 @@ const updateNotificationStatus = (status) => {
   }
 };
 
-// ########## Fonction pour gérer les alertes personnalisées ########## //
-const showAlert = (key, message, timeout = 2000) => {
-  // Récupérer l'état des alertes depuis le localStorage ou initialiser un objet vide en guise de fallback si données inexistantes
-  const alertStatus = getLocalStorage("SortifyAlerts") || {};
 
-  // Vérifier si l'alerte a déjà été affichée
-  if (alertStatus[key]) return;
-
-  // Afficher l'alerte après le délai spécifié
-  setTimeout(() => alert(message), timeout);
-
-  // Marquer l'alerte comme affichée
-  alertStatus[key] = true;
-  setLocalStorage("SortifyAlerts", alertStatus);
-};
-
-// ########## Fonction pour créer une notification desktop personnalisée en fonction du type ########## //
+// ########## Créer notifications desktop personnalisées en fonction du type ########## //
 const createNotification = (type) => {
   let message;
   let body;
@@ -109,21 +146,23 @@ const createNotification = (type) => {
   }
 };
 
-// ########## Fonction pour mettre à jour l'état du bouton de notifications ########## //
+// ########## Initialiser les permissions et gérer l'état du bouton de notifications ########## //
 const updateButtonVisibility = (button, shouldShow) => {
   button.style.display = shouldShow ? 'block' : 'none';
 };
 
 // ########## Fonction pour gérer l'état initial des permissions notifications et de son bouton ########## //
 const initializeNotificationPermissions = (enableNotifsButton) => {
-  // Récupérer ou initialiser le cookie
-  const sortifyLocalStorage = initializeSortifyLocalStorage();
+  // Initialiser ou récupérer SortifyNotifications à partir du localStorage
+  const notificationsLocalStorage = initializeNotificationsStorage();
+  // Initialiser ou récupérer SortifyAlerts à partir du localStorage
+  initializeAlertStorage();
 
   // Gestion des permissions via un switch
   switch (Notification.permission) {
     // Masquer le bouton si permission accordée
     case "granted":
-      if (!sortifyLocalStorage.notif) {
+      if (!notificationsLocalStorage.notif) {
         updateNotificationStatus(true);
       }
       updateButtonVisibility(enableNotifsButton, false);
@@ -167,7 +206,7 @@ const handleNotificationButtonClick = (enableNotifsButton) => {
         chrome.tabs.create({ url: 'chrome://settings/content/notifications' });
       }
       else {
-        console.warn("API chrome.tabs non supportée");
+        console.warn("API chrome.tabs non supportée!");
         createNotification('chrome');
         return;
       }
