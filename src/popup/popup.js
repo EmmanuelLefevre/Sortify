@@ -46,8 +46,19 @@ const updateNotificationStatus = (status) => {
 };
 
 // ########## Fonction pour gérer les alertes personnalisées ########## //
-const showAlert = (message, timeout = 2000) => {
+const showAlert = (key, message, timeout = 2000) => {
+  // Récupérer l'état des alertes depuis le localStorage ou initialiser un objet vide en guise de fallback si données inexistantes
+  const alertStatus = getLocalStorage("SortifyAlerts") || {};
+
+  // Vérifier si l'alerte a déjà été affichée
+  if (alertStatus[key]) return;
+
+  // Afficher l'alerte après le délai spécifié
   setTimeout(() => alert(message), timeout);
+
+  // Marquer l'alerte comme affichée
+  alertStatus[key] = true;
+  setLocalStorage("SortifyAlerts", alertStatus);
 };
 
 // ########## Fonction pour créer une notification desktop personnalisée en fonction du type ########## //
@@ -94,7 +105,7 @@ const createNotification = (type) => {
     });
   }
   else {
-    showAlert("💀💀💀 Les notifications ne sont pas supportées par ce navigateur!");
+    showAlert("unsupported_notifications", "💀💀💀 Les notifications ne sont pas supportées par ce navigateur!");
   }
 };
 
@@ -122,14 +133,14 @@ const initializeNotificationPermissions = (enableNotifsButton) => {
     case "denied":
       updateButtonVisibility(enableNotifsButton, true);
       updateNotificationStatus(false);
-      showAlert("🤬🤬🤬 Notifications refusées! 🤬🤬🤬");
+      showAlert("denied_notifications", "🤬🤬🤬 Notifications refusées! 🤬🤬🤬");
       break;
 
     // Afficher le bouton si état "default" + alert
     case "default":
       updateButtonVisibility(enableNotifsButton, true);
       updateNotificationStatus(false);
-      showAlert("Activer vos notifications svp 👉👉👉");
+      showAlert("default_notifications", "Activer vos notifications svp 👉👉👉");
       break;
 
     // Cas d'erreur
