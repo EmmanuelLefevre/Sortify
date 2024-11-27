@@ -38,7 +38,10 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "css": ["src/assets/css/styles.css"],
+      "css": [
+        "src/assets/css/styles.css",
+        "src/assets/css/animations.css"
+      ],
       "js": [
         "src/assets/js/browser.js"
       ]
