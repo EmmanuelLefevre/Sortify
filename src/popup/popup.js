@@ -3,10 +3,17 @@
 const setLocalStorage = (key, value) => {
   localStorage.setItem(key, JSON.stringify(value));
 };
-// Getter
+// Getter avec fallback en cas de données invalides
 const getLocalStorage = (key) => {
-  const value = localStorage.getItem(key);
-  return value ? JSON.parse(value) : null;
+  try {
+    const value = localStorage.getItem(key);
+    return value ? JSON.parse(value) : null;
+  }
+  catch (error) {
+    console.error(`Erreur lors de la récupération de "${key}" depuis le localStorage:`, error);
+    // Retourner null en cas de données corrompues
+    return null;
+  }
 };
 // Initialiser le local storage
 const initializeSortifyLocalStorage = () => {
@@ -19,18 +26,28 @@ const initializeSortifyLocalStorage = () => {
   }
   return sortifyLocalStorage;
 };
-// Fonction pour mettre à jour l'état des notifications dans le local storage
+// Mettre à jour l'état des notifications dans le local storage
 const updateNotificationStatus = (status) => {
   const sortifyLocalStorage = getLocalStorage("Sortify");
 
-  // Mise à jour de l'état des notifications (true ou false)
-  sortifyLocalStorage.notif = status;
-  setLocalStorage("Sortify", sortifyLocalStorage);
+  if (sortifyLocalStorage) {
+    // Mise à jour de l'état des notifications (true ou false)
+    sortifyLocalStorage.notif = status;
+    setLocalStorage("Sortify", sortifyLocalStorage);
 
-  // Créer la notification uniquement lorsque les notifications sont activées
-  if (status) {
-    createNotification('success');
+    // Créer notification uniquement lorsque les notifications sont activées
+    if (status) {
+      createNotification('success');
+    }
   }
+  else {
+    console.error("Impossible de mettre à jour l'état des notifications: localStorage invalide.");
+  }
+};
+
+// ########## Fonction pour gérer les alertes personnalisées ########## //
+const showAlert = (message, timeout = 1000) => {
+  setTimeout(() => alert(message), timeout);
 };
 
 // ########## Fonction pour créer une notification desktop personnalisée en fonction du type ########## //
@@ -48,14 +65,18 @@ const createNotification = (type) => {
       break;
     case 'error':
       message = 'Sortify';
-      body = '⚠️ Erreur lors de la demande des permissions!';
+      body = '⚠️ Une erreur est survenue!';
       icon = '../assets/logo/logo.png';
       break;
     case 'info':
       message = 'Sortify';
-      body = 'ℹ️ Notifications en cours de vérification...';
+      body = 'ℹ️ Informations string...';
       icon = '../assets/logo/logo.png';
       break;
+    default:
+      console.warn(`Type de notification inconnu: "${type}".`);
+      // Quitter si le type est invalide
+      return;
   }
 
   // Vérifier si les notifications sont supportées par le navigateur avant de les créer
@@ -68,7 +89,7 @@ const createNotification = (type) => {
     });
   }
   else {
-    setTimeout(() => alert("💀💀💀 Les notifications ne sont pas supportées par ce navigateur!"), 2000);
+    showAlert("💀💀💀 Les notifications ne sont pas supportées par ce navigateur!");
   }
 };
 
@@ -82,17 +103,36 @@ const initializeNotificationPermissions = (enableNotifsButton) => {
   // Récupérer ou initialiser le cookie
   const sortifyLocalStorage = initializeSortifyLocalStorage();
 
-  // Masquer le bouton si permission accordée
-  if (Notification.permission === "granted") {
-    if (!sortifyLocalStorage.notif) {
-      updateNotificationStatus(true);
-    }
-    updateButtonVisibility(enableNotifsButton, false);
-  }
-  // Afficher le bouton si l'état est à "default" ou "denied"
-  else {
-    updateButtonVisibility(enableNotifsButton, true);
-    updateNotificationStatus(false);
+  // Gestion des permissions via un switch
+  switch (Notification.permission) {
+    // Masquer le bouton si permission accordée
+    case "granted":
+      if (!sortifyLocalStorage.notif) {
+        updateNotificationStatus(true);
+      }
+      updateButtonVisibility(enableNotifsButton, false);
+      break;
+
+    // Afficher le bouton si état "denied" + alert
+    case "denied":
+      updateButtonVisibility(enableNotifsButton, true);
+      updateNotificationStatus(false);
+      showAlert("🤬🤬🤬 Notifications refusées! 🤬🤬🤬");
+      break;
+
+    // Afficher le bouton si état "default" + alert
+    case "default":
+      updateButtonVisibility(enableNotifsButton, true);
+      updateNotificationStatus(false);
+      showAlert("Activer vos notifications svp 👉👉👉");
+      break;
+
+    // Cas d'erreur
+    default:
+      updateButtonVisibility(enableNotifsButton, true);
+      updateNotificationStatus(false);
+      showAlert("⚠️ Une erreur est survenue!");
+      break;
   }
 };
 
@@ -119,28 +159,17 @@ const handleNotificationButtonClick = (enableNotifsButton) => {
   });
 };
 
-// ########## Fonction pour afficher une alerte selon l'état des permissions ########## //
-const showAlertForPermission = () => {
-  switch (Notification.permission) {
-    case "default":
-      setTimeout(() => alert("Activer vos notifications svp 👉👉👉"), 2000);
-      break;
-    case "denied":
-      setTimeout(() => alert("🤬🤬🤬 Notifications refusées! 🤬🤬🤬"), 2000);
-      break;
-  }
-};
-
 // ########## Chargement du DOM ########## //
 document.addEventListener('DOMContentLoaded', () => {
   const enableNotifsButton = document.getElementById("enable-notifs");
+  if (!enableNotifsButton) {
+    console.error("Le bouton de notifications est introuvable dans le DOM.");
+    return;
+  }
 
   // Initialiser l'état des permissions
   initializeNotificationPermissions(enableNotifsButton);
 
   // Gérer les clics sur le bouton des permissions de notifications
   handleNotificationButtonClick(enableNotifsButton);
-
-  // Afficher une alerte selon l'état actuel des permissions
-  showAlertForPermission();
 });
