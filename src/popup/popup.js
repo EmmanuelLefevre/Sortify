@@ -46,7 +46,7 @@ const updateNotificationStatus = (status) => {
 };
 
 // ########## Fonction pour gérer les alertes personnalisées ########## //
-const showAlert = (message, timeout = 1000) => {
+const showAlert = (message, timeout = 2000) => {
   setTimeout(() => alert(message), timeout);
 };
 
@@ -170,8 +170,8 @@ const handleNotificationButtonClick = (enableNotifsButton) => {
         }
       }, 1000);
 
-      // Arrêter la vérification après 20 secondes si la permission n'est pas accordée
-      setTimeout(() => clearInterval(checkPermission), 20000);
+      // Arrêter la vérification après 15 secondes si la permission n'est pas accordée
+      setTimeout(() => clearInterval(checkPermission), 15000);
     }
     catch (err) {
       console.error("Erreur: ", err);
@@ -180,8 +180,22 @@ const handleNotificationButtonClick = (enableNotifsButton) => {
   });
 };
 
+// ########## Ajouter animation sur le bouton "Ajouter" ########## //
+const addAnimationClass = () => {
+  const button = document.getElementById("sort-btn");
+  if (button) {
+    // Ajouter la classe d'animation
+    button.classList.add("lightSpeedInLeft");
+  }
+  else {
+    console.error("Le bouton avec l'ID 'sort-btn' n'a pas été trouvé dans le DOM.");
+  }
+};
+
 // ########## Chargement du DOM ########## //
 document.addEventListener('DOMContentLoaded', () => {
+  addAnimationClass();
+
   const enableNotifsButton = document.getElementById("enable-notifs");
   if (!enableNotifsButton) {
     console.error("Le bouton de notifications est introuvable dans le DOM.");
