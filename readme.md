@@ -29,7 +29,6 @@ chrome-extension://mphajpdnlknfhohmjkdkljjjkgdfello/
 
 ![Chrome extension settings](https://github.com/EmmanuelLefevre/MarkdownImg/blob/main/chrome_settings.png)
 
-
 ## SERVEO CONFIGURATION
 Serveo.net est un service de tunneling SSH qui permet de rendre vos applications locales accessibles sur Internet sans avoir à configurer un serveur ou à manipuler des paramètres complexes de réseau. Il vous suffit de disposer d'une connexion SSH et d'un terminal pour créer un tunnel sécurisé vers votre machine locale.  
 Serveo est particulièrement utile pour les développeurs qui souhaitent tester des applications web localement (tout en permettant l'accès à des utilisateurs externes) sans nécessiter de configuration complexe de pare-feu ou de routeurs. Il se distingue par sa simplicité d'utilisation, ne nécessitant aucune installation de logiciel supplémentaire.  
