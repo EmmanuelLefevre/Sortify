@@ -16,7 +16,7 @@
 </head>
 
 <body>
-  <div id="sortify-app">
+  <div class="sortify-app">
     <main>
 
       <div class="sortify-app-content">
@@ -34,27 +34,26 @@
             </button>
           </form>
 
-          <!-- Formulaire d'ajout de labels -->
+          <!-- Formulaire d'ajout de catégories -->
           <form action="#"
                 method="post"
                 novalidate>
-            <div class="input-container">
+            <div class="category-input-container">
               <input type="text"
-                     id="input"
-                     name="label"
+                     id="category-input"
+                     name="category"
                      autocomplete="off"
-                     placeholder="Ajouter un label"
-                     aria-label="Champ de saisie du label du favoris"
+                     placeholder="Ajouter une catégorie"
+                     aria-label="Champ de saisie d'ajout d'une catégorie pour les favoris"
                      required/>
-              <span class="input-border"></span>
-              <label for="label-input"
-                     id="label">Ajouter un label</label>
+              <span></span>
+              <label for="category-input">Ajouter une catégorie</label>
             </div>
-            <!-- <button type="submit"
-                    id="add-label-btn"
-                    aria-label="Ajouter un label pour vos favoris">Ajouter
-            </button> -->
           </form>
+          <!-- <button type="submit"
+                  class="add-label-btn"
+                  aria-label="Ajouter un label pour vos favoris">Ajouter
+          </button> -->
 
           <!-- Activer les notifications desktop -->
           <button id="enable-notifs"
@@ -62,7 +61,7 @@
           </button>
 
         </div> <!-- sortify-content -->
-        <div id="request-result"
+        <div class="request-result"
              role="status"
              aria-live="polite">
         </div>
