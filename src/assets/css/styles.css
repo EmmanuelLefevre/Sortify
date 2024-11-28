@@ -16,7 +16,7 @@
     --font-size-h1: 30px;
     --font-size-input: 14px;
     --font-size-label: 14px;
-    --font-size-label-focus: 12px;
+    --font-size-label-focus: 9px;
     --font-size-p: 14px;
     --font-size-result: 14px;
 }
@@ -26,6 +26,7 @@
 :root {
     --white: white;
     --black: black;
+    --black2: #272727;
     --primary-color: #008080;
     --secondary-color: #209b87;
     --third-color: #4db686;
@@ -138,33 +139,51 @@ img.sortify-logo {
     margin: 10px 0 20px 0;
 }
 /*------Input------*/
-.input-container{
+div.input-container{
 	position: relative;
-    height: 27px;
-	margin: 10px 0 25px 0;
-    padding: 5px 10px;
-    border: var(--border-width1) var(--border-style) var(--primary-color);
-    box-sizing: border-box;
+    width: 200px;
+    margin-top: 30px;
 }
-.input-container label{
-	position: absolute;
-	color: var(--primary-color);
-	font-size: var(--font-size-label);
-	top: 0px;
-    padding-left: 10px;
-	transition: all 0.5s ease-in-out;
-}
-.input-container input{
+div.input-container input {
     font-size: var(--font-size-input);
     color: var(--primary-color);
-    background: transparent;
     width: 100%;
-    border: 0;
-    padding: 8px 0 5px 0;
-    box-sizing: border-box;
+    margin-bottom: 30px;
+    border: none;
+    border-bottom: var(--border-width1) var(--border-style) var(--black2);
+    background: transparent;
+    transition: width 0.2s linear 0.2s;
+}
+div.input-container input ~ .input-border {
+    display: block;
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 30px;
+    left: 0;
+    background: linear-gradient(to right, var(--gradient1), var(--gradient2) 60%);
+}
+div.input-container label {
+    position: absolute;
+    font-size: var(--font-size-label);
+    color: var(--primary-color);
+    top: 0;
+    left: 0;
+    padding: 10px 0;
+    pointer-events: none;
+    transition: top 0.5s, font-size 0.5s, color 0.5s;
+}
+/*------Result------*/
+div#request-result {
+    display: none;
+    font-size: var(--font-size-result);
+    color: var(--text-result-color);
+    margin-top: 20px;
 }
 
+
 /*------Hover------*/
+/*Button*/
 button#add-bookmarks-btn:hover,
 button#add-label-btn:hover {
     color: var(--primary-color);
@@ -175,34 +194,71 @@ button#add-label-btn:hover {
 button#enable-notifs:hover {
     text-decoration: underline;
 }
-.input-container input:hover {
+/*Input*/
+div.input-container {
     cursor: pointer;
+}
+div.input-container input:hover ~ label {
+    animation: bounce 1.2s ease-in-out;
+}
+div.input-container input:hover ~ .input-border {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(to right, var(--gradient1), var(--gradient2) 60%);
+    bottom: 30px;
+    left: 0;
+    transition: all 0.5s cubic-bezier(0.2, 0, 0.03, 1);
 }
 
 /*------Focus------*/
-.input-container:focus-within {
-    border: none;
-}
-.input-container input:focus{
-    border: none;
+div.input-container input:focus {
     outline: none;
-    border-bottom: var(--border-width2) var(--border-style) var(--primary-color);
+    color: var(--black);
 }
-.input-container input:focus ~ label,
-.input-container input:valid ~ label {
-	top: -8px;
-	font-size: var(--font-size-label-focus);
+div.input-container input:focus ~ label {
+    font-size: var(--font-size-label-focus);
+    top: -25px;
+    left: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease-in-out;
 }
-/* .input-container input:invalid ~ label {
-    border-bottom: var(--border-width1) var(--border-style) var(--error-color);
-} */
+div.input-container input:focus ~ .input-border {
+    width: 100%;
+    transition: all 0.5s cubic-bezier(0.2, 0, 0.03, 1);
+}
 
-/*------Ids------*/
-div#request-result {
-    display: none;
-    font-size: var(--font-size-result);
-    color: var(--text-result-color);
-    margin-top: 20px;
+/*------Placeholder------*/
+div.input-container input::placeholder {
+    color: transparent;
 }
+div.input-container input:not(:placeholder-shown) ~ label {
+    font-size: var(--font-size-input);
+    top: -5px;
+    left: 0;
+}
+
+/*------Valid/Invalid------*/
+/* .input-container input:valid ~ label {
+    font-size: 14px;
+    top: -25px;
+    left: 0;
+}
+.input-container input:valid ~ .input-border {
+    font-size: 14px;
+    color: var(--main-purple);
+    top: 37px;
+    left: 0;
+}
+.input-container input.invalid + .input-border {
+    background: var(--invalid);
+    transition: all 0.5s cubic-bezier(0.2, 0, 0.03, 1);
+}
+.input-container input.valid + .input-border {
+    background: var(--valid);
+    transition: all 0.5s cubic-bezier(0.2, 0, 0.03, 1);
+} */
 
 /*------Classes------*/
