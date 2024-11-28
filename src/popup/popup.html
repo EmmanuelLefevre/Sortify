@@ -3,23 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sortify est une application Chrome qui facilite la gestion et l'organisation de vos favoris en s'appuyant sur l'IA. Celle-ci automatise le classement de ces derniers en les labélisant.">
+  <meta name="description" content="Extension développée en JavaScript vanilla, HTML5/CSS3, Llama 3.2">
+  <meta name="author" content="Emmanuel Lefevre, Camille Hoareau, Adrien Lazaille">
+  <meta name="keywords" content="Favoris, bookmarks, IA, gestion de tri, automatisation">
+  <meta name="theme-color" content="#008080">
+
   <link rel="stylesheet" href="/src/assets/css/styles.css">
   <link rel="stylesheet" href="/src/assets/css/animations.css">
+
   <title>Sortify</title>
 </head>
 
 <body>
   <div id="sortify-app">
     <main>
+
       <div class="sortify-app-content">
         <div class="sortify-content">
+
           <h1 class="sortify-title">Sortify</h1>
-          <img src="/src/assets/logo/logo.png" class="sortify-logo" alt="Image du logo de l'extension Sortify">
-          <button id="sort-btn">Ajouter</button>
-          <button id="enable-notifs">Activer les notifications</button>
+          <img src="/src/assets/logo/logo.png" class="sortify-logo" alt="Logo de Sortify, l'application de gestion des favoris.">
+
+          <!-- Formulaire d'ajout de favoris -->
+          <form action="#"
+                method="post">
+            <button type="submit"
+                    id="add-bookmarks-btn"
+                    aria-label="Ajouter cet élément aux favoris">Ajouter
+            </button>
+          </form>
+
+          <!-- Formulaire d'ajout de labels -->
+          <form action="#"
+                method="post">
+            <div class="label-container">
+              <input type="text" id="label-input" required/>
+              <label for="label-input">Ajouter un label</label>
+            </div>
+            <button type="submit"
+                    id="add-label-btn"
+                    aria-label="Ajouter un label pour vos favoris">Ajouter
+            </button>
+          </form>
+
+          <!-- Activer les notifications desktop -->
+          <button id="enable-notifs"
+                  aria-label="Activer les notifications">Activer les notifications
+          </button>
+
         </div> <!-- sortify-content -->
-        <div id="request-result"></div>
+        <div id="request-result"
+             role="status"
+             aria-live="polite">
+        </div>
       </div> <!-- sortify-app-content -->
+
     </main>
   </div> <!-- sortify-app -->
 
