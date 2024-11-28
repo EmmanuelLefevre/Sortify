@@ -148,7 +148,7 @@ const createNotification = (type) => {
 
 // ########## Initialiser les permissions et gérer l'état du bouton de notifications ########## //
 const updateButtonVisibility = (button, shouldShow) => {
-  button.style.display = shouldShow ? 'block' : 'none';
+  button.style.display = shouldShow ? 'flex' : 'none';
 };
 
 // ########## Fonction pour gérer l'état initial des permissions notifications et de son bouton ########## //
@@ -158,7 +158,7 @@ const initializeNotificationPermissions = (enableNotifsButton) => {
   // Initialiser ou récupérer SortifyAlerts à partir du localStorage
   initializeAlertStorage();
 
-  // Gestion des permissions via un switch
+  // Gestion des permissions
   switch (Notification.permission) {
     // Masquer le bouton si permission accordée
     case "granted":
@@ -246,7 +246,7 @@ const addAnimationClass = () => {
 document.addEventListener('DOMContentLoaded', () => {
   addAnimationClass();
 
-  const enableNotifsButton = document.getElementById("enable-notifs");
+  const enableNotifsButton = document.getElementById("notifs-content");
   if (!enableNotifsButton) {
     console.warn("Le bouton de notifications est introuvable dans le DOM.");
     return;
