@@ -43,11 +43,11 @@
                      id="category-input"
                      name="category"
                      autocomplete="off"
-                     placeholder="Ajouter une catégorie"
-                     aria-label="Champ de saisie d'ajout d'une catégorie pour les favoris"
+                     placeholder="Créer une catégorie"
+                     aria-label="Champ de saisie de création d'une catégorie pour les favoris"
                      required/>
               <span></span>
-              <label for="category-input">Ajouter une catégorie</label>
+              <label for="category-input">Créer une catégorie</label>
             </div>
           </form>
           <!-- <button type="submit"
@@ -56,9 +56,12 @@
           </button> -->
 
           <!-- Activer les notifications desktop -->
-          <button id="enable-notifs"
-                  aria-label="Activer les notifications">Activer les notifications
-          </button>
+          <div id="notifs-content">
+            <img src="/src/assets/icons/bell_16.png" class="notifs-icon ringinBell" alt="Image de cloche représentant une alerte de notifications.">
+            <button id="enable-notifs"
+                    aria-label="Activer les notifications">Activer les notifications
+            </button>
+          </div>
 
         </div> <!-- sortify-content -->
         <div class="request-result"

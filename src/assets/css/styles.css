@@ -45,7 +45,7 @@
 :root {
     --border-width1: 1px;
     --border-width2: 2px;
-    --border-style: solid;
+    --border-solid: solid;
 }
 /*------Hover------*/
 :root {
@@ -87,7 +87,7 @@ div.sortify-app {
 }
 div.sortify-app-content {
     background-color: var(--background-color);
-    width: 250px;
+    width: 280px;
     height: fit-content;
 }
 /*------Content------*/
@@ -97,6 +97,18 @@ div.sortify-content {
     align-items: center;
     flex-direction: column;
     width: 100%;
+}
+div#notifs-content {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 170px;
+    margin: 10px 0 20px 0;
+    padding: 10px 0;
+    border: var(--border-width2) var(--border-solid) var(--primary-color);
+    border-radius: 5px;
 }
 /*------Title------*/
 h1.sortify-title {
@@ -122,21 +134,30 @@ button#add-label-btn {
     margin-bottom: 25px;
     transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
     box-shadow: 0px 4px 6px -2px var(--box-shadow-color);
-    outline: var(--border-width2) var(--border-style) rgba(0, 0, 0, 0);
+    outline: var(--border-width2) var(--border-solid) rgba(0, 0, 0, 0);
 }
 button#enable-notifs {
     cursor: pointer;
     font-size: var(--font-size-p);
-    color: var(--secondary-color);
+    color: var(--primary-color);
     background-color: transparent;
+    padding-top: 10px;
     border: none;
-    padding-bottom: 20px;
 }
 /*------Img------*/
 img.sortify-logo {
     width: 135px;
     height: auto;
     margin: 10px 0 20px 0;
+}
+img.notifs-icon {
+    position: absolute;
+    background-color: var(--background-color);
+    border: var(--border-width2) var(--border-solid) var(--primary-color);
+    padding: 7px;
+    top: -18px;
+    border-radius: 50%;
+    z-index: 1;
 }
 /*------Input------*/
 div.category-input-container{
@@ -151,7 +172,7 @@ div.category-input-container input {
     margin-bottom: 30px;
     padding-bottom: 5px;
     border: none;
-    border-bottom: var(--border-width1) var(--border-style) var(--black2);
+    border-bottom: var(--border-width1) var(--border-solid) var(--primary-color);
     background: transparent;
     transition: width 0.2s linear 0.2s;
 }
@@ -168,7 +189,7 @@ div.category-input-container label {
     position: absolute;
     font-size: var(--font-size-label);
     color: var(--primary-color);
-    top: 5px;
+    top: 11px;
     left: 0;
     pointer-events: none;
     transition: top 0.5s, font-size 0.5s, color 0.5s;
@@ -193,7 +214,7 @@ button#add-label-btn:hover {
     outline-color: var(--hover-border-color);
 }
 button#enable-notifs:hover {
-    color: var(--third-color);
+    color: var(--secondary-color);
     text-decoration: underline;
 }
 /*Input*/
