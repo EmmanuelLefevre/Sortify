@@ -127,8 +127,8 @@ button#add-label-btn {
 button#enable-notifs {
     cursor: pointer;
     font-size: var(--font-size-p);
-    color: var(--primary-color);
-    background-color: var(--background-color);
+    color: var(--secondary-color);
+    background-color: transparent;
     border: none;
     padding-bottom: 20px;
 }
@@ -139,42 +139,43 @@ img.sortify-logo {
     margin: 10px 0 20px 0;
 }
 /*------Input------*/
-div.input-container{
+div.category-input-container{
 	position: relative;
     width: 200px;
-    margin-top: 30px;
+    margin-top: 15px;
 }
-div.input-container input {
+div.category-input-container input {
     font-size: var(--font-size-input);
     color: var(--primary-color);
     width: 100%;
     margin-bottom: 30px;
+    padding-bottom: 5px;
     border: none;
     border-bottom: var(--border-width1) var(--border-style) var(--black2);
     background: transparent;
     transition: width 0.2s linear 0.2s;
 }
-div.input-container input ~ .input-border {
-    display: block;
+div.category-input-container input ~ span {
     position: absolute;
+    display: block;
     width: 0;
     height: 2px;
     bottom: 30px;
     left: 0;
     background: linear-gradient(to right, var(--gradient1), var(--gradient2) 60%);
 }
-div.input-container label {
+div.category-input-container label {
     position: absolute;
     font-size: var(--font-size-label);
     color: var(--primary-color);
-    top: 0;
+    top: 5px;
     left: 0;
-    padding: 10px 0;
     pointer-events: none;
     transition: top 0.5s, font-size 0.5s, color 0.5s;
+    opacity: 1;
 }
 /*------Result------*/
-div#request-result {
+div.request-result {
     display: none;
     font-size: var(--font-size-result);
     color: var(--text-result-color);
@@ -192,16 +193,14 @@ button#add-label-btn:hover {
     outline-color: var(--hover-border-color);
 }
 button#enable-notifs:hover {
+    color: var(--third-color);
     text-decoration: underline;
 }
 /*Input*/
-div.input-container {
-    cursor: pointer;
-}
-div.input-container input:hover ~ label {
+div.category-input-container input:hover ~ label {
     animation: bounce 1.2s ease-in-out;
 }
-div.input-container input:hover ~ .input-border {
+div.category-input-container input:hover ~ span {
     display: block;
     position: absolute;
     width: 100%;
@@ -213,50 +212,55 @@ div.input-container input:hover ~ .input-border {
 }
 
 /*------Focus------*/
-div.input-container input:focus {
+div.category-input-container input:focus {
     outline: none;
-    color: var(--black);
+    color: var(--primary-color);
+    caret-color: var(--primary-color);
 }
-div.input-container input:focus ~ label {
+div.category-input-container input:focus ~ label {
     font-size: var(--font-size-label-focus);
-    top: -25px;
+    top: -5px;
     left: 0;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.5s ease-in-out;
 }
-div.input-container input:focus ~ .input-border {
+div.category-input-container input:focus ~ span {
     width: 100%;
     transition: all 0.5s cubic-bezier(0.2, 0, 0.03, 1);
 }
 
 /*------Placeholder------*/
-div.input-container input::placeholder {
+div.category-input-container input::placeholder {
     color: transparent;
 }
-div.input-container input:not(:placeholder-shown) ~ label {
-    font-size: var(--font-size-input);
-    top: -5px;
-    left: 0;
+div.category-input-container input:not(:placeholder-shown) ~ label {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.category-input-container input:not(:placeholder-shown) ~ span {
+    width: 100%;
+    background: linear-gradient(to right, var(--gradient1), var(--gradient2) 60%);
 }
 
 /*------Valid/Invalid------*/
-/* .input-container input:valid ~ label {
+/* div.category-input-container input:valid ~ label {
     font-size: 14px;
     top: -25px;
     left: 0;
 }
-.input-container input:valid ~ .input-border {
+div.category-input-container input:valid ~ span {
     font-size: 14px;
     color: var(--main-purple);
     top: 37px;
     left: 0;
 }
-.input-container input.invalid + .input-border {
+div.category-input-container input.invalid + span {
     background: var(--invalid);
     transition: all 0.5s cubic-bezier(0.2, 0, 0.03, 1);
 }
-.input-container input.valid + .input-border {
+div.category-input-container input.valid + span {
     background: var(--valid);
     transition: all 0.5s cubic-bezier(0.2, 0, 0.03, 1);
 } */
