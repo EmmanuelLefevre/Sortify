@@ -1,9 +1,6 @@
 /*------Light Speed In Left------*/
 .lightSpeedInLeft {
-  animation-name: lightSpeedInLeft;
-  animation-duration: 1s;
-  animation-timing-function: ease-out;
-  animation-fill-mode: both;
+  animation: lightSpeedInLeft 1s ease-out both;
 }
 @keyframes lightSpeedInLeft {
   from {
@@ -46,5 +43,62 @@
   }
   60% {
     transform: translateY(-15px);
+  }
+}
+
+/*------Head Shake------*/
+:root {
+  --shake-intensity: 1%;
+}
+.headshake {
+  animation: headshake 0.5s ease-in-out;
+}
+@keyframes headshake {
+  25% {
+    transform: translateX(var(--shake-intensity));
+  }
+  75% {
+    transform: translateX(var(--shake-intensity) * -1);
+  }
+}
+@-webkit-keyframes headshake {
+  25% {
+    transform: translateX(var(--shake-intensity));
+  }
+  75% {
+    transform: translateX(var(--shake-intensity) * -1);
+  }
+}
+
+/*------Zoom Out Up------*/
+.zoomOutUp {
+  animation-name: zoomOutUp 1s ease-in;
+  transform-origin: center bottom;
+}
+@keyframes zoomOutUp {
+  40% {
+    opacity: 1;
+    transform: scale3d(0.475, 0.475, 0.475) translate3d(0, 60px, 0);
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+  to {
+    opacity: 0;
+    transform: scale3d(0.1, 0.1, 0.1) translate3d(0, -2000px, 0);
+    animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1);
+  }
+}
+
+
+/*------Fade Out Up------*/
+.fadeOutUp {
+  animation-name: fadeOutUp 1s ease-in;
+}
+@keyframes fadeOutUp {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: translate3d(0, -100%, 0);
   }
 }
