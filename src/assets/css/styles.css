@@ -14,6 +14,9 @@
     --font-size-body: 24px;
     --font-size-button: 16px;
     --font-size-h1: 30px;
+    --font-size-input: 14px;
+    --font-size-label: 14px;
+    --font-size-label-focus: 12px;
     --font-size-p: 14px;
     --font-size-result: 14px;
 }
@@ -27,6 +30,7 @@
     --secondary-color: #209b87;
     --third-color: #4db686;
     --fourth-color: rgb(0, 255, 229);
+    --error-color: #f7030f;
 }
 /*------Background------*/
 :root {
@@ -39,6 +43,7 @@
 /*------Border------*/
 :root {
     --border-width: 2px;
+    --border-width-input-focus: 1px;
     --border-style: solid;
 }
 /*------Hover------*/
@@ -128,6 +133,32 @@ img.sortify-logo {
     height: auto;
     margin: 10px 0 20px 0;
 }
+.input-container{
+	position: relative;
+	margin: 10px 0 25px 0;
+}
+.input-container label{
+	position: absolute;
+	color: var(--primary-color);
+	font-size: var(--font-size-label);
+	top: 0px;
+	left: 0px;
+	transition: all 0.5s ease-in-out;
+}
+.input-container input{
+    font-size: var(--font-size-input);
+    color: var(--primary-color);
+    background: transparent;
+    width: 100%;
+    border: 0;
+    border-bottom: var(--border-width-input-focus) var(--border-style) var(--primary-color);
+    padding: 8px 0 5px 0;
+}
+.input-container input:focus{
+    border: none;
+    outline: none;
+    border-bottom: var(--border-width) var(--border-style) var(--third-color);
+}
 
 /*------Hover------*/
 button#add-bookmarks-btn:hover,
@@ -140,6 +171,16 @@ button#add-label-btn:hover {
 button#enable-notifs:hover {
     text-decoration: underline;
 }
+
+/*------Focus------*/
+.input-container input:focus ~ label,
+.input-container input:valid ~ label {
+	top: -12px;
+	font-size: var(--font-size-label-focus);
+}
+/* .input-container input:invalid ~ label {
+    border-bottom: var(--border-width-input-focus) var(--border-style) var(--error-color);
+} */
 
 /*------Ids------*/
 div#request-result {
