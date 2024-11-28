@@ -42,8 +42,8 @@
 }
 /*------Border------*/
 :root {
-    --border-width: 2px;
-    --border-width-input-focus: 1px;
+    --border-width1: 1px;
+    --border-width2: 2px;
     --border-style: solid;
 }
 /*------Hover------*/
@@ -77,8 +77,8 @@
 }
 
 
-/*======APPLY======*/
-/*------Tags------*/
+/*======APPLY TAGS======*/
+/*------App------*/
 div.sortify-app {
     font-family: var(--font-size-body) var(--text-serif);
     font-size: var(--font-size-body);
@@ -89,6 +89,7 @@ div.sortify-app-content {
     width: 250px;
     height: fit-content;
 }
+/*------Content------*/
 div.sortify-content {
     display: flex;
     justify-content: center;
@@ -96,6 +97,7 @@ div.sortify-content {
     flex-direction: column;
     width: 100%;
 }
+/*------Title------*/
 h1.sortify-title {
     font-size: var(--font-size-h1);
     font-weight: var(--text-weight-bold);
@@ -106,6 +108,7 @@ h1.sortify-title {
     color: transparent;
     padding-top: 5px;
 }
+/*------Button------*/
 button#add-bookmarks-btn,
 button#add-label-btn {
     cursor: pointer;
@@ -118,7 +121,7 @@ button#add-label-btn {
     margin-bottom: 25px;
     transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
     box-shadow: 0px 4px 6px -2px var(--box-shadow-color);
-    outline: var(--border-width) var(--border-style) rgba(0, 0, 0, 0);
+    outline: var(--border-width2) var(--border-style) rgba(0, 0, 0, 0);
 }
 button#enable-notifs {
     cursor: pointer;
@@ -128,21 +131,27 @@ button#enable-notifs {
     border: none;
     padding-bottom: 20px;
 }
+/*------Img------*/
 img.sortify-logo {
     width: 135px;
     height: auto;
     margin: 10px 0 20px 0;
 }
+/*------Input------*/
 .input-container{
 	position: relative;
+    height: 27px;
 	margin: 10px 0 25px 0;
+    padding: 5px 10px;
+    border: var(--border-width1) var(--border-style) var(--primary-color);
+    box-sizing: border-box;
 }
 .input-container label{
 	position: absolute;
 	color: var(--primary-color);
 	font-size: var(--font-size-label);
 	top: 0px;
-	left: 0px;
+    padding-left: 10px;
 	transition: all 0.5s ease-in-out;
 }
 .input-container input{
@@ -151,13 +160,8 @@ img.sortify-logo {
     background: transparent;
     width: 100%;
     border: 0;
-    border-bottom: var(--border-width-input-focus) var(--border-style) var(--primary-color);
     padding: 8px 0 5px 0;
-}
-.input-container input:focus{
-    border: none;
-    outline: none;
-    border-bottom: var(--border-width) var(--border-style) var(--third-color);
+    box-sizing: border-box;
 }
 
 /*------Hover------*/
@@ -171,15 +175,26 @@ button#add-label-btn:hover {
 button#enable-notifs:hover {
     text-decoration: underline;
 }
+.input-container input:hover {
+    cursor: pointer;
+}
 
 /*------Focus------*/
+.input-container:focus-within {
+    border: none;
+}
+.input-container input:focus{
+    border: none;
+    outline: none;
+    border-bottom: var(--border-width2) var(--border-style) var(--primary-color);
+}
 .input-container input:focus ~ label,
 .input-container input:valid ~ label {
-	top: -12px;
+	top: -8px;
 	font-size: var(--font-size-label-focus);
 }
 /* .input-container input:invalid ~ label {
-    border-bottom: var(--border-width-input-focus) var(--border-style) var(--error-color);
+    border-bottom: var(--border-width1) var(--border-style) var(--error-color);
 } */
 
 /*------Ids------*/
