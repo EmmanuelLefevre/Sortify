@@ -101,7 +101,8 @@ h1.sortify-title {
     color: transparent;
     padding-top: 5px;
 }
-button#sort-btn {
+button#add-bookmarks-btn,
+button#add-label-btn {
     cursor: pointer;
     font-size: var(--font-size-button);
     color: var(--white);
@@ -129,7 +130,8 @@ img.sortify-logo {
 }
 
 /*------Hover------*/
-button#sort-btn:hover {
+button#add-bookmarks-btn:hover,
+button#add-label-btn:hover {
     color: var(--primary-color);
     background-image: none;
     background-color: var(--white);

@@ -232,13 +232,13 @@ const handleNotificationButtonClick = (enableNotifsButton) => {
 
 // ########## Ajouter animation sur le bouton "Ajouter" ########## //
 const addAnimationClass = () => {
-  const button = document.getElementById("sort-btn");
+  const button = document.getElementById("add-bookmarks-btn");
   if (button) {
     // Ajouter la classe d'animation
     button.classList.add("lightSpeedInLeft");
   }
   else {
-    console.error("Le bouton avec l'ID 'sort-btn' n'a pas été trouvé dans le DOM.");
+    console.warn("Le bouton avec l'ID 'add-bookmarks-btn' n'a pas été trouvé dans le DOM.");
   }
 };
 
@@ -248,7 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const enableNotifsButton = document.getElementById("enable-notifs");
   if (!enableNotifsButton) {
-    console.error("Le bouton de notifications est introuvable dans le DOM.");
+    console.warn("Le bouton de notifications est introuvable dans le DOM.");
     return;
   }
 
