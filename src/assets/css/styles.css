@@ -78,7 +78,7 @@
 }
 
 
-/*======APPLY TAGS======*/
+/*======APPLY======*/
 /*------App------*/
 div.sortify-app {
     font-family: var(--font-size-body) var(--text-serif);
@@ -122,8 +122,7 @@ h1.sortify-title {
     padding-top: 5px;
 }
 /*------Button------*/
-button#add-bookmarks-btn,
-button#add-label-btn {
+button#add-bookmarks-btn {
     cursor: pointer;
     font-size: var(--font-size-button);
     color: var(--white);
@@ -135,6 +134,18 @@ button#add-label-btn {
     transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
     box-shadow: 0px 4px 6px -2px var(--box-shadow-color);
     outline: var(--border-width2) var(--border-solid) rgba(0, 0, 0, 0);
+}
+button#add-label-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 5px;
+    top: -18px;
+    transition: transform 0.3s ease;
 }
 button#enable-notifs {
     cursor: pointer;
@@ -163,7 +174,10 @@ img.notifs-icon {
 div.category-input-container{
 	position: relative;
     width: 200px;
-    margin-top: 15px;
+    margin-top: 22px;
+    display: flex;
+    align-items: center;
+    gap: 2px;
 }
 div.category-input-container input {
     font-size: var(--font-size-input);
@@ -175,6 +189,7 @@ div.category-input-container input {
     border-bottom: var(--border-width1) var(--border-solid) var(--primary-color);
     background: transparent;
     transition: width 0.2s linear 0.2s;
+    flex: 1;
 }
 div.category-input-container input ~ span {
     position: absolute;
@@ -189,7 +204,7 @@ div.category-input-container label {
     position: absolute;
     font-size: var(--font-size-label);
     color: var(--primary-color);
-    top: 11px;
+    top: -2px;
     left: 0;
     pointer-events: none;
     transition: top 0.5s, font-size 0.5s, color 0.5s;
@@ -203,33 +218,36 @@ div.request-result {
     margin-top: 20px;
 }
 
-
 /*------Hover------*/
 /*Button*/
-button#add-bookmarks-btn:hover,
-button#add-label-btn:hover {
+button#add-bookmarks-btn:hover {
     color: var(--primary-color);
     background-image: none;
     background-color: var(--white);
     outline-color: var(--hover-border-color);
 }
+button#add-label-btn:hover img.label-icon {
+    transform: scale(1.4);
+    transition: transform 0.3s ease-in-out;
+}
 button#enable-notifs:hover {
     color: var(--secondary-color);
     text-decoration: underline;
 }
-/*Input*/
+/*Label*/
 div.category-input-container input:hover ~ label {
     animation: bounce 1.2s ease-in-out;
 }
+/*Span*/
 div.category-input-container input:hover ~ span {
     display: block;
     position: absolute;
-    width: 100%;
+    width: calc(100% - 36px);
     height: 2px;
     background: linear-gradient(to right, var(--gradient1), var(--gradient2) 60%);
     bottom: 30px;
     left: 0;
-    transition: all 0.5s cubic-bezier(0.2, 0, 0.03, 1);
+    transition: width 0.5s cubic-bezier(0.2, 0, 0.03, 1);
 }
 
 /*------Focus------*/
@@ -247,8 +265,8 @@ div.category-input-container input:focus ~ label {
     transition: opacity 0.5s ease-in-out;
 }
 div.category-input-container input:focus ~ span {
-    width: 100%;
-    transition: all 0.5s cubic-bezier(0.2, 0, 0.03, 1);
+    width: calc(100% - 36px);
+    transition: width 0.5s cubic-bezier(0.2, 0, 0.03, 1);
 }
 
 /*------Placeholder------*/
@@ -261,7 +279,7 @@ div.category-input-container input:not(:placeholder-shown) ~ label {
     transition: opacity 0.3s ease;
 }
 .category-input-container input:not(:placeholder-shown) ~ span {
-    width: 100%;
+    width: calc(100% - 36px);
     background: linear-gradient(to right, var(--gradient1), var(--gradient2) 60%);
 }
 
