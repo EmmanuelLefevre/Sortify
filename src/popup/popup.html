@@ -23,7 +23,9 @@
         <div class="sortify-content">
 
           <h1 class="sortify-title">Sortify</h1>
-          <img src="/src/assets/logo/logo.png" class="sortify-logo" alt="Logo de Sortify, l'application de gestion des favoris.">
+          <img src="/src/assets/logo/logo.png"
+               class="sortify-logo"
+               alt="Logo de Sortify, l'application de gestion des favoris.">
 
           <!-- Formulaire d'ajout de favoris -->
           <form action="#"
@@ -46,18 +48,23 @@
                      placeholder="Créer une catégorie"
                      aria-label="Champ de saisie de création d'une catégorie pour les favoris"
                      required/>
+              <button type="submit"
+                      id="add-label-btn"
+                      aria-label="Créer une catégorie pour les favoris">
+                <img src="/src/assets/icons/label_24.png"
+                     class="label-icon"
+                     alt="Icône représentant le bouton permettant de créer une catégorie" />
+              </button>
               <span></span>
               <label for="category-input">Créer une catégorie</label>
             </div>
           </form>
-          <!-- <button type="submit"
-                  id="add-label-btn"
-                  aria-label="Ajouter un label pour vos favoris">Ajouter
-          </button> -->
 
           <!-- Activer les notifications desktop -->
           <div id="notifs-content">
-            <img src="/src/assets/icons/bell_16.png" class="notifs-icon ringinBell" alt="Image de cloche représentant une alerte de notifications.">
+            <img src="/src/assets/icons/bell_16.png"
+                 class="notifs-icon ringinBell"
+                 alt="Image de cloche représentant une alerte de notifications.">
             <button id="enable-notifs"
                     aria-label="Activer les notifications">Activer les notifications
             </button>
