@@ -175,7 +175,7 @@ button#add-bookmarks-btn {
     box-shadow: var(--button-shadow);
     outline: var(--border-width2) var(--border-solid) rgba(0, 0, 0, 0);
 }
-button#add-label-btn {
+button#add-category-btn {
     position: relative;
     display: flex;
     align-items: center;
@@ -261,7 +261,7 @@ button#add-bookmarks-btn:hover {
     background-color: var(--white);
     outline-color: var(--hover-border-color);
 }
-button#add-label-btn:hover img.label-icon {
+button#add-category-btn:hover img.category-icon {
     transform: scale(1.4);
     transform-origin: center;
     filter: var(--icon-shadow);
@@ -322,9 +322,11 @@ div.category-input-container input:not(:placeholder-shown) ~ label {
 /*------Valid / Invalid------*/
 input.valid + span#border-input {
     background: var(--valid-color);
+    width: calc(100% - 36px);
     transition: all 0.5s cubic-bezier(0.2, 0, 0.03, 1);
 }
 input.invalid + span#border-input {
     background: var(--invalid-color);
+    width: calc(100% - 36px);
     transition: all 0.5s cubic-bezier(0.2, 0, 0.03, 1);
 }

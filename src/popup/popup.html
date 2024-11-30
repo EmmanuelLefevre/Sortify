@@ -29,6 +29,7 @@
 
           <!-- Formulaire d'ajout de favoris -->
           <form action="#"
+                id="bookmarks-form"
                 method="post">
             <button type="submit"
                     id="add-bookmarks-btn"
@@ -38,6 +39,7 @@
 
           <!-- Formulaire de création de catégories -->
           <form action="#"
+                id="category-form"
                 method="post"
                 novalidate>
             <div class="category-input-container">
@@ -46,13 +48,12 @@
                      name="category"
                      autocomplete="off"
                      placeholder="Créer une catégorie"
-                     aria-label="Champ de saisie de création d'une catégorie pour les favoris"
-                     required/>
+                     aria-label="Champ de saisie de création d'une catégorie pour les favoris"/>
               <button type="submit"
-                      id="add-label-btn"
+                      id="add-category-btn"
                       aria-label="Créer une catégorie pour les favoris">
                 <img src="/src/assets/icons/label_24.png"
-                     class="label-icon"
+                     class="category-icon"
                      alt="Icône représentant le bouton permettant de créer une catégorie">
               </button>
               <span id="border-input"></span>
