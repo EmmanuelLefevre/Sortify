@@ -65,7 +65,14 @@
 }
 /*------Shadows------*/
 :root {
-    --box-shadow-color: rgba(0, 0, 0, 0.7);
+    --box-shadow-color: rgba(0, 0, 0, 0.6);
+    --button-shadow-color: rgba(0, 0, 0, 0.7);
+    --text-shadow-color: rgba(0, 0, 0, 0.2);
+}
+:root {
+    --box-shadow: 0px 11px 5px -8px var(--box-shadow-color);
+    --button-shadow: 0px 6px 6px -2px var(--button-shadow-color);
+    --text-shadow: 0px 2px 2px var(--text-shadow-color);
 }
 
 /*======SEMANTIC FONTS======*/
@@ -98,17 +105,46 @@ div.sortify-content {
     flex-direction: column;
     width: 100%;
 }
-div#notifs-content {
+.notifs-border {
+    display: inline-block;
+    background: linear-gradient(var(--gradient-angle1), var(--primary-color), var(--fourth-color));
+    width: 170px;
+    margin: 10px 0 20px 0;
+    padding: 2px;
+    border-radius: 5px;
+    box-shadow: var(--box-shadow);
+}
+#notifs-content {
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    width: 170px;
-    margin: 10px 0 20px 0;
+    background: var(--background-color);
     padding: 10px 0;
+    border-radius: 3px;
+    z-index: 1;
+}
+.notifs-icon-container {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--background-color);
+    width: 32px;
+    height: 32px;
+    top: -16px;
     border: var(--border-width2) var(--border-solid) var(--primary-color);
-    border-radius: 5px;
+    border-radius: 50%;
+    z-index: 2;
+}
+.notifs-icon {
+    position: relative;
+    background: linear-gradient(var(--gradient-angle1), var(--gradient1), var(--gradient2));
+    width: 16px;
+    height: 16px;
+    mask: url('/src/assets/icons/bell_16.png') no-repeat center;
+    mask-size: contain;
 }
 /*------Title------*/
 h1.sortify-title {
@@ -132,7 +168,7 @@ button#add-bookmarks-btn {
     padding: 10px 15px;
     margin-bottom: 25px;
     transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
-    box-shadow: 0px 4px 6px -2px var(--box-shadow-color);
+    box-shadow: var(--button-shadow);
     outline: var(--border-width2) var(--border-solid) rgba(0, 0, 0, 0);
 }
 button#add-label-btn {
@@ -154,6 +190,7 @@ button#enable-notifs {
     background-color: transparent;
     padding-top: 10px;
     border: none;
+    text-shadow: var(--text-shadow);
 }
 /*------Img------*/
 img.sortify-logo {
@@ -161,14 +198,8 @@ img.sortify-logo {
     height: auto;
     margin: 10px 0 20px 0;
 }
-img.notifs-icon {
-    position: absolute;
-    background-color: var(--background-color);
-    border: var(--border-width2) var(--border-solid) var(--primary-color);
-    padding: 7px;
-    top: -18px;
-    border-radius: 50%;
-    z-index: 1;
+.notifs-icon img {
+    display: none;
 }
 /*------Input------*/
 div.category-input-container{
@@ -231,7 +262,6 @@ button#add-label-btn:hover img.label-icon {
     transition: transform 0.3s ease-in-out;
 }
 button#enable-notifs:hover {
-    color: var(--secondary-color);
     text-decoration: underline;
 }
 /*Label*/
@@ -258,7 +288,7 @@ div.category-input-container input:focus {
 }
 div.category-input-container input:focus ~ label {
     font-size: var(--font-size-label-focus);
-    top: -5px;
+    top: -10px;
     left: 0;
     opacity: 0;
     pointer-events: none;
@@ -284,24 +314,6 @@ div.category-input-container input:not(:placeholder-shown) ~ label {
 }
 
 /*------Valid/Invalid------*/
-/* div.category-input-container input:valid ~ label {
-    font-size: 14px;
-    top: -25px;
-    left: 0;
-}
-div.category-input-container input:valid ~ span {
-    font-size: 14px;
-    color: var(--main-purple);
-    top: 37px;
-    left: 0;
-}
-div.category-input-container input.invalid + span {
-    background: var(--invalid);
-    transition: all 0.5s cubic-bezier(0.2, 0, 0.03, 1);
-}
-div.category-input-container input.valid + span {
-    background: var(--valid);
-    transition: all 0.5s cubic-bezier(0.2, 0, 0.03, 1);
-} */
+
 
 /*------Classes------*/
