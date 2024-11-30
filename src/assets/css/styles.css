@@ -67,11 +67,13 @@
 :root {
     --box-shadow-color: rgba(0, 0, 0, 0.6);
     --button-shadow-color: rgba(0, 0, 0, 0.7);
+    --icon-shadow-color: rgba(0, 0, 0, 0.2);
     --text-shadow-color: rgba(0, 0, 0, 0.2);
 }
 :root {
     --box-shadow: 0px 11px 5px -8px var(--box-shadow-color);
     --button-shadow: 0px 6px 6px -2px var(--button-shadow-color);
+    --icon-shadow: drop-shadow(2px 1px 0px var(--icon-shadow-color));
     --text-shadow: 0px 2px 2px var(--text-shadow-color);
 }
 
@@ -192,7 +194,7 @@ button#enable-notifs {
     border: none;
     text-shadow: var(--text-shadow);
 }
-/*------Img------*/
+/*------Img / Icon------*/
 img.sortify-logo {
     width: 135px;
     height: auto;
@@ -259,7 +261,9 @@ button#add-bookmarks-btn:hover {
 }
 button#add-label-btn:hover img.label-icon {
     transform: scale(1.4);
-    transition: transform 0.3s ease-in-out;
+    transform-origin: center;
+    filter: var(--icon-shadow);
+    transition: transform 0.3s ease-in, drop-shadow 0.3s ease-out;
 }
 button#enable-notifs:hover {
     text-decoration: underline;
