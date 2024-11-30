@@ -22,8 +22,8 @@ const getLocalStorage = (key) => {
 };
 
 
-// ########## Initialiser les JSON du local storage ########## //
-// Initialiser les données des notifications
+// ########## Initialiser JSON du local storage ########## //
+// Initialiser données des notifications
 const initializeNotificationsStorage = () => {
   const defaultNotificationPermission = { notifications: false };
   const notifData = getLocalStorage("SortifyNotifications");
@@ -54,7 +54,7 @@ const initializeAlertStorage = () => {
 // ########## Gestion des alertes ########## //
 // Afficher une alerte personnalisée si elle n'a pas déjà été affichée
 const showAlert = (key, message, timeout = 2000) => {
-  // Récupérer l'état des alertes depuis le localStorage ou initialiser un objet vide en guise de fallback si données inexistantes
+  // Récupérer état des alertes depuis le localStorage ou initialiser objet vide (en guise de fallback si données inexistantes)
   const alertStatus = getLocalStorage("SortifyAlerts") || {};
 
   // Vérifier si l'alerte a déjà été affichée
@@ -75,12 +75,12 @@ const resetAlertStatus = (key) => {
 };
 
 
-// ########## Gérer la mise à jour de l'état des notifications ########## //
+// ########## Gérer MAJ de l'état des notifications ########## //
 const updateNotificationStatus = (status) => {
   const notifData = getLocalStorage("SortifyNotifications");
 
   if (notifData) {
-    // Mise à jour de l'état des notifications (true ou false)
+    // MAJ état des notifications (true ou false)
     notifData.notif = status;
     setLocalStorage("SortifyNotifications", notifData);
 
@@ -104,7 +104,7 @@ const createNotification = (type) => {
   let body;
   let icon;
 
-  // Utilisation d'un switch pour déterminer le type de notification
+  // Déterminer type de notification
   switch (type) {
     case 'success':
       message = 'Sortify';
@@ -128,11 +128,11 @@ const createNotification = (type) => {
       break;
     default:
       console.warn(`Type de notification inconnu: "${type}".`);
-      // Quitter si le type est invalide
+      // Quitter si type invalide
       return;
   }
 
-  // Vérifier si les notifications sont supportées par le navigateur avant de les créer
+  // Vérifier si notifications sont supportées par le navigateur
   if ("Notification" in window) {
     new Notification(message, {
       body: body,
@@ -146,12 +146,12 @@ const createNotification = (type) => {
   }
 };
 
-// ########## Initialiser les permissions et gérer l'état du bouton de notifications ########## //
+// ########## Initialiser permissions + gérer état bouton de notifications ########## //
 const updateButtonVisibility = (button, shouldShow) => {
   button.style.display = shouldShow ? 'flex' : 'none';
 };
 
-// ########## Fonction pour gérer l'état initial des permissions notifications et de son bouton ########## //
+// ########## Gérer état initial des permissions notifications et de son bouton ########## //
 const initializeNotificationPermissions = (enableNotifsButton) => {
   // Initialiser ou récupérer SortifyNotifications à partir du localStorage
   const notificationsLocalStorage = initializeNotificationsStorage();
@@ -160,7 +160,7 @@ const initializeNotificationPermissions = (enableNotifsButton) => {
 
   // Gestion des permissions
   switch (Notification.permission) {
-    // Masquer le bouton si permission accordée
+    // Masquer bouton si permission accordée
     case "granted":
       if (!notificationsLocalStorage.notif) {
         updateNotificationStatus(true);
@@ -168,21 +168,20 @@ const initializeNotificationPermissions = (enableNotifsButton) => {
       updateButtonVisibility(enableNotifsButton, false);
       break;
 
-    // Afficher le bouton si état "denied" + alert
+    // Afficher bouton si état "denied" + alert
     case "denied":
       updateButtonVisibility(enableNotifsButton, true);
       updateNotificationStatus(false);
       showAlert("denied_notifications", "🤬🤬🤬 Notifications refusées! 🤬🤬🤬");
       break;
 
-    // Afficher le bouton si état "default" + alert
+    // Afficher bouton si état "default" + alert
     case "default":
       updateButtonVisibility(enableNotifsButton, true);
       updateNotificationStatus(false);
       showAlert("default_notifications", "Activer vos notifications svp 👉👉👉");
       break;
 
-    // Cas d'erreur
     default:
       updateButtonVisibility(enableNotifsButton, true);
       updateNotificationStatus(false);
@@ -196,13 +195,13 @@ const initializeNotificationPermissions = (enableNotifsButton) => {
   }
 };
 
-// ########## Fonction pour gérer les clics sur le bouton de notifications ########## //
+// ########## Gérer les clics sur le bouton de notifications ########## //
 const handleNotificationButtonClick = (enableNotifsButton) => {
   enableNotifsButton.addEventListener('click', async (_event) => {
     try {
-      // Vérifier si l'API chrome.tabs.create est disponible
+      // Vérifier si API chrome.tabs.create est disponible
       if (chrome.tabs && chrome.tabs.create) {
-        // Ouvrir l'onglet des paramètres de notifications de Chrome
+        // Ouvrir onglet paramètres de notifications de Chrome
         chrome.tabs.create({ url: 'chrome://settings/content/notifications' });
       }
       else {
@@ -211,7 +210,7 @@ const handleNotificationButtonClick = (enableNotifsButton) => {
         return;
       }
 
-      // Vérifier si l'autorisation a changée
+      // Vérifier si autorisation a changée
       const checkPermission = setInterval(() => {
         if (Notification.permission === 'granted') {
           clearInterval(checkPermission);
@@ -220,7 +219,7 @@ const handleNotificationButtonClick = (enableNotifsButton) => {
         }
       }, 1000);
 
-      // Arrêter la vérification après 15 secondes si la permission n'est pas accordée
+      // Arrêter vérification après 15 secondes si permission n'est pas accordée
       setTimeout(() => clearInterval(checkPermission), 15000);
     }
     catch (err) {
@@ -230,7 +229,7 @@ const handleNotificationButtonClick = (enableNotifsButton) => {
   });
 };
 
-// ########## Ajouter animation sur le bouton "Ajouter" ########## //
+// ########## Ajouter animation sur bouton d'ajout des favoris ########## //
 const addAnimationClass = () => {
   const button = document.getElementById("add-bookmarks-btn");
   if (button) {
@@ -242,20 +241,44 @@ const addAnimationClass = () => {
   }
 };
 
-// ########## Gérer état bordure de l'input en fonction de la validité saisie utilisateur ########## //
+// ########## Validation formulaire ajout de favoris ########## //
+
+// ########## Validation formulaire création de catégories ########## //
+const form = document.getElementById('category-form');
 const input = document.getElementById('category-input');
 const span = document.getElementById('border-input');
+const submitButton = document.getElementById('add-category-btn');
 
+// Injecter "required" et forcer saisie (plage 2/21 caractères)
+input.setAttribute('required', true);
+input.setAttribute('minlength', 2);
+input.setAttribute('maxlength', 21);
+
+// Activer / désactiver bouton soumission
+const toggleLabelSubmitButton = () => {
+  submitButton.disabled = input.validity.valid ? false : true;
+};
+
+// Écouter changements d'état de l'input
 input.addEventListener('input', () => {
+  // Vérifier validité input et activer/désactiver bouton
+  toggleLabelSubmitButton();
+});
+
+form.addEventListener('submit', (event) => {
+  // Empêcher soumission formulaire input invalide
+  event.preventDefault();
+
   if (input.validity.valid) {
-    input.classList.add('valid');
-    input.classList.remove('invalid');
+    span.classList.add('valid');
+    span.classList.remove('invalid');
     input.classList.remove('headshake');
+    form.submit();
   }
   else {
-    input.classList.add('invalid');
+    span.classList.add('invalid');
     input.classList.add('headshake');
-    input.classList.remove('valid');
+    span.classList.remove('valid');
   }
 });
 
@@ -269,9 +292,12 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  // Initialiser l'état des permissions
+  // Initialiser état des permissions
   initializeNotificationPermissions(enableNotifsButton);
 
-  // Gérer les clics sur le bouton des permissions de notifications
+  // Gérer clics bouton des permissions de notifications
   handleNotificationButtonClick(enableNotifsButton);
+
+  // Initialiser état bouton de création de catégories
+  toggleLabelSubmitButton();
 });
