@@ -242,6 +242,23 @@ const addAnimationClass = () => {
   }
 };
 
+// ########## Gérer état bordure de l'input en fonction de la validité saisie utilisateur ########## //
+const input = document.getElementById('category-input');
+const span = document.getElementById('border-input');
+
+input.addEventListener('input', () => {
+  if (input.validity.valid) {
+    input.classList.add('valid');
+    input.classList.remove('invalid');
+    input.classList.remove('headshake');
+  }
+  else {
+    input.classList.add('invalid');
+    input.classList.add('headshake');
+    input.classList.remove('valid');
+  }
+});
+
 // ########## Chargement du DOM ########## //
 document.addEventListener('DOMContentLoaded', () => {
   addAnimationClass();
