@@ -162,8 +162,7 @@ h1.sortify-title {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     color: transparent;
-    margin: 0;
-    padding-top: 5px;
+    margin: 15px 0 20px 0;
     z-index: 1;
 }
 h1.sortify-title.border-layer {
@@ -235,7 +234,7 @@ button#enable-notifs {
 img.sortify-logo {
     width: 135px;
     height: auto;
-    margin: 10px 0 20px 0;
+    margin-bottom: 25px;
 }
 .notifs-icon img {
     display: none;
