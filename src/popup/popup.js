@@ -81,7 +81,7 @@ const updateNotificationStatus = (status) => {
 
   if (notifData) {
     // MAJ état des notifications (true ou false)
-    notifData.notif = status;
+    notifData.notifications = status;
     setLocalStorage("SortifyNotifications", notifData);
 
     // Créer notification uniquement lorsque les notifications sont activées
@@ -146,13 +146,15 @@ const createNotification = (type) => {
   }
 };
 
-// ########## Initialiser permissions + gérer état bouton de notifications ########## //
-const updateButtonVisibility = (button, shouldShow) => {
-  button.style.display = shouldShow ? 'flex' : 'none';
+// ########## Afficher container de notifications ########## //
+const updateNotifContentVisibility = (element, shouldShow) => {
+  element.style.display = shouldShow ? 'inline-block' : 'none';
 };
 
-// ########## Gérer état initial des permissions notifications et de son bouton ########## //
-const initializeNotificationPermissions = (enableNotifsButton) => {
+// ########## Gérer état initial des permissions notifications et de son container ########## //
+const initializeNotificationPermissions = () => {
+  const notifContent = document.querySelector('.notifs-border-content');
+
   // Initialiser ou récupérer SortifyNotifications à partir du localStorage
   const notificationsLocalStorage = initializeNotificationsStorage();
   // Initialiser ou récupérer SortifyAlerts à partir du localStorage
@@ -162,28 +164,29 @@ const initializeNotificationPermissions = (enableNotifsButton) => {
   switch (Notification.permission) {
     // Masquer bouton si permission accordée
     case "granted":
-      if (!notificationsLocalStorage.notif) {
+      if (!notificationsLocalStorage.notifications) {
         updateNotificationStatus(true);
       }
-      updateButtonVisibility(enableNotifsButton, false);
+      updateNotifContentVisibility(notifContent, false);
+      setLocalStorage("SortifyAlerts", { ...getLocalStorage("SortifyAlerts"), default_notifications: true });
       break;
 
     // Afficher bouton si état "denied" + alert
     case "denied":
-      updateButtonVisibility(enableNotifsButton, true);
+      updateNotifContentVisibility(notifContent, true);
       updateNotificationStatus(false);
       showAlert("denied_notifications", "🤬🤬🤬 Notifications refusées! 🤬🤬🤬");
       break;
 
     // Afficher bouton si état "default" + alert
     case "default":
-      updateButtonVisibility(enableNotifsButton, true);
+      updateNotifContentVisibility(notifContent, true);
       updateNotificationStatus(false);
       showAlert("default_notifications", "Activer vos notifications svp 👉👉👉");
       break;
 
     default:
-      updateButtonVisibility(enableNotifsButton, true);
+      updateNotifContentVisibility(notifContent, true);
       updateNotificationStatus(false);
       if ("Notification" in window && Notification.permission === "granted") {
         createNotification('error');
@@ -196,8 +199,11 @@ const initializeNotificationPermissions = (enableNotifsButton) => {
 };
 
 // ########## Gérer les clics sur le bouton de notifications ########## //
-const handleNotificationButtonClick = (enableNotifsButton) => {
-  enableNotifsButton.addEventListener('click', async (_event) => {
+const handleNotificationButtonClick = () => {
+  const notifsButton = document.getElementById("enable-notifs");
+  const notifContent = document.querySelector('.notifs-border-content');
+
+  notifsButton.addEventListener('click', async (_event) => {
     try {
       // Vérifier si API chrome.tabs.create est disponible
       if (chrome.tabs && chrome.tabs.create) {
@@ -215,7 +221,8 @@ const handleNotificationButtonClick = (enableNotifsButton) => {
         if (Notification.permission === 'granted') {
           clearInterval(checkPermission);
           updateNotificationStatus(true);
-          updateButtonVisibility(enableNotifsButton, false);
+          updateNotifContentVisibility(notifContent, false);
+          setLocalStorage("SortifyAlerts", { ...getLocalStorage("SortifyAlerts"), default_notifications: true });
         }
       }, 1000);
 
@@ -248,26 +255,6 @@ const addBtnBookmarkAnimations = () => {
   button.addEventListener('mouseleave', () => toggleDisplay(false));
 };
 
-// ########## Ajouter animation sur bouton d'ajout des favoris ########## //
-const addHoverEffect = () => {
-  const button = document.getElementById('add-bookmark-btn');
-  const rotatingBorder = document.querySelector('.rotating-border-line');
-
-  if (!button || !rotatingBorder) {
-      console.warn("Le bouton ou la bordure animée est introuvable dans le DOM.");
-      return;
-  }
-
-  button.addEventListener('mouseenter', () => {
-      rotatingBorder.style.display = 'block';
-  });
-
-  button.addEventListener('mouseleave', () => {
-      rotatingBorder.style.display = 'none';
-  });
-};
-
-
 // ########## Validation formulaire ajout de favoris ########## //
 
 // ########## Validation formulaire création de catégories ########## //
@@ -276,7 +263,7 @@ const input = document.getElementById('category-input');
 const span = document.getElementById('border-input');
 const submitButton = document.getElementById('add-category-btn');
 
-// Injecter "required" et forcer saisie (plage 2/21 caractères)
+// Injecter "required" + plage 2/21 caractères)
 input.setAttribute('required', true);
 input.setAttribute('minlength', 2);
 input.setAttribute('maxlength', 21);
@@ -309,16 +296,13 @@ form.addEventListener('submit', (event) => {
   }
 });
 
+
+
 // ########## Chargement du DOM ########## //
 document.addEventListener('DOMContentLoaded', () => {
-  const enableNotifsButton = document.getElementById("notifs-content");
-  if (!enableNotifsButton) {
-    console.warn("Le bouton de notifications est introuvable dans le DOM.");
-    return;
-  }
-
   addBtnBookmarkAnimations();
-  initializeNotificationPermissions(enableNotifsButton);
-  handleNotificationButtonClick(enableNotifsButton);
+  initializeNotificationPermissions();
+  handleNotificationButtonClick();
   toggleLabelSubmitButton();
+  console.log(Notification.permission);
 });
