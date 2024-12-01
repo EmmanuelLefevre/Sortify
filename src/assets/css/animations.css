@@ -89,6 +89,15 @@
   }
 }
 
+/*------Spinning border------*/
+.spinningBorder {
+  animation: spinningBorder 4s linear infinite;
+}
+@keyframes spinningBorder {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 /*------Ringing bell------*/
 .ringinBell {
   animation: ring 4s .7s ease-in-out infinite;
