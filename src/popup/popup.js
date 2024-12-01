@@ -255,7 +255,18 @@ const addBtnBookmarkAnimations = () => {
   button.addEventListener('mouseleave', () => toggleDisplay(false));
 };
 
-// ########## Validation formulaire ajout de favoris ########## //
+// ########## Formulaire ajout de favoris ########## //
+document.getElementById('bookmark-form').addEventListener('submit', function (event) {
+  // Empêcher le rechargement de la page
+  event.preventDefault();
+
+  chrome.runtime.sendMessage({ action: 'sendActiveTabUrl' }, function(response) {
+    response.success
+      ? console.log('Bookmark ajouté avec succès:', response.data)
+      : console.error('Erreur lors de l\'ajout du bookmark:', response.error);
+  });
+});
+
 
 // ########## Validation formulaire création de catégories ########## //
 const form = document.getElementById('category-form');
@@ -304,5 +315,4 @@ document.addEventListener('DOMContentLoaded', () => {
   initializeNotificationPermissions();
   handleNotificationButtonClick();
   toggleLabelSubmitButton();
-  console.log(Notification.permission);
 });
