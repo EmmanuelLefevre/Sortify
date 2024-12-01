@@ -115,11 +115,11 @@ div.sortify-content {
     position: relative;
     display: inline-block;
 }
-.notifs-border {
+.notifs-border-content {
     display: inline-block;
     background: linear-gradient(var(--gradient-angle1), var(--primary-color), var(--fourth-color));
     width: 170px;
-    margin: 10px 0 20px 0;
+    margin: 10px 0 25px 0;
     padding: 2px;
     border-radius: 5px;
     box-shadow: var(--box-shadow);
