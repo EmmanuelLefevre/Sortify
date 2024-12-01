@@ -103,7 +103,7 @@ div.sortify-app-content {
     width: 280px;
     height: fit-content;
 }
-/*------Content------*/
+/*------Content / Container------*/
 div.sortify-content {
     display: flex;
     justify-content: center;
@@ -131,7 +131,7 @@ div.sortify-content {
     align-items: center;
     flex-direction: column;
     background: var(--background-color);
-    padding: 10px 0;
+    padding: 13px 3px 11px 3px;
     border-radius: 3px;
     z-index: 1;
 }
@@ -141,20 +141,16 @@ div.sortify-content {
     justify-content: center;
     align-items: center;
     background-color: var(--background-color);
-    width: 32px;
-    height: 32px;
-    top: -16px;
+    width: 36px;
+    height: 36px;
+    top: -18px;
     border: var(--border-width2) var(--border-solid) var(--primary-color);
     border-radius: 50%;
     z-index: 2;
 }
-.notifs-icon {
-    position: relative;
-    background: linear-gradient(var(--gradient-angle1), var(--gradient1), var(--gradient2));
-    width: 16px;
-    height: 16px;
-    mask: url('/src/assets/icons/bell_16.png') no-repeat center;
-    mask-size: contain;
+/*------Form------*/
+#bookmark-form {
+    margin-bottom: 25px;
 }
 /*------Title------*/
 h1.sortify-title {
@@ -181,18 +177,37 @@ h1.sortify-title.border-layer {
     z-index: 0;
 }
 /*------Button------*/
+.bookmark-btn-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 106px;
+    height: 46px;
+    margin: 0px auto;
+    border-radius: 5px;
+    overflow: hidden;
+}
+.rotating-border-line {
+    width: 106px;
+    height: 23px;
+    background: linear-gradient(90deg, var(--fourth-color), var(--fourth-color));
+    rotate: -30deg;
+    animation: spinningBorderPoint 2s linear infinite;
+    animation-play-state: paused;
+}
 button#add-bookmark-btn {
+    position: absolute;
     cursor: pointer;
     font-size: var(--font-size-button);
     color: var(--white);
     background-image: var(--button-gradient-effect);
-    border: none;
+    width: 96px;
+    height: 38px;
     border-radius: 5px;
-    padding: 10px 15px;
-    margin-bottom: 25px;
-    transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
+    border: none;
     box-shadow: var(--button-shadow);
     outline: var(--border-width2) var(--border-solid) rgba(0, 0, 0, 0);
+    transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
 }
 button#add-category-btn {
     position: relative;
@@ -223,6 +238,14 @@ img.sortify-logo {
 }
 .notifs-icon img {
     display: none;
+}
+.notifs-icon {
+    position: relative;
+    background: linear-gradient(var(--gradient-angle1), var(--gradient1), var(--gradient2));
+    width: 16px;
+    height: 16px;
+    mask: url('/src/assets/icons/bell_16.png') no-repeat center;
+    mask-size: contain;
 }
 /*------Input------*/
 div.category-input-container{
@@ -274,11 +297,16 @@ div.request-result {
 
 /*------Hover------*/
 /*Button*/
+.bookmark-btn-container:hover .rotating-border-line {
+    animation-play-state: running;
+}
 button#add-bookmark-btn:hover {
     color: var(--primary-color);
     background-image: none;
     background-color: var(--white);
+    /* border-color: var(--hover-border-color); */
     outline-color: var(--hover-border-color);
+    box-shadow: none;
 }
 button#add-category-btn:hover img.category-icon {
     transform: scale(1.4);
