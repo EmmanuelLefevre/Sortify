@@ -150,7 +150,7 @@ div.sortify-content {
 }
 /*------Form------*/
 #bookmark-form {
-    margin-bottom: 25px;
+    margin: 5px 0 25px 0;
 }
 /*------Title------*/
 h1.sortify-title {
@@ -188,6 +188,7 @@ h1.sortify-title.border-layer {
     overflow: hidden;
 }
 .rotating-border-line {
+    display: none;
     width: 106px;
     height: 23px;
     background: linear-gradient(90deg, var(--fourth-color), var(--fourth-color));
