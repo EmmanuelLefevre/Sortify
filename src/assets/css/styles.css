@@ -13,7 +13,7 @@
 :root {
     --font-size-body: 24px;
     --font-size-button: 16px;
-    --font-size-h1: 30px;
+    --font-size-h1: 40px;
     --font-size-input: 14px;
     --font-size-label: 14px;
     --font-size-label-focus: 9px;
@@ -69,12 +69,14 @@
 :root {
     --box-shadow-color: rgba(0, 0, 0, 0.6);
     --button-shadow-color: rgba(0, 0, 0, 0.7);
+    --h1-shadow-color: rgba(0, 0, 0, 0.1);
     --icon-shadow-color: rgba(0, 0, 0, 0.2);
     --text-shadow-color: rgba(0, 0, 0, 0.2);
 }
 :root {
     --box-shadow: 0px 11px 5px -8px var(--box-shadow-color);
     --button-shadow: 0px 7px 6px -4px var(--button-shadow-color);
+    --h1-shadow: 3px 3px 0px var(--h1-shadow-color);
     --icon-shadow: drop-shadow(2px 1px 0px var(--icon-shadow-color));
     --text-shadow: 0px 2px 2px var(--text-shadow-color);
 }
@@ -108,6 +110,10 @@ div.sortify-content {
     align-items: center;
     flex-direction: column;
     width: 100%;
+}
+.h1-container {
+    position: relative;
+    display: inline-block;
 }
 .notifs-border {
     display: inline-block;
@@ -152,6 +158,7 @@ div.sortify-content {
 }
 /*------Title------*/
 h1.sortify-title {
+    position: relative;
     font-size: var(--font-size-h1);
     font-weight: var(--text-weight-bold);
     background: var(--h1-gradient-effect);
@@ -159,7 +166,19 @@ h1.sortify-title {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     color: transparent;
+    margin: 0;
     padding-top: 5px;
+    z-index: 1;
+}
+h1.sortify-title.border-layer {
+    position: absolute;
+    color: transparent;
+    background: none;
+    -webkit-text-stroke: 1px var(--fourth-color);
+    top: 0;
+    left: 0;
+    z-index: 0;
+    text-shadow: var(--h1-shadow);
 }
 /*------Button------*/
 button#add-bookmarks-btn {
