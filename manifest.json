@@ -5,7 +5,6 @@
   "description": "Extension Chrome de tri automatique des favoris",
   "permissions": [
     "scripting",
-    "activeTab",
     "tabs",
     "storage"
   ],
