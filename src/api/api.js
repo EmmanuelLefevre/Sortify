@@ -8,7 +8,7 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
 
       if (!activeTab || !activeTab.url) {
         console.error('Aucun onglet actif ou URL non disponible.');
-        sendResponse({ success: false, error: 'Aucun onglet actif ou URL non disponible.' });
+        sendResponse({ success: false, error: 'url' });
         return;
       }
 
@@ -24,16 +24,20 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
       })
       .then(response => response.json())
       .then(data => {
-        console.log('Réponse du back-end:', data);
+        console.log('Back-end success response:', data);
         sendResponse({ success: true, data });
       })
       .catch(error => {
-        console.error('Erreur lors de l\'envoi au back-end:', error);
-        sendResponse({ success: false, error });
+        if (error.message.includes('NetworkError')) {
+          sendResponse({ success: false, error: 'offline' });
+        }
+        else {
+          sendResponse({ success: false, error: error.message });
+        }
       });
     });
 
-    // Indiquer que la réponse sera envoyée de manière asynchrone
+    // Réponse asynchrone
     return true;
   }
 });
