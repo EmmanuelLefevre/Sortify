@@ -100,7 +100,7 @@ div.sortify-app {
 }
 div.sortify-app-content {
     background-color: var(--background-color);
-    width: 280px;
+    width: 320px;
     height: fit-content;
 }
 /*------Content / Container------*/
@@ -119,7 +119,7 @@ div.sortify-content {
     display: inline-block;
     background: linear-gradient(var(--gradient-angle1), var(--primary-color), var(--fourth-color));
     width: 170px;
-    margin: 10px 0 25px 0;
+    margin: 10px 0 30px 0;
     padding: 2px;
     border-radius: 5px;
     box-shadow: var(--box-shadow);
@@ -288,6 +288,24 @@ div.category-input-container label {
     transition: top 0.5s, font-size 0.5s, color 0.5s;
     opacity: 1;
 }
+/*------Tooltip------*/
+.tooltip {
+    position: absolute;
+    visibility: hidden;
+    color: var(--primary-color);
+    background-color: var(--background-color);
+    text-align: center;
+    width: auto;
+    padding: 5px 10px;
+    left: 170%;
+    bottom: 100%;
+    border-radius: 3px;
+    border: var(--border-width1) var(--border-solid) var(--primary-color);
+    transform: translateX(-50%);
+    transition: opacity 0.3s;
+    opacity: 0;
+    z-index: 1;
+}
 /*------Result------*/
 div.request-result {
     display: none;
@@ -332,6 +350,11 @@ div.category-input-container input:hover ~ span#border-input {
     bottom: 30px;
     left: 0;
     transition: width 0.5s cubic-bezier(0.2, 0, 0.03, 1);
+}
+/*Tooltip*/
+.category-input-container:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
 }
 
 /*------Focus------*/
