@@ -174,11 +174,11 @@ h1.sortify-title.border-layer {
     position: absolute;
     color: transparent;
     background: none;
-    -webkit-text-stroke: 1px var(--fourth-color);
     top: 0;
     left: 0;
-    z-index: 0;
+    -webkit-text-stroke: 1px var(--fourth-color);
     text-shadow: var(--h1-shadow);
+    z-index: 0;
 }
 /*------Button------*/
 button#add-bookmarks-btn {
