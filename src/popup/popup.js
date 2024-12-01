@@ -231,13 +231,13 @@ const handleNotificationButtonClick = (enableNotifsButton) => {
 
 // ########## Ajouter animation sur bouton d'ajout des favoris ########## //
 const addAnimationClass = () => {
-  const button = document.getElementById("add-bookmarks-btn");
+  const button = document.getElementById("add-bookmark-btn");
   if (button) {
     // Ajouter la classe d'animation
     button.classList.add("lightSpeedInLeft");
   }
   else {
-    console.warn("Le bouton avec l'ID 'add-bookmarks-btn' n'a pas été trouvé dans le DOM.");
+    console.warn("Le bouton avec l'ID 'add-bookmark-btn' n'a pas été trouvé dans le DOM.");
   }
 };
 
