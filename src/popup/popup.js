@@ -311,20 +311,14 @@ form.addEventListener('submit', (event) => {
 
 // ########## Chargement du DOM ########## //
 document.addEventListener('DOMContentLoaded', () => {
-  addBtnBookmarkAnimations();
-
   const enableNotifsButton = document.getElementById("notifs-content");
   if (!enableNotifsButton) {
     console.warn("Le bouton de notifications est introuvable dans le DOM.");
     return;
   }
 
-  // Initialiser état des permissions
+  addBtnBookmarkAnimations();
   initializeNotificationPermissions(enableNotifsButton);
-
-  // Gérer clics bouton des permissions de notifications
   handleNotificationButtonClick(enableNotifsButton);
-
-  // Initialiser état bouton de création de catégories
   toggleLabelSubmitButton();
 });
