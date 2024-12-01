@@ -89,42 +89,46 @@
   }
 }
 
-/*------Spinning border------*/
-.spinningBorder {
-  animation: spinningBorder 4s linear infinite;
+/*------Spinning border point------*/
+.spinningBorderPoint {
+  animation: spinningBorderPoint 4s linear infinite;
 }
-@keyframes spinningBorder {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+@keyframes spinningBorderPoint {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /*------Ringing bell------*/
-.ringinBell {
-  animation: ring 4s .7s ease-in-out infinite;
+.ringingBell {
+  animation: ringingBell 4s .7s ease-in-out infinite;
 }
-@keyframes ring {
+@keyframes ringingBell {
   0% { transform: rotate(0); }
-  1% { transform: rotate(30deg); }
-  3% { transform: rotate(-28deg); }
-  5% { transform: rotate(34deg); }
-  7% { transform: rotate(-32deg); }
-  9% { transform: rotate(30deg); }
-  11% { transform: rotate(-28deg); }
-  13% { transform: rotate(26deg); }
-  15% { transform: rotate(-24deg); }
-  17% { transform: rotate(22deg); }
-  19% { transform: rotate(-20deg); }
-  21% { transform: rotate(18deg); }
-  23% { transform: rotate(-16deg); }
-  25% { transform: rotate(14deg); }
-  27% { transform: rotate(-12deg); }
-  29% { transform: rotate(10deg); }
-  31% { transform: rotate(-8deg); }
-  33% { transform: rotate(6deg); }
-  35% { transform: rotate(-4deg); }
-  37% { transform: rotate(2deg); }
-  39% { transform: rotate(-1deg); }
-  41% { transform: rotate(1deg); }
+  1% { transform: rotate(30deg) scale(1.2)}
+  3% { transform: rotate(-28deg) scale(1.2)}
+  5% { transform: rotate(34deg) scale(1.2)}
+  7% { transform: rotate(-32deg) scale(1.2)}
+  9% { transform: rotate(30deg) scale(1.2)}
+  11% { transform: rotate(-28deg) scale(1.2)}
+  13% { transform: rotate(26deg) scale(1.2)}
+  15% { transform: rotate(-24deg) scale(1.2)}
+  17% { transform: rotate(22deg) scale(1.2)}
+  19% { transform: rotate(-20deg) scale(1.2)}
+  21% { transform: rotate(18deg) scale(1.2)}
+  23% { transform: rotate(-16deg) scale(1.2)}
+  25% { transform: rotate(14deg) scale(1.2)}
+  27% { transform: rotate(-12deg) scale(1.2)}
+  29% { transform: rotate(10deg) scale(1.2)}
+  31% { transform: rotate(-8deg) scale(1.2)}
+  33% { transform: rotate(6deg) scale(1.2)}
+  35% { transform: rotate(-4deg) scale(1.2)}
+  37% { transform: rotate(2deg) scale(1.2)}
+  39% { transform: rotate(-1deg) scale(1.2)}
+  41% { transform: rotate(1deg) scale(1.2)}
   43% { transform: rotate(0); }
   100% { transform: rotate(0); }
 }
