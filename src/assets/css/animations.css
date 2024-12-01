@@ -104,7 +104,7 @@
 
 /*------Ringing bell------*/
 .ringingBell {
-  animation: ringingBell 4s .7s ease-in-out infinite;
+  animation: ringingBell 5s 1.3s ease-in-out infinite;
 }
 @keyframes ringingBell {
   0% { transform: rotate(0); }
