@@ -181,7 +181,7 @@ h1.sortify-title.border-layer {
     z-index: 0;
 }
 /*------Button------*/
-button#add-bookmarks-btn {
+button#add-bookmark-btn {
     cursor: pointer;
     font-size: var(--font-size-button);
     color: var(--white);
@@ -274,7 +274,7 @@ div.request-result {
 
 /*------Hover------*/
 /*Button*/
-button#add-bookmarks-btn:hover {
+button#add-bookmark-btn:hover {
     color: var(--primary-color);
     background-image: none;
     background-color: var(--white);
