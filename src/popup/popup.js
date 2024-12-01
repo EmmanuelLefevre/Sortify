@@ -229,17 +229,44 @@ const handleNotificationButtonClick = (enableNotifsButton) => {
   });
 };
 
-// ########## Ajouter animation sur bouton d'ajout des favoris ########## //
-const addAnimationClass = () => {
+// ########## Ajouter animations sur bouton d'ajout des favoris ########## //
+const addBtnBookmarkAnimations = () => {
   const button = document.getElementById("add-bookmark-btn");
-  if (button) {
-    // Ajouter la classe d'animation
-    button.classList.add("lightSpeedInLeft");
-  }
-  else {
+  const rotatingBorder = document.querySelector('.rotating-border-line');
+
+  if (!button) {
     console.warn("Le bouton avec l'ID 'add-bookmark-btn' n'a pas été trouvé dans le DOM.");
+    return;
   }
+
+  // Ajouter la classe d'animation
+  button.classList.add("lightSpeedInLeft");
+
+  // Ajouter l'animation au hover
+  const toggleDisplay = (state) => rotatingBorder.style.display = state ? 'block' : 'none';
+  button.addEventListener('mouseenter', () => toggleDisplay(true));
+  button.addEventListener('mouseleave', () => toggleDisplay(false));
 };
+
+// ########## Ajouter animation sur bouton d'ajout des favoris ########## //
+const addHoverEffect = () => {
+  const button = document.getElementById('add-bookmark-btn');
+  const rotatingBorder = document.querySelector('.rotating-border-line');
+
+  if (!button || !rotatingBorder) {
+      console.warn("Le bouton ou la bordure animée est introuvable dans le DOM.");
+      return;
+  }
+
+  button.addEventListener('mouseenter', () => {
+      rotatingBorder.style.display = 'block';
+  });
+
+  button.addEventListener('mouseleave', () => {
+      rotatingBorder.style.display = 'none';
+  });
+};
+
 
 // ########## Validation formulaire ajout de favoris ########## //
 
@@ -284,7 +311,7 @@ form.addEventListener('submit', (event) => {
 
 // ########## Chargement du DOM ########## //
 document.addEventListener('DOMContentLoaded', () => {
-  addAnimationClass();
+  addBtnBookmarkAnimations();
 
   const enableNotifsButton = document.getElementById("notifs-content");
   if (!enableNotifsButton) {
