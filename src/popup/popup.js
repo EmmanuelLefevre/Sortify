@@ -50,10 +50,14 @@ const initializeAlertStorage = () => {
   return alertData;
 };
 
+// ########## Alertes ########## //
+const showAlert = (message, timeout = 2000) => {
+  setTimeout(() => alert(message), timeout);
+}
 
-// ########## Gestion des alertes ########## //
+// ########## Gestion des alertes de notifications ########## //
 // Afficher une alerte personnalisée si elle n'a pas déjà été affichée
-const showAlert = (key, message, timeout = 2000) => {
+const showAlertNotifs = (key, message, timeout = 2000) => {
   // Récupérer état des alertes depuis le localStorage ou initialiser objet vide (en guise de fallback si données inexistantes)
   const alertStatus = getLocalStorage("SortifyAlerts") || {};
 
@@ -74,7 +78,6 @@ const resetAlertStatus = (key) => {
   setLocalStorage("SortifyAlerts", alertStatus);
 };
 
-
 // ########## Gérer MAJ de l'état des notifications ########## //
 const updateNotificationStatus = (status) => {
   const notifData = getLocalStorage("SortifyNotifications");
@@ -86,7 +89,7 @@ const updateNotificationStatus = (status) => {
 
     // Créer notification uniquement lorsque les notifications sont activées
     if (status) {
-      createNotification('success');
+      createNotification('notif-success');
     }
     else {
       resetAlertStatus("denied_notifications");
@@ -106,14 +109,29 @@ const createNotification = (type) => {
 
   // Déterminer type de notification
   switch (type) {
-    case 'success':
+    case 'notif-success':
       message = 'Sortify';
       body = '🚀 Les notifications sont activées!';
       icon = '../assets/logo/logo.png';
       break;
+    case 'bookmark':
+      message = 'Sortify';
+      body = '✔️ Le favori a été ajouté!';
+      icon = '../assets/logo/logo.png';
+      break;
     case 'error':
       message = 'Sortify';
-      body = '⚠️ Une erreur est survenue!';
+      body = '⚰️ Une erreur est survenue!';
+      icon = '../assets/logo/logo.png';
+      break;
+    case 'server-error':
+      message = 'Sortify';
+      body = '💣 Une erreur serveur est survenue!';
+      icon = '../assets/logo/logo.png';
+      break;
+    case 'server-offline':
+      message = 'Sortify';
+      body = '🗄️ Le serveur semble hors-ligne!';
       icon = '../assets/logo/logo.png';
       break;
     case 'chrome':
@@ -137,12 +155,11 @@ const createNotification = (type) => {
     new Notification(message, {
       body: body,
       icon: icon,
-      silent: true,
-      badge: 'src/assets/icons/success_48.png'
+      silent: true
     });
   }
   else {
-    showAlert("unsupported_notifications", "💀💀💀 Les notifications ne sont pas supportées par ce navigateur!");
+    showAlertNotifs("unsupported_notifications", "💀💀💀 Les notifications ne sont pas supportées par ce navigateur!");
   }
 };
 
@@ -175,14 +192,14 @@ const initializeNotificationPermissions = () => {
     case "denied":
       updateNotifContentVisibility(notifContent, true);
       updateNotificationStatus(false);
-      showAlert("denied_notifications", "🤬🤬🤬 Notifications refusées! 🤬🤬🤬");
+      showAlertNotifs("denied_notifications", "🤬🤬🤬 Notifications refusées! 🤬🤬🤬");
       break;
 
     // Afficher bouton si état "default" + alert
     case "default":
       updateNotifContentVisibility(notifContent, true);
       updateNotificationStatus(false);
-      showAlert("default_notifications", "Activer vos notifications svp 👉👉👉");
+      showAlertNotifs("default_notifications", "Activer vos notifications svp 👉👉👉");
       break;
 
     default:
@@ -192,7 +209,7 @@ const initializeNotificationPermissions = () => {
         createNotification('error');
       }
       else {
-        showAlert("⚠️ Une erreur est survenue!");
+        showAlert("⚰️  Une erreur est survenue!");
       }
       break;
   }
@@ -261,9 +278,46 @@ document.getElementById('bookmark-form').addEventListener('submit', function (ev
   event.preventDefault();
 
   chrome.runtime.sendMessage({ action: 'sendActiveTabUrl' }, function(response) {
-    response.success
-      ? console.log('Bookmark ajouté avec succès:', response.data)
-      : console.error('Erreur lors de l\'ajout du bookmark:', response.error);
+    // Success
+    if (response.success) {
+      if (Notification.permission === 'granted') {
+        createNotification('bookmark');
+      }
+      else {
+        showAlert("✔️ Le favori a été ajouté!");
+      }
+      console.log('Favori ajouté:', response.data);
+    }
+    // Erreur générale, y compris serveur hors ligne
+    else if (!response.success) {
+      if (response.error === 'offline') {
+        if (Notification.permission === 'granted') {
+          createNotification('server-error');
+        }
+        else {
+          showAlert("🗄️ Le serveur semble hors-ligne!");
+        }
+        console.error('Serveur hors-ligne:', response.error);
+      }
+      else {
+        // Autre type d'erreur serveur
+        if (Notification.permission === 'granted') {
+          createNotification('server-error');
+        }
+        else {
+          showAlert("💣 Une erreur serveur est survenue!");
+        }
+        console.error('Erreur serveur:', response.error);
+      }
+    }
+    else {
+      if (Notification.permission === 'granted') {
+        createNotification('error');
+      }
+      else {
+        showAlert("⚰️ Une erreur est survenue!");
+      }
+    }
   });
 });
 
