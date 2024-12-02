@@ -22,7 +22,7 @@ chrome://settings/content/notifications
 ```
 Ajouter/Bloquer permission de notifications
 ```bash
-chrome-extension://mphajpdnlknfhohmjkdkljjjkgdfello/
+chrome-extension://hajlfpcnjgppoapaaieccblofcgpmbpc/
 ```
 3. Activer mode développeur
 4. Repérer le bouton "Charger l'extension non empaquetée"
