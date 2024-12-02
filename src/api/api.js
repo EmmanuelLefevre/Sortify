@@ -7,12 +7,12 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
       const activeTab = window.tabs.find(tab => tab.active);
 
       if (!activeTab || !activeTab.url) {
-        console.error('Aucun onglet actif ou URL non disponible.');
+        console.error('Active tab or URL not available!');
         sendResponse({ success: false, error: 'url' });
         return;
       }
 
-      console.log('URL de l\'onglet actif:', activeTab.url);
+      console.log('URL of active tab:', activeTab.url);
 
       // Envoyer l'URL au back-end
       fetch('https://votre-backend.com/api/bookmarks', {
