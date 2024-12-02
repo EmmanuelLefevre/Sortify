@@ -1,21 +1,46 @@
 // ########## Utilitaires pour le local storage Sortify (JSON) ########## //
 // Setter
 const setLocalStorage = (key, value) => {
-  if (localStorage) {
+  // Validation
+  if (typeof value !== 'object' || value === null) {
+    console.error("Invalid local storage data format: expected an object!");
+    return;
+  }
+  try {
     localStorage.setItem(key, JSON.stringify(value));
   }
-  else {
-    console.warn("Local storage inaccessible!");
+  catch (error) {
+    console.warn("Local storage not found!");
   }
 };
 // Getter avec fallback en cas de données invalides
 const getLocalStorage = (key) => {
   try {
     const value = localStorage.getItem(key);
-    return value ? JSON.parse(value) : null;
+    if (value) {
+      const parsedValue = JSON.parse(value);
+
+      // Validation
+      if (typeof parsedValue === 'object' && parsedValue !== null) {
+        if (key === 'SortifyNotifications' && 'notifications' in parsedValue) {
+          return parsedValue;
+        }
+        else if (key === 'SortifyAlerts' &&
+                         'denied_notifications' in parsedValue &&
+                         'default_notifications' in parsedValue &&
+                         'unsupported_notifications' in parsedValue) {
+          return parsedValue;
+        }
+      }
+      else {
+        console.error("Invalid data structure!");
+        return null;
+      }
+    }
+    return null;
   }
   catch (error) {
-    console.error(`Erreur lors de la récupération de "${key}" depuis le localStorage:`, error);
+    console.error(`Error tretrieving "${key}" from localStorage:`, error);
     // Retourner null en cas de données corrompues
     return null;
   }
@@ -94,7 +119,7 @@ const updateNotificationStatus = (status) => {
     }
   }
   else {
-    console.error("Impossible de mettre à jour l'état des notifications: localStorage invalide.");
+    console.error("Unable to update notification status, invalid localStorage!");
   }
 };
 
@@ -143,7 +168,7 @@ const createNotification = (type) => {
       icon = '../assets/logo/logo.png';
       break;
     default:
-      console.warn(`Type de notification inconnu: "${type}".`);
+      console.warn(`Unknown notification type: "${type}".`);
       // Quitter si type invalide
       return;
   }
@@ -219,6 +244,15 @@ const handleNotificationButtonClick = () => {
   const notifsButton = document.getElementById("enable-notifs");
   const notifContent = document.querySelector('.notifs-border-content');
 
+  if (!notifsButton) {
+    console.warn("Element with ID 'enable-notifs' was not found in the DOM.");
+    return;
+  }
+  if (!notifContent) {
+    console.warn("Element with class 'notifs-border-content' was not found in the DOM.");
+    return;
+  }
+
   notifsButton.addEventListener('click', async (_event) => {
     try {
       // Vérifier si API chrome.tabs.create est disponible
@@ -227,7 +261,7 @@ const handleNotificationButtonClick = () => {
         chrome.tabs.create({ url: 'chrome://settings/content/notifications' });
       }
       else {
-        console.warn("API chrome.tabs non supportée!");
+        console.warn("API chrome.tabs not supported!");
         createNotification('chrome');
         return;
       }
@@ -247,7 +281,7 @@ const handleNotificationButtonClick = () => {
       setTimeout(() => clearInterval(checkPermission), 15000);
     }
     catch (err) {
-      console.error("Erreur: ", err);
+      console.error("Error: ", err);
       createNotification('error');
     }
   });
@@ -259,7 +293,11 @@ const addBtnBookmarkAnimations = () => {
   const rotatingBorder = document.querySelector('.rotating-border-line');
 
   if (!button) {
-    console.warn("Le bouton avec l'ID 'add-bookmark-btn' n'a pas été trouvé dans le DOM.");
+    console.warn("Button with ID 'add-bookmark-btn' was not found in the DOM.");
+    return;
+  }
+  if (!rotatingBorder) {
+    console.warn("Element with class 'rotating-border-line' was not found in the DOM.");
     return;
   }
 
@@ -286,7 +324,7 @@ document.getElementById('bookmark-form').addEventListener('submit', function (ev
       else {
         showAlert("✔️ Le favori a été ajouté!");
       }
-      console.log('Favori ajouté:', response.data);
+      console.log('Bookmark added:', response.data);
     }
     // Erreur générale, y compris serveur hors ligne
     else if (!response.success) {
@@ -297,7 +335,7 @@ document.getElementById('bookmark-form').addEventListener('submit', function (ev
         else {
           showAlert("🗄️ Le serveur semble hors-ligne!");
         }
-        console.error('Serveur hors-ligne:', response.error);
+        console.error('Offline server:', response.error);
       }
       else {
         // Autre type d'erreur serveur
@@ -307,7 +345,7 @@ document.getElementById('bookmark-form').addEventListener('submit', function (ev
         else {
           showAlert("💣 Une erreur serveur est survenue!");
         }
-        console.error('Erreur serveur:', response.error);
+        console.error('Server error:', response.error);
       }
     }
     else {
@@ -369,4 +407,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initializeNotificationPermissions();
   handleNotificationButtonClick();
   toggleLabelSubmitButton();
+  console.log(Notification.permission);
 });
