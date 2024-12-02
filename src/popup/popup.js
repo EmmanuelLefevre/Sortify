@@ -157,7 +157,7 @@ const createNotification = (type) => {
       body = '💣 Une erreur serveur est survenue!';
       icon = '../assets/logo/logo.png';
       break;
-    case 'server-offline':
+    case 'offline-server':
       message = 'Sortify';
       body = '🗄️ Le serveur semble hors-ligne!';
       icon = '../assets/logo/logo.png';
@@ -320,29 +320,28 @@ document.getElementById('bookmark-form').addEventListener('submit', function (ev
 
   if(isChromeExtension()) {
     chrome.runtime.sendMessage({ action: 'sendActiveTabUrl' }, function(response) {
-      // Success
-      if (response.success) {
-        if (Notification.permission === 'granted') {
-          createNotification('bookmark');
-        }
-        else {
-          showAlert("✔️ Le favori a été ajouté!");
-        }
-        console.log('Bookmark added:', response.data);
-      }
-      // Erreur générale, y compris serveur hors ligne
-      else if (!response.success) {
-        if (response.error === 'offline') {
+      switch (true) {
+        case response.success:
           if (Notification.permission === 'granted') {
-            createNotification('server-error');
+            createNotification('bookmark');
+          }
+          else {
+            showAlert("✔️ Le favori a été ajouté!");
+          }
+          console.log('Bookmark added:', response.data);
+          break;
+
+        case !response.success && response.error === 'offline':
+          if (Notification.permission === 'granted') {
+            createNotification('offline-server');
           }
           else {
             showAlert("🗄️ Le serveur semble hors-ligne!");
           }
           console.error('Offline server:', response.error);
-        }
-        else {
-          // Autre type d'erreur serveur
+          break;
+
+        case !response.success:
           if (Notification.permission === 'granted') {
             createNotification('server-error');
           }
@@ -350,20 +349,22 @@ document.getElementById('bookmark-form').addEventListener('submit', function (ev
             showAlert("💣 Une erreur serveur est survenue!");
           }
           console.error('Server error:', response.error);
-        }
-      }
-      else {
-        if (Notification.permission === 'granted') {
-          createNotification('error');
-        }
-        else {
-          showAlert("⚰️ Une erreur est survenue!");
-        }
+          break;
+
+        default:
+          if (Notification.permission === 'granted') {
+            createNotification('error');
+          }
+          else {
+            showAlert("⚰️ Une erreur est survenue!");
+          }
+          console.warn("Erreur: ", response);
+          break;
       }
     });
   }
   else {
-    console.warn("Code isn't executed in a Chrome environment!");
+    console.warn("You should execute this extension in a Chrome environment!");
   }
 });
 
