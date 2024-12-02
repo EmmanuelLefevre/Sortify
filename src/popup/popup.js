@@ -50,26 +50,24 @@ const initializeAlertStorage = () => {
   return alertData;
 };
 
-// ########## Alertes ########## //
-const showAlert = (message, timeout = 2000) => {
-  setTimeout(() => alert(message), timeout);
-}
-
-// ########## Gestion des alertes de notifications ########## //
+// ########## Gestion des alertes ########## //
 // Afficher une alerte personnalisée si elle n'a pas déjà été affichée
-const showAlertNotifs = (key, message, timeout = 2000) => {
-  // Récupérer état des alertes depuis le localStorage ou initialiser objet vide (en guise de fallback si données inexistantes)
-  const alertStatus = getLocalStorage("SortifyAlerts") || {};
+const showAlert = (key, message, timeout = 2000) => {
+  // Vérifier si key est passer en paramètre
+  if (key !== undefined) {
+    // Récupérer état des alertes depuis le localStorage ou initialiser objet vide (en guise de fallback si données inexistantes)
+    const alertStatus = getLocalStorage("SortifyAlerts") || {};
 
-  // Vérifier si l'alerte a déjà été affichée
-  if (!alertStatus[key]) return;
+    // Vérifier si l'alerte a déjà été affichée
+    if (!alertStatus[key]) return;
+
+    // Désactiver l'alerte après l'affichage
+    alertStatus[key] = false;
+    setLocalStorage("SortifyAlerts", alertStatus);
+  }
 
   // Afficher l'alerte après le délai spécifié
   setTimeout(() => alert(message), timeout);
-
-  // Désactiver l'alerte après l'affichage
-  alertStatus[key] = false;
-  setLocalStorage("SortifyAlerts", alertStatus);
 };
 // Réactiver une alerte spécifique
 const resetAlertStatus = (key) => {
@@ -159,7 +157,7 @@ const createNotification = (type) => {
     });
   }
   else {
-    showAlertNotifs("unsupported_notifications", "💀💀💀 Les notifications ne sont pas supportées par ce navigateur!");
+    showAlert("unsupported_notifications", "💀💀💀 Les notifications ne sont pas supportées par ce navigateur!");
   }
 };
 
@@ -185,21 +183,22 @@ const initializeNotificationPermissions = () => {
         updateNotificationStatus(true);
       }
       updateNotifContentVisibility(notifContent, false);
-      setLocalStorage("SortifyAlerts", { ...getLocalStorage("SortifyAlerts"), default_notifications: true });
+      resetAlertStatus("default_notifications");
+      // setLocalStorage("SortifyAlerts", { ...getLocalStorage("SortifyAlerts"), default_notifications: true });
       break;
 
     // Afficher bouton si état "denied" + alert
     case "denied":
       updateNotifContentVisibility(notifContent, true);
       updateNotificationStatus(false);
-      showAlertNotifs("denied_notifications", "🤬🤬🤬 Notifications refusées! 🤬🤬🤬");
+      showAlert("denied_notifications", "🤬🤬🤬 Notifications refusées! 🤬🤬🤬");
       break;
 
     // Afficher bouton si état "default" + alert
     case "default":
       updateNotifContentVisibility(notifContent, true);
       updateNotificationStatus(false);
-      showAlertNotifs("default_notifications", "Activer vos notifications svp 👉👉👉");
+      showAlert("default_notifications", "Activer vos notifications svp 👉👉👉");
       break;
 
     default:
@@ -239,7 +238,8 @@ const handleNotificationButtonClick = () => {
           clearInterval(checkPermission);
           updateNotificationStatus(true);
           updateNotifContentVisibility(notifContent, false);
-          setLocalStorage("SortifyAlerts", { ...getLocalStorage("SortifyAlerts"), default_notifications: true });
+          resetAlertStatus("default_notifications");
+          // setLocalStorage("SortifyAlerts", { ...getLocalStorage("SortifyAlerts"), default_notifications: true });
         }
       }, 1000);
 
