@@ -318,48 +318,53 @@ document.getElementById('bookmark-form').addEventListener('submit', function (ev
   // Empêcher le rechargement de la page
   event.preventDefault();
 
-  chrome.runtime.sendMessage({ action: 'sendActiveTabUrl' }, function(response) {
-    // Success
-    if (response.success) {
-      if (Notification.permission === 'granted') {
-        createNotification('bookmark');
-      }
-      else {
-        showAlert("✔️ Le favori a été ajouté!");
-      }
-      console.log('Bookmark added:', response.data);
-    }
-    // Erreur générale, y compris serveur hors ligne
-    else if (!response.success) {
-      if (response.error === 'offline') {
+  if(isChromeExtension()) {
+    chrome.runtime.sendMessage({ action: 'sendActiveTabUrl' }, function(response) {
+      // Success
+      if (response.success) {
         if (Notification.permission === 'granted') {
-          createNotification('server-error');
+          createNotification('bookmark');
         }
         else {
-          showAlert("🗄️ Le serveur semble hors-ligne!");
+          showAlert("✔️ Le favori a été ajouté!");
         }
-        console.error('Offline server:', response.error);
+        console.log('Bookmark added:', response.data);
       }
-      else {
-        // Autre type d'erreur serveur
-        if (Notification.permission === 'granted') {
-          createNotification('server-error');
+      // Erreur générale, y compris serveur hors ligne
+      else if (!response.success) {
+        if (response.error === 'offline') {
+          if (Notification.permission === 'granted') {
+            createNotification('server-error');
+          }
+          else {
+            showAlert("🗄️ Le serveur semble hors-ligne!");
+          }
+          console.error('Offline server:', response.error);
         }
         else {
-          showAlert("💣 Une erreur serveur est survenue!");
+          // Autre type d'erreur serveur
+          if (Notification.permission === 'granted') {
+            createNotification('server-error');
+          }
+          else {
+            showAlert("💣 Une erreur serveur est survenue!");
+          }
+          console.error('Server error:', response.error);
         }
-        console.error('Server error:', response.error);
-      }
-    }
-    else {
-      if (Notification.permission === 'granted') {
-        createNotification('error');
       }
       else {
-        showAlert("⚰️ Une erreur est survenue!");
+        if (Notification.permission === 'granted') {
+          createNotification('error');
+        }
+        else {
+          showAlert("⚰️ Une erreur est survenue!");
+        }
       }
-    }
-  });
+    });
+  }
+  else {
+    console.warn("Code isn't executed in a Chrome environment!");
+  }
 });
 
 
