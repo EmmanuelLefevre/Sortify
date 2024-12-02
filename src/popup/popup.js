@@ -410,5 +410,4 @@ document.addEventListener('DOMContentLoaded', () => {
   initializeNotificationPermissions();
   handleNotificationButtonClick();
   toggleLabelSubmitButton();
-  console.log(Notification.permission);
 });
