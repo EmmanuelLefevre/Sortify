@@ -1,3 +1,8 @@
+// ########## Chrome extension ########## //
+const isChromeExtension = () => {
+  return typeof chrome !== 'undefined' && typeof chrome.tabs !== 'undefined';
+}
+
 // ########## Utilitaires pour le local storage Sortify (JSON) ########## //
 // Setter
 const setLocalStorage = (key, value) => {
@@ -255,14 +260,12 @@ const handleNotificationButtonClick = () => {
 
   notifsButton.addEventListener('click', async (_event) => {
     try {
-      // Vérifier si API chrome.tabs.create est disponible
-      if (chrome.tabs && chrome.tabs.create) {
+      if (isChromeExtension()) {
         // Ouvrir onglet paramètres de notifications de Chrome
-        chrome.tabs.create({ url: 'chrome://settings/content/notifications' });
+        chrome.tabs.create({url:'chrome://settings/content/notifications'});
       }
       else {
-        console.warn("API chrome.tabs not supported!");
-        createNotification('chrome');
+        console.warn("API Chrome not supported!");
         return;
       }
 
