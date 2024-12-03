@@ -50,8 +50,10 @@
                      id="category-input"
                      name="category"
                      autocomplete="off"
+                     spellcheck="false"
                      placeholder="Créer une catégorie"
-                     aria-label="Champ de saisie de création d'une catégorie pour les favoris"/>
+                     aria-label="Champ de saisie de création d'une catégorie pour les favoris"
+                     required/>
               <button type="submit"
                       id="add-category-btn"
                       aria-label="Créer une catégorie pour les favoris">
@@ -62,6 +64,7 @@
               </button>
               <span id="border-input"></span>
               <label for="category-input">Créer une catégorie</label>
+              <span id="error-message-content"></span>
             </div>
           </form>
 

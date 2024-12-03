@@ -13,6 +13,7 @@
 :root {
     --font-size-body: 24px;
     --font-size-button: 16px;
+    --font-size-error: 12px;
     --font-size-h1: 40px;
     --font-size-input: 14px;
     --font-size-label: 14px;
@@ -147,6 +148,14 @@ div.sortify-content {
     border: var(--border-width2) var(--border-solid) var(--primary-color);
     border-radius: 50%;
     z-index: 2;
+}
+#error-message-content {
+    visibility: hidden;
+    font-size: var(--font-size-error);
+    color: var(--error-color);
+}
+#error-message-content.show {
+    visibility: visible;
 }
 /*------Form------*/
 #bookmark-form {
