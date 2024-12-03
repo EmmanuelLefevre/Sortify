@@ -18,6 +18,7 @@ const setLocalStorage = (key, value) => {
     console.warn("Local storage not found!");
   }
 };
+
 // Getter avec fallback en cas de données invalides
 const getLocalStorage = (key) => {
   try {
@@ -51,7 +52,6 @@ const getLocalStorage = (key) => {
   }
 };
 
-
 // ########## Initialiser JSON du local storage ########## //
 // Initialiser données des notifications
 const initializeNotificationsStorage = () => {
@@ -64,6 +64,7 @@ const initializeNotificationsStorage = () => {
   }
   return notifData;
 };
+
 // Initialiser les données des alertes
 const initializeAlertStorage = () => {
   const defaultAlertSettings = {
@@ -99,6 +100,7 @@ const showAlert = (key, message, timeout = 2000) => {
   // Afficher l'alerte après le délai spécifié
   setTimeout(() => alert(message), timeout);
 };
+
 // Réactiver une alerte spécifique
 const resetAlertStatus = (key) => {
   const alertStatus = getLocalStorage("SortifyAlerts") || {};
@@ -374,37 +376,107 @@ const form = document.getElementById('category-form');
 const input = document.getElementById('category-input');
 const span = document.getElementById('border-input');
 const submitButton = document.getElementById('add-category-btn');
+const categoryInputContainer = document.querySelector('.category-input-container');
 
-// Injecter "required" + plage 2/21 caractères)
+// Désactiver submit bouton
+submitButton.disabled = true;
+
+// Injecter les contraintes de validation
 input.setAttribute('required', true);
-input.setAttribute('minlength', 2);
-input.setAttribute('maxlength', 21);
+input.setAttribute('minlength', 3);
+
+// Message d'erreur
+const errorMessage = document.createElement('span');
+errorMessage.id = 'error-message-content';
+categoryInputContainer.insertAdjacentElement('afterend', errorMessage);
 
 // Activer / désactiver bouton soumission
 const toggleLabelSubmitButton = () => {
-  submitButton.disabled = input.validity.valid ? false : true;
+  submitButton.disabled = !input.validity.valid;
+};
+
+// MAJ message d'erreur
+const updateErrorMessage = () => {
+  const value = input.value;
+  let error = '';
+
+  switch (true) {
+    case value.length === 0:
+      error = '⚠️ Le champ ne peut pas être vide!';
+      break;
+
+    case value.length < 3:
+      error = '⚠️ Taille minimum de 3 caractères!';
+      break;
+
+    case value.length > 18:
+      error = '⚠️ Taille maximum de 18 caractères!';
+      break;
+
+    case !/^[A-Za-z0-9]*$/.test(value):
+      error = '⚠️ (A-Z, a-z) et (0-9) autorisés!';
+      break;
+
+    default:
+      error = '';
+  }
+
+  // Invalidité si erreur détectée
+  if (error) {
+    input.setCustomValidity('invalid');
+    // Afficher message d'erreur
+    errorMessage.textContent = error;
+    errorMessage.classList.add('show');
+  }
+  else {
+    input.setCustomValidity('valid');
+    // Effacer message d'erreur
+    errorMessage.textContent = '';
+    errorMessage.classList.remove('show');
+  }
 };
 
 // Écouter changements d'état de l'input
 input.addEventListener('input', () => {
-  // Vérifier validité input et activer/désactiver bouton
+  updateErrorMessage();
   toggleLabelSubmitButton();
+
+  if ((span.classList.contains('invalid') || span.classList.contains('border-input')) && input.validity.valid) {
+    span.classList.remove('invalid');
+    span.classList.add('valid');
+    input.classList.remove('headshake');
+
+    // Retirer classe valid après 2 secondes
+    setTimeout(() => {
+      span.classList.remove('valid');
+    }, 2000);
+  }
 });
 
+// Masquer le message d'erreur lorsque l'input perd le focus
+input.addEventListener('blur', () => {
+  if (!input.validity.valid) {
+    errorMessage.classList.remove('show');
+  }
+});
+
+// Gérer soumission formulaire
 form.addEventListener('submit', (event) => {
-  // Empêcher soumission formulaire input invalide
+  // Empêcher soumission formulaire input si invalide
   event.preventDefault();
 
   if (input.validity.valid) {
     span.classList.add('valid');
     span.classList.remove('invalid');
     input.classList.remove('headshake');
+    errorMessage.textContent = '';
     form.submit();
   }
   else {
     span.classList.add('invalid');
     input.classList.add('headshake');
     span.classList.remove('valid');
+    updateErrorMessage();
   }
 });
 
