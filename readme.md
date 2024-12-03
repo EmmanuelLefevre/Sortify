@@ -12,22 +12,26 @@ Grâce à l'intégration de l'intelligence artificielle, cette extension ne se c
 Cette extension vise à offrir une expérience de gestion des favoris plus fluide et plus intuitive tout en préservant la vie privée de l'utilisateur.
 
 ## CHROME EXTENSIONS SETTINGS
-1. Ouvrir l'URL ci dessous dans le navigateur Chrome
+1. Activer mode développeur
+2. Repérer le bouton "Charger l'extension non empaquetée"
+![Chrome extension settings](https://github.com/EmmanuelLefevre/MarkdownImg/blob/main/chrome_settings.png)
+3. Ouvrir l'URL ci dessous dans le navigateur Chrome
 ```bash
 chrome://extensions/
 ```
-2. Vérifier les permissions d'extension Chrome
+4. Vérifier les permissions d'extension Chrome
 ```bash
 chrome://settings/content/notifications
 ```
-Ajouter/Bloquer permission de notifications
+5. Ajouter/Bloquer permission de notifications
 ```bash
-chrome-extension://hajlfpcnjgppoapaaieccblofcgpmbpc/
+chrome-extension://<id>/
 ```
-3. Activer mode développeur
-4. Repérer le bouton "Charger l'extension non empaquetée"
+```bash
+chrome-extension://<mphajpdnlknfhohmjkdkljjjkgdfello>/
+```
+![Chrome extension id](https://github.com/EmmanuelLefevre/MarkdownImg/blob/main/chrome_extension_id.png)
 
-![Chrome extension settings](https://github.com/EmmanuelLefevre/MarkdownImg/blob/main/chrome_settings.png)
 
 ## SERVEO CONFIGURATION
 Serveo.net est un service de tunneling SSH qui permet de rendre vos applications locales accessibles sur Internet sans avoir à configurer un serveur ou à manipuler des paramètres complexes de réseau. Il vous suffit de disposer d'une connexion SSH et d'un terminal pour créer un tunnel sécurisé vers votre machine locale.  
