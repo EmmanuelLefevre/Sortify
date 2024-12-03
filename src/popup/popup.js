@@ -453,7 +453,7 @@ input.addEventListener('input', () => {
   }
 });
 
-// Masquer le message d'erreur lorsque l'input perd le focus
+// Masquer message d'erreur si input unfocus
 input.addEventListener('blur', () => {
   if (!input.validity.valid) {
     errorMessage.classList.remove('show');
@@ -462,7 +462,7 @@ input.addEventListener('blur', () => {
 
 // Gérer soumission formulaire
 form.addEventListener('submit', (event) => {
-  // Empêcher soumission formulaire input si invalide
+  // Empêcher soumission formulaire si input invalide
   event.preventDefault();
 
   if (input.validity.valid) {
