@@ -161,6 +161,9 @@ div.sortify-content {
 #bookmark-form {
     margin: 5px 0 25px 0;
 }
+#category-form {
+    margin-bottom: 30px;
+}
 /*------Title------*/
 h1.sortify-title {
     position: relative;
@@ -227,7 +230,7 @@ button#add-category-btn {
     background: none;
     border: none;
     padding: 5px;
-    top: -18px;
+    top: -5px;
     transition: transform 0.3s ease;
 }
 button#enable-notifs {
@@ -269,11 +272,10 @@ div.category-input-container input {
     font-size: var(--font-size-input);
     color: var(--primary-color);
     width: 100%;
-    margin-bottom: 30px;
     padding-bottom: 5px;
     border: none;
     border-bottom: var(--border-width1) var(--border-solid) var(--primary-color);
-    background: transparent;
+    background: var(--background-color);
     transition: width 0.2s linear 0.2s;
     flex: 1;
 }
@@ -331,7 +333,6 @@ button#add-bookmark-btn:hover {
     color: var(--primary-color);
     background-image: none;
     background-color: var(--white);
-    /* border-color: var(--hover-border-color); */
     outline-color: var(--hover-border-color);
     box-shadow: none;
 }
@@ -354,6 +355,7 @@ div.category-input-container input:hover ~ span#border-input {
     position: absolute;
     width: calc(100% - 36px);
     height: 2px;
+    top: 26px;
     background: linear-gradient(to right, var(--gradient1), var(--gradient2) 60%);
     bottom: 30px;
     left: 0;
@@ -381,6 +383,7 @@ div.category-input-container input:focus ~ label {
 }
 div.category-input-container input:focus ~ span#border-input {
     width: calc(100% - 36px);
+    top: 26px;
     transition: width 0.5s cubic-bezier(0.2, 0, 0.03, 1);
 }
 
@@ -396,16 +399,20 @@ div.category-input-container input:not(:placeholder-shown) ~ label {
 .category-input-container input:not(:placeholder-shown) ~ span#border-input {
     width: calc(100% - 36px);
     background: linear-gradient(to right, var(--gradient1), var(--gradient2) 60%);
+    top: 26px;
 }
 
 /*------Valid / Invalid------*/
-input.valid + span#border-input {
-    background: var(--valid-color);
+span#border-input.valid {
+    background: linear-gradient(to right, var(--valid-color), var(--valid-color) 60%) !important;
     width: calc(100% - 36px);
     transition: all 0.5s cubic-bezier(0.2, 0, 0.03, 1);
 }
-input.invalid + span#border-input {
-    background: var(--invalid-color);
+span#border-input.invalid {
+    background: linear-gradient(to right, var(--invalid-color), var(--error-color) 60%) !important;
     width: calc(100% - 36px);
     transition: all 0.5s cubic-bezier(0.2, 0, 0.03, 1);
 }
+/* input#category-input.invalid {
+    box-shadow: inset 0 0px 10px 2px var(--invalid-color);
+} */

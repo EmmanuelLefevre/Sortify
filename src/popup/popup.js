@@ -384,6 +384,7 @@ submitButton.disabled = true;
 // Injecter les contraintes de validation
 input.setAttribute('required', true);
 input.setAttribute('minlength', 3);
+input.setAttribute('maxlength', 21);
 
 // Message d'erreur
 const errorMessage = document.createElement('span');
@@ -391,13 +392,13 @@ errorMessage.id = 'error-message-content';
 categoryInputContainer.insertAdjacentElement('afterend', errorMessage);
 
 // Activer / désactiver bouton soumission
-const toggleLabelSubmitButton = () => {
+const toggleSubmitButton = () => {
   submitButton.disabled = !input.validity.valid;
 };
 
-// MAJ message d'erreur
-const updateErrorMessage = () => {
-  const value = input.value;
+// Comportement de validation
+const updateValidationState = () => {
+  const value = input.value.trim();
   let error = '';
 
   switch (true) {
@@ -409,8 +410,8 @@ const updateErrorMessage = () => {
       error = '⚠️ Taille minimum de 3 caractères!';
       break;
 
-    case value.length > 18:
-      error = '⚠️ Taille maximum de 18 caractères!';
+    case value.length > 21:
+      error = '⚠️ Taille maximum de 21 caractères!';
       break;
 
     case !/^[A-Za-z0-9]*$/.test(value):
@@ -424,12 +425,20 @@ const updateErrorMessage = () => {
   // Invalidité si erreur détectée
   if (error) {
     input.setCustomValidity('invalid');
+    span.classList.remove('valid');
+    span.classList.add('invalid');
+    input.classList.add('invalid');
+    input.classList.add('headshake');
     // Afficher message d'erreur
     errorMessage.textContent = error;
     errorMessage.classList.add('show');
   }
   else {
     input.setCustomValidity('valid');
+    span.classList.remove('invalid');
+    span.classList.add('valid');
+    input.classList.remove('invalid');
+    input.classList.remove('headshake');
     // Effacer message d'erreur
     errorMessage.textContent = '';
     errorMessage.classList.remove('show');
@@ -438,24 +447,20 @@ const updateErrorMessage = () => {
 
 // Écouter changements d'état de l'input
 input.addEventListener('input', () => {
-  updateErrorMessage();
-  toggleLabelSubmitButton();
-
-  if ((span.classList.contains('invalid') || span.classList.contains('border-input')) && input.validity.valid) {
-    span.classList.remove('invalid');
-    span.classList.add('valid');
-    input.classList.remove('headshake');
-
-    // Retirer classe valid après 2 secondes
-    setTimeout(() => {
-      span.classList.remove('valid');
-    }, 2000);
-  }
+  updateValidationState();
+  toggleSubmitButton();
 });
 
-// Masquer message d'erreur si input unfocus
+// Input unfocus (masquer message d'erreur + retirer classe de validation si input vide)
 input.addEventListener('blur', () => {
-  if (!input.validity.valid) {
+  if (!input.validity.valid && input.value.trim() === '') {
+    span.classList.remove('valid', 'invalid');
+    input.classList.remove('headshake');
+    errorMessage.textContent = '';
+    errorMessage.classList.remove('show');
+  }
+  else if (!input.validity.valid) {
+    errorMessage.textContent = '';
     errorMessage.classList.remove('show');
   }
 });
@@ -465,18 +470,9 @@ form.addEventListener('submit', (event) => {
   // Empêcher soumission formulaire si input invalide
   event.preventDefault();
 
+  updateValidationState();
   if (input.validity.valid) {
-    span.classList.add('valid');
-    span.classList.remove('invalid');
-    input.classList.remove('headshake');
-    errorMessage.textContent = '';
     form.submit();
-  }
-  else {
-    span.classList.add('invalid');
-    input.classList.add('headshake');
-    span.classList.remove('valid');
-    updateErrorMessage();
   }
 });
 
@@ -487,5 +483,5 @@ document.addEventListener('DOMContentLoaded', () => {
   addBtnBookmarkAnimations();
   initializeNotificationPermissions();
   handleNotificationButtonClick();
-  toggleLabelSubmitButton();
+  toggleSubmitButton();
 });
