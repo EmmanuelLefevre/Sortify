@@ -39,13 +39,10 @@
 :root {
   --shake-intensity: 1%;
 }
-.headshake-eio {
-  animation: headshake 0.5s;
-  animation-iteration-count: ease-in-out;
-}
-.headshake-ift {
-  animation: headshake 0.5s;
-  animation-iteration-count: infinite;
+.headshake {
+  animation: headshake 1s;
+  animation-iteration-count: 2;
+  animation-timing-function: ease-in-out;
 }
 @keyframes headshake {
   25% {
