@@ -413,6 +413,6 @@ span#border-input.invalid {
     width: calc(100% - 36px);
     transition: all 0.5s cubic-bezier(0.2, 0, 0.03, 1);
 }
-/* input#category-input.invalid {
-    box-shadow: inset 0 0px 10px 2px var(--invalid-color);
-} */
+input#category-input.invalid {
+    color: var(--invalid-color);
+}
