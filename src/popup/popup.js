@@ -377,6 +377,8 @@ const input = document.getElementById('category-input');
 const span = document.getElementById('border-input');
 const submitButton = document.getElementById('add-category-btn');
 const categoryInputContainer = document.querySelector('.category-input-container');
+const categoryIcon = document.querySelector('.category-icon');
+const spanTooltip = document.querySelector('.tooltip');
 
 // Désactiver submit bouton
 submitButton.disabled = true;
@@ -392,7 +394,7 @@ errorMessage.id = 'error-message-content';
 categoryInputContainer.insertAdjacentElement('afterend', errorMessage);
 
 // Activer / désactiver bouton soumission
-const toggleSubmitButton = () => {
+const toggleSubmitButtonState = () => {
   submitButton.disabled = !input.validity.valid;
 };
 
@@ -425,7 +427,6 @@ const updateValidationState = () => {
   // Invalidité si erreur détectée
   if (error) {
     input.setCustomValidity('invalid');
-    span.classList.remove('valid');
     span.classList.add('invalid');
     input.classList.add('invalid');
     input.classList.add('headshake');
@@ -434,7 +435,7 @@ const updateValidationState = () => {
     errorMessage.classList.add('show');
   }
   else {
-    input.setCustomValidity('valid');
+    input.setCustomValidity('');
     span.classList.remove('invalid');
     span.classList.add('valid');
     input.classList.remove('invalid');
@@ -442,19 +443,24 @@ const updateValidationState = () => {
     // Effacer message d'erreur
     errorMessage.textContent = '';
     errorMessage.classList.remove('show');
+
+    // Modifier texte du tooltip
+    if (spanTooltip) {
+      spanTooltip.textContent = 'Créer';
+    }
   }
 };
 
-// Écouter changements d'état de l'input
+// Écouter événements changements d'état de l'input
 input.addEventListener('input', () => {
   updateValidationState();
-  toggleSubmitButton();
+  toggleSubmitButtonState();
 });
 
 // Input unfocus (masquer message d'erreur + retirer classe de validation si input vide)
 input.addEventListener('blur', () => {
   if (!input.validity.valid && input.value.trim() === '') {
-    span.classList.remove('valid', 'invalid');
+    span.classList.remove('invalid');
     input.classList.remove('headshake');
     errorMessage.textContent = '';
     errorMessage.classList.remove('show');
@@ -463,6 +469,7 @@ input.addEventListener('blur', () => {
     errorMessage.textContent = '';
     errorMessage.classList.remove('show');
   }
+  toggleSubmitButtonState();
 });
 
 // Gérer soumission formulaire
@@ -483,5 +490,5 @@ document.addEventListener('DOMContentLoaded', () => {
   addBtnBookmarkAnimations();
   initializeNotificationPermissions();
   handleNotificationButtonClick();
-  toggleSubmitButton();
+  toggleSubmitButtonState();
 });
