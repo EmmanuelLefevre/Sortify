@@ -383,10 +383,12 @@ const spanTooltip = document.querySelector('.tooltip');
 // Désactiver submit bouton
 submitButton.disabled = true;
 
+// Vérifier si utilisateur a déjà saisi
+let hasTyped = false;
+
 // Injecter les contraintes de validation
 input.setAttribute('required', true);
 input.setAttribute('minlength', 3);
-input.setAttribute('maxlength', 21);
 
 // Message d'erreur
 const errorMessage = document.createElement('span');
@@ -412,8 +414,8 @@ const updateValidationState = () => {
       error = '⚠️ Taille minimum de 3 caractères!';
       break;
 
-    case value.length > 21:
-      error = '⚠️ Taille maximum de 21 caractères!';
+    case value.length > 25:
+      error = '⚠️ Taille maximum de 25 caractères!';
       break;
 
     case !/^[A-Za-z0-9]*$/.test(value):
@@ -436,9 +438,7 @@ const updateValidationState = () => {
     errorMessage.classList.add('show');
 
     // Modifier texte du tooltip
-    if (spanTooltip) {
-      spanTooltip.textContent = 'Saisir';
-    }
+    spanTooltip.textContent = 'Saisie invalide';
   }
   else {
     input.setCustomValidity('');
@@ -452,17 +452,36 @@ const updateValidationState = () => {
     errorMessage.classList.remove('show');
 
     // Modifier texte du tooltip
-    if (spanTooltip) {
-      spanTooltip.textContent = 'Créer';
-    }
+    spanTooltip.textContent = 'Créer';
   }
 };
 
 // Écouter événements changements d'état de l'input
 input.addEventListener('input', () => {
+  // Utilisateur a saisi
+  const value = input.value.trim();
+  if (value !== '') {
+    hasTyped = true;
+  }
+
+  // Vérifier si input vide après saisie
+  if (hasTyped && value === '') {
+    spanTooltip.textContent = 'Rejoues';
+  }
+  else if (value !== '') {
+    spanTooltip.textContent = 'Créer';
+  }
+
   updateValidationState();
   toggleSubmitButtonState();
 });
+
+// Input focus + vide + utilisateur a déjà saisi
+// input.addEventListener('focus', () => {
+//   if (hasTyped && input.value.trim() === '') {
+//     spanTooltip.textContent = 'Rejoues';
+//   }
+// });
 
 // Input unfocus (masquer message d'erreur + retirer classe de validation si input vide)
 input.addEventListener('blur', () => {
@@ -472,12 +491,8 @@ input.addEventListener('blur', () => {
     input.classList.remove('headshake');
     errorMessage.textContent = '';
     errorMessage.classList.remove('show');
+    spanTooltip.textContent = 'Saisir';
   }
-  else if (!input.validity.valid) {
-    errorMessage.textContent = '';
-    errorMessage.classList.remove('show');
-  }
-  toggleSubmitButtonState();
 });
 
 // Gérer soumission formulaire
