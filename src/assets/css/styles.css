@@ -404,15 +404,15 @@ div.category-input-container input:not(:placeholder-shown) ~ label {
 
 /*------Valid / Invalid------*/
 span#border-input.valid {
-    background: linear-gradient(to right, var(--valid-color), var(--valid-color) 60%) !important;
+    background: var(--valid-color) !important;
     width: calc(100% - 36px);
     transition: all 0.5s cubic-bezier(0.2, 0, 0.03, 1);
 }
 span#border-input.invalid {
-    background: linear-gradient(to right, var(--invalid-color), var(--error-color) 60%) !important;
+    background: linear-gradient(to right, var(--invalid-color), var(--error-color) 45%) !important;
     width: calc(100% - 36px);
     transition: all 0.5s cubic-bezier(0.2, 0, 0.03, 1);
 }
 input#category-input.invalid {
-    color: var(--invalid-color);
+    color: var(--error-color);
 }
