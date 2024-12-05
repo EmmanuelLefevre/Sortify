@@ -461,6 +461,7 @@ input.addEventListener('input', () => {
 input.addEventListener('blur', () => {
   if (!input.validity.valid && input.value.trim() === '') {
     span.classList.remove('invalid');
+    span.classList.remove('valid');
     input.classList.remove('headshake');
     errorMessage.textContent = '';
     errorMessage.classList.remove('show');
