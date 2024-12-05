@@ -340,7 +340,8 @@ button#add-category-btn:hover img.category-icon {
     transform: scale(1.4);
     transform-origin: center;
     filter: var(--icon-shadow);
-    transition: transform 0.3s ease-in, drop-shadow 0.3s ease-out;
+    transition: opacity 0.3s ease, transform 0.3s ease-in, drop-shadow 0.3s ease-out;
+    opacity: 1;
 }
 button#enable-notifs:hover {
     text-decoration: underline;
@@ -400,6 +401,14 @@ div.category-input-container input:not(:placeholder-shown) ~ label {
     width: calc(100% - 36px);
     background: linear-gradient(to right, var(--gradient1), var(--gradient2) 60%);
     top: 26px;
+}
+
+/*------Disabled------*/
+button#add-category-btn:disabled {
+    cursor: not-allowed;
+}
+button#add-category-btn:disabled img.category-icon {
+    opacity: 0.5;
 }
 
 /*------Valid / Invalid------*/
