@@ -402,14 +402,12 @@ button#add-category-btn:disabled img.category-icon {
 
 /*------Valid / Invalid------*/
 span#border-input.valid {
+    animation: fillValidBorder 0.5s cubic-bezier(0.2, 0, 0.03, 1);
     background: var(--valid-color) !important;
-    width: calc(100% - 36px);
-    transition: all 0.5s cubic-bezier(0.2, 0, 0.03, 1);
 }
 span#border-input.invalid {
+    animation: fillErrorBorder 0.5s cubic-bezier(0.2, 0, 0.03, 1);
     background: linear-gradient(to right, var(--invalid-color), var(--error-color) 45%) !important;
-    width: calc(100% - 36px);
-    transition: width 0.5s cubic-bezier(0.2, 0, 0.03, 1);
 }
 input#category-input.invalid {
     color: var(--invalid-color);
