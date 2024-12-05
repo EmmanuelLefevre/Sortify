@@ -7,24 +7,9 @@
     box-sizing: border-box;
 }
 
-
-/*======FONTS SIZE======*/
-/* Font-size variables */
+/*======VARIABLES======*/
 :root {
-    --font-size-body: 24px;
-    --font-size-button: 16px;
-    --font-size-error: 12px;
-    --font-size-h1: 40px;
-    --font-size-input: 14px;
-    --font-size-label: 14px;
-    --font-size-label-focus: 9px;
-    --font-size-p: 14px;
-    --font-size-result: 14px;
-}
-
-/*======COLOR PALETTE======*/
-/*------Main------*/
-:root {
+    /*------Colors------*/
     --white: white;
     --black: black;
     --black2: #272727;
@@ -35,27 +20,33 @@
     --error-color: #fd7200;
     --valid-color: #3cff00;
     --invalid-color: #fa0000;
-}
-/*------Background------*/
-:root {
+
+    /*------Fonts size------*/
+    --font-size-body: 24px;
+    --font-size-button: 16px;
+    --font-size-error: 12px;
+    --font-size-h1: 40px;
+    --font-size-input: 14px;
+    --font-size-label: 14px;
+    --font-size-label-focus: 9px;
+    --font-size-p: 14px;
+    --font-size-result: 14px;
+
+    /*------Background------*/
     --background-color: #f5f5f5;
-}
-/*------Text------*/
-:root {
+
+    /*------Text------*/
     --text-result-color: #004466;
-}
-/*------Border------*/
-:root {
+
+    /*------Border------*/
     --border-width1: 1px;
     --border-width2: 2px;
     --border-solid: solid;
-}
-/*------Hover------*/
-:root {
+
+    /*------Hover------*/
     --hover-border-color: var(--primary-color);
-}
-/*------Gradient------*/
-:root {
+
+    /*------Gradient------*/
     --gradient-angle1: 180deg;
     --gradient-angle2: 315deg;
     --gradient1: var(--primary-color);
@@ -65,26 +56,21 @@
     --end-position2: 74%;
     --button-gradient-effect: linear-gradient(var(--gradient-angle2), var(--gradient2) var(--start-position), var(--gradient1) var(--end-position2));
     --h1-gradient-effect: linear-gradient(var(--gradient-angle1), var(--gradient1) var(--start-position), var(--gradient2) var(--end-position1));
-}
-/*------Shadows------*/
-:root {
+
+    /*------Shadows------*/
     --box-shadow-color: rgba(0, 0, 0, 0.6);
     --button-shadow-color: rgba(0, 0, 0, 0.7);
     --h1-shadow-color: rgba(0, 0, 0, 0.1);
     --icon-shadow-color: rgba(0, 0, 0, 0.2);
     --text-shadow-color: rgba(0, 0, 0, 0.2);
-}
-:root {
+
     --box-shadow: 0px 11px 5px -8px var(--box-shadow-color);
     --button-shadow: 0px 7px 6px -4px var(--button-shadow-color);
     --h1-shadow: 3px 3px 0px var(--h1-shadow-color);
     --icon-shadow: drop-shadow(2px 1px 0px var(--icon-shadow-color));
     --text-shadow: 0px 2px 2px var(--text-shadow-color);
-}
 
-/*======SEMANTIC FONTS======*/
-/*------Arial------*/
-:root {
+    /*------Fonts------*/
     --text: 'arial';
     --text-serif: 'sans-serif';
     --text-weight-regular: 400;
@@ -150,9 +136,12 @@ div.sortify-content {
     z-index: 2;
 }
 #error-message-content {
+    display: block;
     visibility: hidden;
     font-size: var(--font-size-error);
     color: var(--error-color);
+    height: 10px;
+    margin-top: 10px;
 }
 #error-message-content.show {
     visibility: visible;
@@ -162,7 +151,7 @@ div.sortify-content {
     margin: 5px 0 25px 0;
 }
 #category-form {
-    margin-bottom: 30px;
+    margin-bottom: 25px;
 }
 /*------Title------*/
 h1.sortify-title {
@@ -420,8 +409,8 @@ span#border-input.valid {
 span#border-input.invalid {
     background: linear-gradient(to right, var(--invalid-color), var(--error-color) 45%) !important;
     width: calc(100% - 36px);
-    transition: all 0.5s cubic-bezier(0.2, 0, 0.03, 1);
+    transition: width 0.5s cubic-bezier(0.2, 0, 0.03, 1);
 }
 input#category-input.invalid {
-    color: var(--error-color);
+    color: var(--invalid-color);
 }
