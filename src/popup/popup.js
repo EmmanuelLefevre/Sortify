@@ -430,9 +430,15 @@ const updateValidationState = () => {
     span.classList.add('invalid');
     input.classList.add('invalid');
     input.classList.add('headshake');
+
     // Afficher message d'erreur
     errorMessage.textContent = error;
     errorMessage.classList.add('show');
+
+    // Modifier texte du tooltip
+    if (spanTooltip) {
+      spanTooltip.textContent = 'Saisir';
+    }
   }
   else {
     input.setCustomValidity('');
@@ -440,6 +446,7 @@ const updateValidationState = () => {
     span.classList.add('valid');
     input.classList.remove('invalid');
     input.classList.remove('headshake');
+
     // Effacer message d'erreur
     errorMessage.textContent = '';
     errorMessage.classList.remove('show');
