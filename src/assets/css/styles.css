@@ -102,7 +102,7 @@ div.sortify-content {
     position: relative;
     display: inline-block;
 }
-.notifs-border-content {
+.notifs-border-container {
     display: inline-block;
     background: linear-gradient(var(--gradient-angle1), var(--primary-color), var(--fourth-color));
     width: 170px;
@@ -111,7 +111,7 @@ div.sortify-content {
     border-radius: 5px;
     box-shadow: var(--box-shadow);
 }
-#notifs-content {
+#notifs-container {
     position: relative;
     display: flex;
     justify-content: center;

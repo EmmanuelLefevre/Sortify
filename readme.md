@@ -26,10 +26,10 @@ chrome://settings/content/notifications
 ```
 5. Ajouter/Bloquer permission de notifications
 ```bash
-chrome-extension://<id>/
+chrome-extension://<id>
 ```
 ```bash
-chrome-extension://<mphajpdnlknfhohmjkdkljjjkgdfello>/
+chrome-extension://hajlfpcnjgppoapaaieccblofcgpmbpc
 ```
 ![Chrome extension id](https://github.com/EmmanuelLefevre/MarkdownImg/blob/main/chrome_extension_id.png)
 
