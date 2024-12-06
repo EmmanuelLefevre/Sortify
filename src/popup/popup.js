@@ -372,37 +372,37 @@ document.getElementById('bookmark-form').addEventListener('submit', function (ev
 
 
 // ########## Validation formulaire création de catégories ########## //
-const form = document.getElementById('category-form');
-const input = document.getElementById('category-input');
-const span = document.getElementById('border-input');
-const submitButton = document.getElementById('add-category-btn');
+const categoryForm = document.getElementById('category-form');
+const categoryInput = document.getElementById('category-input');
+const spanCategoryBorder = document.getElementById('category-border-input');
+const submitCategoryButton = document.getElementById('add-category-btn');
 const categoryInputContainer = document.querySelector('.category-input-container');
 const categoryIcon = document.querySelector('.category-icon');
-const spanTooltip = document.querySelector('.tooltip');
+const spanCategoryTooltip = document.querySelector('.category-tooltip');
 
 // Désactiver submit bouton
-submitButton.disabled = true;
+submitCategoryButton.disabled = true;
 
 // Vérifier si utilisateur a déjà saisi
 let hasTyped = false;
 
 // Injecter les contraintes de validation
-input.setAttribute('required', true);
-input.setAttribute('minlength', 3);
+categoryInput.setAttribute('required', true);
+categoryInput.setAttribute('minlength', 3);
 
 // Message d'erreur
-const errorMessage = document.createElement('span');
-errorMessage.id = 'error-message-content';
-categoryInputContainer.insertAdjacentElement('afterend', errorMessage);
+const categoryErrorMessage = document.createElement('span');
+categoryErrorMessage.id = 'category-error-message';
+categoryInputContainer.insertAdjacentElement('afterend', categoryErrorMessage);
 
 // Activer / désactiver bouton soumission
 const toggleSubmitButtonState = () => {
-  submitButton.disabled = !input.validity.valid;
+  submitCategoryButton.disabled = !categoryInput.validity.valid;
 };
 
 // Comportement de validation
 const updateValidationState = () => {
-  const value = input.value.trim();
+  const value = categoryInput.value.trim();
   let error = '';
 
   switch (true) {
@@ -428,48 +428,49 @@ const updateValidationState = () => {
 
   // Invalidité si erreur détectée
   if (error) {
-    input.setCustomValidity('invalid');
-    span.classList.add('invalid');
-    input.classList.add('invalid');
-    input.classList.add('headshake');
+    categoryInput.setCustomValidity('invalid');
+    spanCategoryBorder.classList.add('invalid');
+    categoryInput.classList.add('invalid');
+    categoryInput.classList.add('headshake');
 
     // Afficher message d'erreur
-    errorMessage.textContent = error;
-    errorMessage.classList.add('show');
+    categoryErrorMessage.textContent = error;
+    categoryErrorMessage.classList.add('show');
 
     // Modifier texte du tooltip
-    spanTooltip.textContent = 'Saisie invalide';
+    spanCategoryTooltip.textContent = 'Saisie invalide';
   }
   else {
-    input.setCustomValidity('');
-    span.classList.remove('invalid');
-    span.classList.add('valid');
-    input.classList.remove('invalid');
-    input.classList.remove('headshake');
+    categoryInput.setCustomValidity('');
+    spanCategoryBorder.classList.remove('invalid');
+    spanCategoryBorder.classList.add('valid');
+    categoryInput.classList.remove('invalid');
+    categoryInput.classList.remove('headshake');
 
     // Effacer message d'erreur
-    errorMessage.textContent = '';
-    errorMessage.classList.remove('show');
+    categoryErrorMessage.textContent = '';
+    categoryErrorMessage.classList.remove('show');
 
     // Modifier texte du tooltip
-    spanTooltip.textContent = 'Créer';
+    spanCategoryTooltip.textContent = 'Créer';
   }
 };
 
 // Écouter événements changements d'état de l'input
-input.addEventListener('input', () => {
+categoryInput.addEventListener('input', () => {
+  console.log(hasTyped);
   // Utilisateur a saisi
-  const value = input.value.trim();
+  const value = categoryInput.value.trim();
   if (value !== '') {
     hasTyped = true;
   }
 
   // Vérifier si input vide après saisie
   if (hasTyped && value === '') {
-    spanTooltip.textContent = 'Rejoues';
+    spanCategoryTooltip.textContent = 'Rejoues';
   }
   else if (value !== '') {
-    spanTooltip.textContent = 'Créer';
+    spanCategoryTooltip.textContent = 'Créer';
   }
 
   updateValidationState();
@@ -477,32 +478,32 @@ input.addEventListener('input', () => {
 });
 
 // Input focus + vide + utilisateur a déjà saisi
-// input.addEventListener('focus', () => {
-//   if (hasTyped && input.value.trim() === '') {
-//     spanTooltip.textContent = 'Rejoues';
-//   }
-// });
+categoryInput.addEventListener('focus', () => {
+  if (hasTyped && categoryInput.value.trim() === '') {
+    spanCategoryTooltip.textContent = 'Rejoues';
+  }
+});
 
 // Input unfocus (masquer message d'erreur + retirer classe de validation si input vide)
-input.addEventListener('blur', () => {
-  if (!input.validity.valid && input.value.trim() === '') {
-    span.classList.remove('invalid');
-    span.classList.remove('valid');
-    input.classList.remove('headshake');
-    errorMessage.textContent = '';
-    errorMessage.classList.remove('show');
-    spanTooltip.textContent = 'Saisir';
+categoryInput.addEventListener('blur', () => {
+  if (!categoryInput.validity.valid && categoryInput.value.trim() === '') {
+    spanCategoryBorder.classList.remove('invalid');
+    spanCategoryBorder.classList.remove('valid');
+    categoryInput.classList.remove('headshake');
+    categoryErrorMessage.textContent = '';
+    categoryErrorMessage.classList.remove('show');
+    spanCategoryTooltip.textContent = 'Saisir';
   }
 });
 
 // Gérer soumission formulaire
-form.addEventListener('submit', (event) => {
+categoryForm.addEventListener('submit', (event) => {
   // Empêcher soumission formulaire si input invalide
   event.preventDefault();
 
   updateValidationState();
-  if (input.validity.valid) {
-    form.submit();
+  if (categoryInput.validity.valid) {
+    categoryForm.submit();
   }
 });
 

@@ -135,7 +135,7 @@ div.sortify-content {
     border-radius: 50%;
     z-index: 2;
 }
-#error-message-content {
+#category-error-message {
     display: block;
     visibility: hidden;
     font-size: var(--font-size-error);
@@ -143,7 +143,7 @@ div.sortify-content {
     height: 10px;
     margin-top: 10px;
 }
-#error-message-content.show {
+#category-error-message.show {
     visibility: visible;
 }
 /*------Form------*/
@@ -268,7 +268,7 @@ div.category-input-container input {
     transition: width 0.2s linear 0.2s;
     flex: 1;
 }
-div.category-input-container input ~ span#border-input {
+div.category-input-container input ~ span#category-border-input {
     position: absolute;
     display: block;
     width: 0;
@@ -288,7 +288,7 @@ div.category-input-container label {
     opacity: 1;
 }
 /*------Tooltip------*/
-.tooltip {
+.category-tooltip {
     position: absolute;
     visibility: hidden;
     color: var(--primary-color);
@@ -340,7 +340,7 @@ div.category-input-container input:hover ~ label {
     animation: bounce 1.2s ease-in-out infinite;
 }
 /*Span*/
-div.category-input-container input:hover ~ span#border-input {
+div.category-input-container input:hover ~ span#category-border-input {
     display: block;
     position: absolute;
     width: calc(100% - 36px);
@@ -352,7 +352,7 @@ div.category-input-container input:hover ~ span#border-input {
     transition: width 0.5s cubic-bezier(0.2, 0, 0.03, 1);
 }
 /*Tooltip*/
-#add-category-btn:hover .tooltip {
+#add-category-btn:hover .category-tooltip {
     visibility: visible;
     opacity: 1;
 }
@@ -371,7 +371,7 @@ div.category-input-container input:focus ~ label {
     pointer-events: none;
     transition: opacity 0.5s ease-in-out;
 }
-div.category-input-container input:focus ~ span#border-input {
+div.category-input-container input:focus ~ span#category-border-input {
     width: calc(100% - 36px);
     top: 26px;
     transition: width 0.5s cubic-bezier(0.2, 0, 0.03, 1);
@@ -386,7 +386,7 @@ div.category-input-container input:not(:placeholder-shown) ~ label {
     pointer-events: none;
     transition: opacity 0.3s ease;
 }
-.category-input-container input:not(:placeholder-shown) ~ span#border-input {
+.category-input-container input:not(:placeholder-shown) ~ span#category-border-input {
     width: calc(100% - 36px);
     background: linear-gradient(to right, var(--gradient1), var(--gradient2) 60%);
     top: 26px;
@@ -401,11 +401,11 @@ button#add-category-btn:disabled img.category-icon {
 }
 
 /*------Valid / Invalid------*/
-span#border-input.valid {
+span#category-border-input.valid {
     animation: fillValidBorder 0.5s cubic-bezier(0.2, 0, 0.03, 1);
     background: var(--valid-color) !important;
 }
-span#border-input.invalid {
+span#category-border-input.invalid {
     animation: fillErrorBorder 0.5s cubic-bezier(0.2, 0, 0.03, 1);
     background: linear-gradient(to right, var(--invalid-color), var(--error-color) 45%) !important;
 }
