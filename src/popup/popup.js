@@ -237,7 +237,7 @@ const initializeNotificationPermissions = () => {
     case "denied":
       updateNotifContainerVisibility(notifsContainer, true);
       updateNotificationStatus(false);
-      showAlert("denied_notifications", "🤬 WTF! Actives tes notifications! 🤬");
+      showAlert("denied_notifications", "🤬 Réactiver vos notifications! 🤬");
       break;
 
     // Afficher bouton si état "default" + alert
