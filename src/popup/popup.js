@@ -5,9 +5,9 @@ const isChromeExtension = () => {
   return typeof chrome !== 'undefined' && typeof chrome.tabs !== 'undefined';
 }
 
-// ###################################################################### //
-// ########## Utilitaires pour le local storage Sortify (JSON) ########## //
-// ###################################################################### //
+// ################################################################ //
+// ########## Getter/Setter local storage Sortify (JSON) ########## //
+// ################################################################ //
 // Setter
 const setLocalStorage = (key, value) => {
   // Validation
@@ -211,9 +211,9 @@ const updateNotifContainerVisibility = (element, shouldShow) => {
   element.style.display = shouldShow ? 'inline-block' : 'none';
 };
 
-// ########################################################################################## //
-// ########## Gérer état initial des permissions notifications et de son container ########## //
-// ########################################################################################## //
+// #################################################################################### //
+// ########## Etat initial des permissions notifications et de son container ########## //
+// #################################################################################### //
 const initializeNotificationPermissions = () => {
   const notifsContainer = document.querySelector('.notifs-border-container');
 
@@ -254,7 +254,7 @@ const initializeNotificationPermissions = () => {
         createNotification('error');
       }
       else {
-        showAlert("⚰️  Une erreur est survenue!");
+        showAlert("⚰️ Une erreur est survenue!");
       }
       break;
   }
@@ -307,9 +307,9 @@ const handleNotificationButtonClick = () => {
   });
 };
 
-// ####################################################################### //
-// ########## Ajouter animations sur bouton d'ajout des favoris ########## //
-// ####################################################################### //
+// ########################################################### //
+// ########## Animations bouton d'ajout des favoris ########## //
+// ########################################################### //
 const addBtnBookmarkAnimations = () => {
   const submitBookmarkButton = document.getElementById("add-bookmark-btn");
   const rotatingBorder = document.querySelector('.rotating-border-line');
