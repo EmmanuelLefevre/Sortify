@@ -294,10 +294,10 @@ const handleNotificationButtonClick = () => {
 
 // ########## Ajouter animations sur bouton d'ajout des favoris ########## //
 const addBtnBookmarkAnimations = () => {
-  const button = document.getElementById("add-bookmark-btn");
+  const bookmarkButton = document.getElementById("add-bookmark-btn");
   const rotatingBorder = document.querySelector('.rotating-border-line');
 
-  if (!button) {
+  if (!bookmarkButton) {
     console.warn("Button with ID 'add-bookmark-btn' was not found in the DOM.");
     return;
   }
@@ -307,12 +307,12 @@ const addBtnBookmarkAnimations = () => {
   }
 
   // Ajouter la classe d'animation
-  button.classList.add("lightSpeedInLeft");
+  bookmarkButton.classList.add("lightSpeedInLeft");
 
   // Ajouter l'animation au hover
   const toggleDisplay = (state) => rotatingBorder.style.display = state ? 'block' : 'none';
-  button.addEventListener('mouseenter', () => toggleDisplay(true));
-  button.addEventListener('mouseleave', () => toggleDisplay(false));
+  bookmarkButton.addEventListener('mouseenter', () => toggleDisplay(true));
+  bookmarkButton.addEventListener('mouseleave', () => toggleDisplay(false));
 };
 
 // ########## Formulaire ajout de favoris ########## //
@@ -384,7 +384,7 @@ const spanCategoryTooltip = document.querySelector('.category-tooltip');
 submitCategoryButton.disabled = true;
 
 // Vérifier si utilisateur a déjà saisi
-let hasTyped = false;
+let categoryHasTyped = false;
 
 // Injecter les contraintes de validation
 categoryInput.setAttribute('required', true);
@@ -458,30 +458,24 @@ const updateValidationState = () => {
 
 // Écouter événements changements d'état de l'input
 categoryInput.addEventListener('input', () => {
-  console.log(hasTyped);
-  // Utilisateur a saisi
+  console.log(categoryHasTyped);
+  // MAJ état de saisie
   const value = categoryInput.value.trim();
   if (value !== '') {
-    hasTyped = true;
-  }
-
-  // Vérifier si input vide après saisie
-  if (hasTyped && value === '') {
-    spanCategoryTooltip.textContent = 'Rejoues';
-  }
-  else if (value !== '') {
-    spanCategoryTooltip.textContent = 'Créer';
+    categoryHasTyped = true;
   }
 
   updateValidationState();
-  toggleSubmitButtonState();
-});
 
-// Input focus + vide + utilisateur a déjà saisi
-categoryInput.addEventListener('focus', () => {
-  if (hasTyped && categoryInput.value.trim() === '') {
+  // Focus + input vide + état saisie = true
+  if (categoryHasTyped && value === '' && document.activeElement === categoryInput) {
     spanCategoryTooltip.textContent = 'Rejoues';
   }
+  else if (value === '') {
+    spanCategoryTooltip.textContent = 'Saisir';
+  }
+
+  toggleSubmitButtonState();
 });
 
 // Input unfocus (masquer message d'erreur + retirer classe de validation si input vide)
@@ -493,6 +487,7 @@ categoryInput.addEventListener('blur', () => {
     categoryErrorMessage.textContent = '';
     categoryErrorMessage.classList.remove('show');
     spanCategoryTooltip.textContent = 'Saisir';
+    categoryHasTyped = false;
   }
 });
 
