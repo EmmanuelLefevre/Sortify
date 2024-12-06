@@ -1,9 +1,13 @@
+// ###################################### //
 // ########## Chrome extension ########## //
+// ###################################### //
 const isChromeExtension = () => {
   return typeof chrome !== 'undefined' && typeof chrome.tabs !== 'undefined';
 }
 
+// ###################################################################### //
 // ########## Utilitaires pour le local storage Sortify (JSON) ########## //
+// ###################################################################### //
 // Setter
 const setLocalStorage = (key, value) => {
   // Validation
@@ -52,7 +56,9 @@ const getLocalStorage = (key) => {
   }
 };
 
+// ####################################################### //
 // ########## Initialiser JSON du local storage ########## //
+// ####################################################### //
 // Initialiser données des notifications
 const initializeNotificationsStorage = () => {
   const defaultNotificationPermission = { notifications: false };
@@ -81,7 +87,9 @@ const initializeAlertStorage = () => {
   return alertData;
 };
 
+// ######################################### //
 // ########## Gestion des alertes ########## //
+// ######################################### //
 // Afficher une alerte personnalisée si elle n'a pas déjà été affichée
 const showAlert = (key, message, timeout = 2000) => {
   // Vérifier si key est passer en paramètre
@@ -108,7 +116,9 @@ const resetAlertStatus = (key) => {
   setLocalStorage("SortifyAlerts", alertStatus);
 };
 
+// ########################################################### //
 // ########## Gérer MAJ de l'état des notifications ########## //
+// ########################################################### //
 const updateNotificationStatus = (status) => {
   const notifData = getLocalStorage("SortifyNotifications");
 
@@ -130,8 +140,9 @@ const updateNotificationStatus = (status) => {
   }
 };
 
-
+// #################################################################################### //
 // ########## Créer notifications desktop personnalisées en fonction du type ########## //
+// #################################################################################### //
 const createNotification = (type) => {
   let message;
   let body;
@@ -193,14 +204,18 @@ const createNotification = (type) => {
   }
 };
 
+// ######################################################### //
 // ########## Afficher container de notifications ########## //
-const updateNotifContentVisibility = (element, shouldShow) => {
+// ######################################################### //
+const updateNotifContainerVisibility = (element, shouldShow) => {
   element.style.display = shouldShow ? 'inline-block' : 'none';
 };
 
+// ########################################################################################## //
 // ########## Gérer état initial des permissions notifications et de son container ########## //
+// ########################################################################################## //
 const initializeNotificationPermissions = () => {
-  const notifContent = document.querySelector('.notifs-border-content');
+  const notifsContainer = document.querySelector('.notifs-border-container');
 
   // Initialiser ou récupérer SortifyNotifications à partir du localStorage
   const notificationsLocalStorage = initializeNotificationsStorage();
@@ -214,27 +229,26 @@ const initializeNotificationPermissions = () => {
       if (!notificationsLocalStorage.notifications) {
         updateNotificationStatus(true);
       }
-      updateNotifContentVisibility(notifContent, false);
+      updateNotifContainerVisibility(notifsContainer, false);
       resetAlertStatus("default_notifications");
-      // setLocalStorage("SortifyAlerts", { ...getLocalStorage("SortifyAlerts"), default_notifications: true });
       break;
 
     // Afficher bouton si état "denied" + alert
     case "denied":
-      updateNotifContentVisibility(notifContent, true);
+      updateNotifContainerVisibility(notifsContainer, true);
       updateNotificationStatus(false);
-      showAlert("denied_notifications", "🤬🤬🤬 Notifications refusées! 🤬🤬🤬");
+      showAlert("denied_notifications", "🤬 WTF! Actives tes notifications! 🤬");
       break;
 
     // Afficher bouton si état "default" + alert
     case "default":
-      updateNotifContentVisibility(notifContent, true);
+      updateNotifContainerVisibility(notifsContainer, true);
       updateNotificationStatus(false);
-      showAlert("default_notifications", "Activer vos notifications svp 👉👉👉");
+      showAlert("default_notifications", "Activer vos notifications svp 👉");
       break;
 
     default:
-      updateNotifContentVisibility(notifContent, true);
+      updateNotifContainerVisibility(notifsContainer, true);
       updateNotificationStatus(false);
       if ("Notification" in window && Notification.permission === "granted") {
         createNotification('error');
@@ -246,17 +260,19 @@ const initializeNotificationPermissions = () => {
   }
 };
 
-// ########## Gérer les clics sur le bouton de notifications ########## //
+// ########################################################### //
+// ########## Gestion clics bouton de notifications ########## //
+// ########################################################### //
 const handleNotificationButtonClick = () => {
   const notifsButton = document.getElementById("enable-notifs");
-  const notifContent = document.querySelector('.notifs-border-content');
+  const notifsContainer = document.querySelector('.notifs-border-container');
 
   if (!notifsButton) {
     console.warn("Element with ID 'enable-notifs' was not found in the DOM.");
     return;
   }
-  if (!notifContent) {
-    console.warn("Element with class 'notifs-border-content' was not found in the DOM.");
+  if (!notifsContainer) {
+    console.warn("Element with class 'notifs-border-container' was not found in the DOM.");
     return;
   }
 
@@ -276,9 +292,8 @@ const handleNotificationButtonClick = () => {
         if (Notification.permission === 'granted') {
           clearInterval(checkPermission);
           updateNotificationStatus(true);
-          updateNotifContentVisibility(notifContent, false);
+          updateNotifContainerVisibility(notifsContainer, false);
           resetAlertStatus("default_notifications");
-          // setLocalStorage("SortifyAlerts", { ...getLocalStorage("SortifyAlerts"), default_notifications: true });
         }
       }, 1000);
 
@@ -292,12 +307,14 @@ const handleNotificationButtonClick = () => {
   });
 };
 
+// ####################################################################### //
 // ########## Ajouter animations sur bouton d'ajout des favoris ########## //
+// ####################################################################### //
 const addBtnBookmarkAnimations = () => {
-  const bookmarkButton = document.getElementById("add-bookmark-btn");
+  const submitBookmarkButton = document.getElementById("add-bookmark-btn");
   const rotatingBorder = document.querySelector('.rotating-border-line');
 
-  if (!bookmarkButton) {
+  if (!submitBookmarkButton) {
     console.warn("Button with ID 'add-bookmark-btn' was not found in the DOM.");
     return;
   }
@@ -307,15 +324,17 @@ const addBtnBookmarkAnimations = () => {
   }
 
   // Ajouter la classe d'animation
-  bookmarkButton.classList.add("lightSpeedInLeft");
+  submitBookmarkButton.classList.add("lightSpeedInLeft");
 
   // Ajouter l'animation au hover
   const toggleDisplay = (state) => rotatingBorder.style.display = state ? 'block' : 'none';
-  bookmarkButton.addEventListener('mouseenter', () => toggleDisplay(true));
-  bookmarkButton.addEventListener('mouseleave', () => toggleDisplay(false));
+  submitBookmarkButton.addEventListener('mouseenter', () => toggleDisplay(true));
+  submitBookmarkButton.addEventListener('mouseleave', () => toggleDisplay(false));
 };
 
+// ################################################# //
 // ########## Formulaire ajout de favoris ########## //
+// ################################################# //
 document.getElementById('bookmark-form').addEventListener('submit', function (event) {
   // Empêcher le rechargement de la page
   event.preventDefault();
@@ -370,8 +389,9 @@ document.getElementById('bookmark-form').addEventListener('submit', function (ev
   }
 });
 
-
+// ################################################################## //
 // ########## Validation formulaire création de catégories ########## //
+// ################################################################## //
 const categoryForm = document.getElementById('category-form');
 const categoryInput = document.getElementById('category-input');
 const spanCategoryBorder = document.getElementById('category-border-input');
@@ -437,7 +457,7 @@ const updateValidationState = () => {
     categoryErrorMessage.textContent = error;
     categoryErrorMessage.classList.add('show');
 
-    // Modifier texte du tooltip
+    // Modifier texte tooltip
     spanCategoryTooltip.textContent = 'Saisie invalide';
   }
   else {
@@ -451,14 +471,13 @@ const updateValidationState = () => {
     categoryErrorMessage.textContent = '';
     categoryErrorMessage.classList.remove('show');
 
-    // Modifier texte du tooltip
+    // Modifier texte tooltip
     spanCategoryTooltip.textContent = 'Créer';
   }
 };
 
 // Écouter événements changements d'état de l'input
 categoryInput.addEventListener('input', () => {
-  console.log(categoryHasTyped);
   // MAJ état de saisie
   const value = categoryInput.value.trim();
   if (value !== '') {
@@ -491,7 +510,7 @@ categoryInput.addEventListener('blur', () => {
   }
 });
 
-// Gérer soumission formulaire
+// Soumission formulaire
 categoryForm.addEventListener('submit', (event) => {
   // Empêcher soumission formulaire si input invalide
   event.preventDefault();
@@ -502,9 +521,9 @@ categoryForm.addEventListener('submit', (event) => {
   }
 });
 
-
-
+// ####################################### //
 // ########## Chargement du DOM ########## //
+// ####################################### //
 document.addEventListener('DOMContentLoaded', () => {
   addBtnBookmarkAnimations();
   initializeNotificationPermissions();
