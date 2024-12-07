@@ -381,6 +381,66 @@ async function sendMessageAsync(requestData) {
     });
   });
 }
+// Gérer erreurs provenant de api.js
+function handleServiceWorkerError(error) {
+  switch (error.error) {
+    case 'offline':
+      handleError('offline-server', "🗄️ Le serveur semble hors-ligne!");
+      break;
+
+    case 'server-error':
+      handleError('server-error', "💣 Une erreur serveur est survenue!");
+      break;
+
+    case 'not-found':
+      handleError('not-found', "👀 404 not found!");
+      break;
+
+    case 'client-error':
+      handleError('client-error', "🖥️ Une erreur client est survenue!");
+      break;
+
+    default:
+      handleError('error', "⚰️ Une erreur est survenue!");
+      break;
+  }
+}
+// Afficher notifications / alertes en fonction de la permission
+function handleError(notificationType, alertMessage) {
+  if (Notification.permission === 'granted') {
+    createNotification(notificationType);
+  }
+  else {
+    showAlert(alertMessage);
+  }
+}
+
+// ########################################################### //
+// ########## Charger les catégories dans le select ########## //
+// ########################################################### //
+const updateCategoryForm = document.getElementById('update-category-form');
+const updateCategoryInput = document.getElementById('update-category-input');
+const updateCategoriesSelect = document.getElementById('update-categories-select');
+
+async function updateCategoriesSelectList() {
+  if(isChromeExtension()) {
+    try {
+      const response = await sendMessageAsync({ action: 'loadCategories' });
+
+      // Vider et remplir le select
+      updateCategoriesSelect.innerHTML = '';
+      response.data.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item.id;
+        option.textContent = item.name;
+        updateCategoriesSelect.appendChild(option);
+      });
+    }
+    catch (error) {
+      handleServiceWorkerError(error);
+    }
+  }
+}
 
 // ################################################# //
 // ########## Formulaire ajout de favoris ########## //
@@ -388,7 +448,7 @@ async function sendMessageAsync(requestData) {
 const bookmarkForm = document.getElementById('bookmark-form');
 
 bookmarkForm.addEventListener('submit', async function (event) {
-  // Empêcher le rechargement de la page
+  // Empêcher soumission classique du formulaire
   event.preventDefault();
 
   if(isChromeExtension()) {
@@ -407,52 +467,7 @@ bookmarkForm.addEventListener('submit', async function (event) {
       console.log('Bookmark added:', response.data);
     }
     catch (error) {
-      switch (error.error) {
-        case 'offline':
-          if (Notification.permission === 'granted') {
-            createNotification('offline-server');
-          }
-          else {
-            showAlert("🗄️ Le serveur semble hors-ligne!");
-          }
-          break;
-
-        case 'server-error':
-          if (Notification.permission === 'granted') {
-            createNotification('server-error');
-          }
-          else {
-            showAlert("💣 Une erreur serveur est survenue!");
-          }
-          break;
-
-        case 'not-found':
-          if (Notification.permission === 'granted') {
-            createNotification('not-found');
-          }
-          else {
-            showAlert("👀 404 not found!");
-          }
-          break;
-
-        case 'client-error':
-          if (Notification.permission === 'granted') {
-            createNotification('client-error');
-          }
-          else {
-            showAlert("🖥️ Une erreur client est survenue!");
-          }
-          break;
-
-        default:
-          if (Notification.permission === 'granted') {
-            createNotification('error');
-          }
-          else {
-            showAlert("⚰️ Une erreur est survenue!");
-          }
-          break;
-      }
+      handleServiceWorkerError(error);
     }
   }
   else {
@@ -588,33 +603,37 @@ categoryForm.addEventListener('submit', async (event) => {
   // Vérifier validité de l'input
   updateValidationState();
 
-  // Si formulaire valide
-  if (categoryInput.validity.valid) {
-    const categoryName = categoryInput.value.trim();
+  if(isChromeExtension()) {
+    // Si formulaire valide
+    if (categoryInput.validity.valid) {
 
-    try {
-      const newCategory = await addCategory(categoryName);
+      // Valeur actuelle sélectionnée
+      const categoryName = categoryInput.value.trim();
 
-      // Traiter la réponse de l'API (notif / alert / success message )
-      if (Notification.permission === 'granted') {
-        createNotification('category');
-      }
-      else {
-        showAlert("✔️ La catégorie a été ajoutée!");
-      }
-      console.log('Nouvelle catégorie créée:', newCategory);
+      if (categoryName) {
+        try {
+          const response = await sendMessageAsync({
+            action: 'addCategory',
+            categoryName: categoryName
+          });
 
-      // Reset formulaire + input
-      categoryForm.reset();
-    }
-    catch (error) {
-      if (Notification.permission === 'granted') {
-        createNotification('error');
+          // Traiter la réponse de l'API (notif / alert / success message )
+          if (Notification.permission === 'granted') {
+            createNotification('category');
+          }
+          else {
+            showAlert("✔️ La catégorie a été ajoutée!");
+          }
+
+          // Reset formulaire
+          categoryForm.reset();
+          // Reset input (par sécurité car déjà effectué par le reset formulaire)
+          updateCategoryInput.value = '';
+        }
+        catch (error) {
+          handleServiceWorkerError(error);
+        }
       }
-      else {
-        showAlert("⚰️ Une erreur est survenue!");
-      }
-      console.warn('Erreur lors de la mise à jour de la catégorie :', error);
     }
   }
 });
@@ -622,29 +641,6 @@ categoryForm.addEventListener('submit', async (event) => {
 // ########################################################### //
 // ########## Formulaire modification de catégories ########## //
 // ########################################################### //
-const updateCategoryForm = document.getElementById('update-category-form');
-const updateCategoryInput = document.getElementById('update-category-input');
-const updateCategoriesSelect = document.getElementById('update-categories-select');
-
-// Récupérer catégories pour hydrater le select
-document.addEventListener('DOMContentLoaded', async () => {
-  try {
-    const categories = await loadCategories();
-
-    // Initialiser contenu du select
-    updateCategoriesSelect.innerHTML = '';
-    categories.forEach(item => {
-      const option = document.createElement('option');
-      option.value = item.id;
-      option.textContent = item.name;
-      updateCategoriesSelect.appendChild(option);
-    });
-  }
-  catch (error) {
-    console.error('Erreur de chargement des catégories: ', error);
-  }
-});
-
 // Désactiver submit bouton
 // Vérifier si utilisateur a déjà saisi
 let categoriesHasTyped = false;
@@ -655,44 +651,49 @@ let categoriesHasTyped = false;
 
 // Soumission formulaire
 updateCategoryForm.addEventListener('submit', async (event) => {
-    // Empêcher soumission classique du formulaire
+  // Empêcher soumission classique du formulaire
   event.preventDefault();
 
-  // Si formulaire valide
-  if (updateCategoryInput.validity.valid) {
-    // Valeur actuelle sélectionnée (ID)
-    const oldCategoryId = updateCategoriesSelect.value;
-    // Nouvelle valeur saisie
-    const newCategoryName = updateCategoryInput.value.trim();
+  // Vérifier validité de l'input
+  // updateValidationState();
 
-    try {
-      const updatedCategory = await updateCategory(oldCategoryId, newCategoryName);
+  if(isChromeExtension()) {
+    // Si formulaire valide
+    if (updateCategoryInput.validity.valid) {
 
-      // Traiter la réponse de l'API (notif / alert / success message )
-      if (Notification.permission === 'granted') {
-        createNotification('add-category');
+      // Valeur actuelle sélectionnée (ID)
+      const oldCategoryId = updateCategoriesSelect.value;
+      // Nouvelle valeur saisie
+      const newCategoryName = updateCategoryInput.value.trim();
+
+      if (oldCategoryId && newCategoryName) {
+        try {
+          const response = await sendMessageAsync({
+            action: 'updateCategory',
+            oldCategoryId: oldCategoryId,
+            newCategoryName: newCategoryName
+          });
+
+          // MAJ select catégories
+          updateCategoriesSelectList();
+
+          if (Notification.permission === 'granted') {
+            createNotification('update-category');
+          }
+          else {
+            showAlert("✔️ La catégorie a été modifiée!");
+          }
+
+          // Reset formulaire
+          updateCategoryForm.reset();
+          // Reset input (par sécurité car déjà effectué par le reset formulaire)
+          updateCategoryInput.value = '';
+        }
+        catch (error) {
+          handleServiceWorkerError(error);
+        }
       }
-      else {
-        showAlert("✔️ La catégorie a été modifiée!");
-      }
-      // MAJ select catégories
-      loadCategories();
-
-      console.log('Nouvelle catégorie modifiée:', updatedCategory);
-
-      // Reset formulaire + input
-      updateCategoryForm.reset();
     }
-    catch (error) {
-      if (Notification.permission === 'granted') {
-        createNotification('error');
-      }
-      else {
-        showAlert("⚰️ Une erreur est survenue!");
-      }
-      console.warn('Erreur lors de la mise à jour de la catégorie :', error);
-    }
-
   }
 });
 
@@ -701,6 +702,7 @@ updateCategoryForm.addEventListener('submit', async (event) => {
 // ########## Chargement du DOM ########## //
 // ####################################### //
 document.addEventListener('DOMContentLoaded', () => {
+  updateCategoriesSelectList();
   addBtnBookmarkAnimations();
   initializeNotificationPermissions();
   handleNotificationButtonClick();
