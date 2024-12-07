@@ -169,6 +169,11 @@ function handleApiError(error, sendResponse) {
   if (error.message.includes('NetworkError')) {
     sendResponse({ success: false, error: 'offline' });
   }
+  // Gérer erreur HTTP spécifique
+  else if (error.message.includes('Erreur HTTP')) {
+    sendResponse({ success: false, error: 'server-error' });
+  }
+  // Gérer autres erreurs
   else {
     sendResponse({ success: false, error: error.message });
   }
