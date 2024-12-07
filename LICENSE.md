@@ -1,6 +1,7 @@
 # LICENCE PROPRIETAIRE POUR LE LOGICIEL SORTIFY
 
-## Copyright (c) Novembre 2024 LEFEVRE Emmanuel (Cod!ngT3kSolutions, SIRET: 50863331000026).
+## Copyright (c) Novembre 2024
+## LEFEVRE Emmanuel (Cod!ngT3kSolutions, SIRET: 50863331000026).
 ## Tous droits réservés.
 
 1. **Droits de l'auteur**  
@@ -11,6 +12,7 @@
 
 3. **Conditions d'utilisation**  
   a. L'utilisation, la modification, la redistribution, ou l'exploitation commerciale du logiciel sont strictement interdites sans l'autorisation écrite préalable de LEFEVRE Emmanuel (Cod!ngT3kSolutions SIRET 50863331000026).  
+
   b. L'utilisateur n'est pas autorisé à revendre, distribuer ou prêter le logiciel à des fins commerciales, ni à l'intégrer dans un produit commercial sans consentement explicite. Une licence commerciale distincte peut être accordée sur demande écrite à l'auteur pour des cas d'utilisation spécifiques, sous réserve d'accord.  
 
 4. **Interdictions**  
