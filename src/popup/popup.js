@@ -1,3 +1,16 @@
+/*
+ * Copyright (c) Novembre 2024 LEFEVRE Emmanuel (Cod!ngT3kSolutions, SIRET: 50863331000026)
+ * Tous droits réservés.
+ *
+ * Licence propriétaire pour le logiciel Sortify. Aucun droit n'est accordé en dehors des conditions spécifiées dans la présente licence.
+ * Pour plus de détails, consultez le fichier LICENSE.
+*/
+
+// ############################# //
+// ########## Imports ########## //
+// ############################# //
+import { addCategory, loadCategories, updateCategory } from '../api/api.js';
+
 // ###################################### //
 // ########## Chrome extension ########## //
 // ###################################### //
@@ -158,6 +171,16 @@ const createNotification = (type) => {
     case 'bookmark':
       message = 'Sortify';
       body = '✔️ Le favori a été ajouté!';
+      icon = '../assets/logo/logo.png';
+      break;
+    case 'category':
+      message = 'Sortify';
+      body = '✔️ La catégorie a été ajoutée!';
+      icon = '../assets/logo/logo.png';
+      break;
+    case 'update-category':
+      message = 'Sortify';
+      body = '✔️ La catégorie a été modifiée!';
       icon = '../assets/logo/logo.png';
       break;
     case 'error':
@@ -389,15 +412,14 @@ document.getElementById('bookmark-form').addEventListener('submit', function (ev
   }
 });
 
-// ################################################################## //
-// ########## Validation formulaire création de catégories ########## //
-// ################################################################## //
+// ####################################################### //
+// ########## Formulaire création de catégories ########## //
+// ####################################################### //
 const categoryForm = document.getElementById('category-form');
 const categoryInput = document.getElementById('category-input');
 const spanCategoryBorder = document.getElementById('category-border-input');
 const submitCategoryButton = document.getElementById('add-category-btn');
 const categoryInputContainer = document.querySelector('.category-input-container');
-const categoryIcon = document.querySelector('.category-icon');
 const spanCategoryTooltip = document.querySelector('.category-tooltip');
 
 // Désactiver submit bouton
@@ -511,15 +533,125 @@ categoryInput.addEventListener('blur', () => {
 });
 
 // Soumission formulaire
-categoryForm.addEventListener('submit', (event) => {
-  // Empêcher soumission formulaire si input invalide
+categoryForm.addEventListener('submit', async (event) => {
+  // Empêcher soumission classique du formulaire
   event.preventDefault();
 
+  // Vérifier validité de l'input
   updateValidationState();
+
+  // Si formulaire valide
   if (categoryInput.validity.valid) {
-    categoryForm.submit();
+    const categoryName = categoryInput.value.trim();
+
+    try {
+      const newCategory = await createCategory(categoryName);
+
+      // Traiter la réponse de l'API (notif / alert / success message )
+      if (Notification.permission === 'granted') {
+        createNotification('category');
+      }
+      else {
+        showAlert("✔️ La catégorie a été ajoutée!");
+      }
+      console.log('Nouvelle catégorie créée:', newCategory);
+
+      // Reset formulaire + input
+      categoryForm.reset();
+      categoryInput.reset();
+    }
+    catch (error) {
+      // Notifs ou alert + console.warn
+      if (Notification.permission === 'granted') {
+        createNotification('error');
+      }
+      else {
+        showAlert("⚰️ Une erreur est survenue!");
+      }
+      console.warn('Erreur lors de la mise à jour de la catégorie :', error);
+    }
   }
 });
+
+// ########################################################### //
+// ########## Formulaire modification de catégories ########## //
+// ########################################################### //
+const updateCategoryForm = document.getElementById('update-category-form');
+const updateCategoryInput = document.getElementById('update-category-input');
+const updateCategoriesSelect = document.getElementById('update-categories-select');
+
+// Récupérer catégories pour hydrater le select
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const categories = await loadCategories();
+
+    // Initialiser contenu du select
+    updateCategoriesSelect.innerHTML = '';
+    categories.forEach(item => {
+      const option = document.createElement('option');
+      option.value = item.id;
+      option.textContent = item.name;
+      updateCategoriesSelect.appendChild(option);
+    });
+  }
+  catch (error) {
+    console.error('Erreur de chargement des catégories: ', error);
+  }
+});
+
+// Désactiver submit bouton
+// Vérifier si utilisateur a déjà saisi
+let categoriesHasTyped = false;
+// Injecter les contraintes de validation
+// Message d'erreur
+// Activer / désactiver bouton soumission
+// Comportement de validation
+
+// Soumission formulaire
+updateCategoryForm.addEventListener('submit', async (event) => {
+    // Empêcher soumission classique du formulaire
+  event.preventDefault();
+
+  // Si formulaire valide
+  if (updateCategoryInput.validity.valid) {
+    // Valeur actuelle sélectionnée (ID)
+    const oldCategoryId = updateCategoriesSelect.value;
+    // Nouvelle valeur saisie
+    const newCategoryName = updateCategoryInput.value.trim();
+
+    try {
+      const updatedCategory = await updateCategory(oldCategoryId, newCategoryName);
+
+      // Traiter la réponse de l'API (notif / alert / success message )
+      if (Notification.permission === 'granted') {
+        createNotification('add-category');
+      }
+      else {
+        showAlert("✔️ La catégorie a été modifiée!");
+      }
+      // MAJ select catégories
+      loadCategories();
+
+      console.log('Nouvelle catégorie modifiée:', updatedCategory);
+
+      // Reset formulaire + input
+      updateCategoryForm.reset();
+      updateCategoryInput.reset();
+    }
+    catch (error) {
+      // Notifs ou alert + console.warn
+      if (Notification.permission === 'granted') {
+        createNotification('error');
+      }
+      else {
+        showAlert("⚰️ Une erreur est survenue!");
+      }
+      console.warn('Erreur lors de la mise à jour de la catégorie :', error);
+    }
+
+  }
+});
+
 
 // ####################################### //
 // ########## Chargement du DOM ########## //
