@@ -17,6 +17,7 @@
 
 4. **Interdictions**  
   a. Il est interdit d'utiliser le logiciel pour créer un projet propriétaire similaire ou dérivé à des fins commerciales.  
+ 
   b. Toute tentative de modification du code source ou de décompilation sans autorisation est strictement interdite.  
 
 5. **Aucune garantie**  
