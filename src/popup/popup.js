@@ -29,7 +29,7 @@ const setLocalStorage = (key, value) => {
     localStorage.setItem(key, JSON.stringify(value));
   }
   catch (error) {
-    console.warn("Local storage not found!");
+    console.error("Local storage not found!");
   }
 };
 
@@ -216,7 +216,7 @@ const createNotification = (type) => {
       icon = '../assets/logo/logo.png';
       break;
     default:
-      console.warn(`Unknown notification type: "${type}".`);
+      console.error(`Unknown notification type: "${type}".`);
       // Quitter si type invalide
       return;
   }
@@ -298,11 +298,11 @@ const handleNotificationButtonClick = () => {
   const notifsContainer = document.querySelector('.notifs-border-container');
 
   if (!notifsButton) {
-    console.warn("Element with ID 'enable-notifs' was not found in the DOM.");
+    console.error("Element with ID 'enable-notifs' was not found in the DOM.");
     return;
   }
   if (!notifsContainer) {
-    console.warn("Element with class 'notifs-border-container' was not found in the DOM.");
+    console.error("Element with class 'notifs-border-container' was not found in the DOM.");
     return;
   }
 
@@ -313,7 +313,7 @@ const handleNotificationButtonClick = () => {
         chrome.tabs.create({url:'chrome://settings/content/notifications'});
       }
       else {
-        console.warn("API Chrome not supported!");
+        console.error("API Chrome not supported!");
         return;
       }
 
@@ -345,11 +345,11 @@ const addBtnBookmarkAnimations = () => {
   const rotatingBorder = document.querySelector('.rotating-border-line');
 
   if (!submitBookmarkButton) {
-    console.warn("Button with ID 'add-bookmark-btn' was not found in the DOM.");
+    console.error("Button with ID 'add-bookmark-btn' was not found in the DOM.");
     return;
   }
   if (!rotatingBorder) {
-    console.warn("Element with class 'rotating-border-line' was not found in the DOM.");
+    console.error("Element with class 'rotating-border-line' was not found in the DOM.");
     return;
   }
 
@@ -471,7 +471,7 @@ bookmarkForm.addEventListener('submit', async function (event) {
     }
   }
   else {
-    console.warn("You should execute this extension in a Chrome environment!");
+    console.error("You should execute this extension in a Chrome environment!");
   }
 });
 
