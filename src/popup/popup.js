@@ -606,7 +606,6 @@ categoryForm.addEventListener('submit', async (event) => {
 
       // Reset formulaire + input
       categoryForm.reset();
-      categoryInput.reset();
     }
     catch (error) {
       if (Notification.permission === 'granted') {
@@ -683,7 +682,6 @@ updateCategoryForm.addEventListener('submit', async (event) => {
 
       // Reset formulaire + input
       updateCategoryForm.reset();
-      updateCategoryInput.reset();
     }
     catch (error) {
       if (Notification.permission === 'granted') {
