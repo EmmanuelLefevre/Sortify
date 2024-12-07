@@ -33,7 +33,7 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
 
           console.log('URL of active tab:', activeTab.url);
 
-          // Envoyer l'URL au back-end avec async/await
+          // Requête pour ajouter le favori
           const response = await fetch(`${apiBaseUrl}bookmark`, {
             method: 'POST',
             headers: {
@@ -42,21 +42,15 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
             body: JSON.stringify({ url: activeTab.url }),
           });
 
-          const data = await response.json();
+          const result = await response.json();
+          console.log('Bookmark added:', result);
 
-          console.log('Back-end success response:', data);
-          sendResponse({ success: true, data });
+          // Retourner les données au popup.js
+          sendResponse({ success: true, data: result });
         });
       }
       catch (error) {
-        console.error('Error occurred:', error);
-
-        if (error.message.includes('NetworkError')) {
-          sendResponse({ success: false, error: 'offline' });
-        }
-        else {
-          sendResponse({ success: false, error: error.message });
-        }
+        handleApiError(error, sendResponse);
       }
     // L'API Chrome, comme chrome.windows.getCurrent ne retourne pas de promesses. Par conséquent, on ne peut pas directement utiliser await sur ces fonctions. Il convient donc d'auto-invoquer cette fonction pour l'exécuter immédiatement.
     })();
@@ -66,96 +60,119 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
   }
 });
 
-
-// ################################## //
+// #################################### //
 // ########## Get categories ########## //
-// ################################## //
-export async function loadCategories() {
-  try {
-    const response = await fetch(`${apiBaseUrl}categories`);
+// #################################### //
+chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
+  if (request.action === 'loadCategories') {
+    (async () => {
+      try {
+        const response = await fetch(`${apiBaseUrl}categories`);
 
-    if (!response.ok) {
-      throw new Error(`Erreur HTTP : ${response.status}`);
-    }
+        if (!response.ok) {
+          throw new Error(`Erreur HTTP : ${response.status}`);
+        }
 
-    const result = await response.json();
-    return result;
+        const result = await response.json();
+        console.log('Categories loaded:', result);
+
+        sendResponse({ success: true, data: result });
+      }
+      catch (error) {
+        handleApiError(error, sendResponse);
+      }
+    })();
+
+    return true;
   }
-  catch (error) {
-    console.error("Erreur dans loadCategories :", error);
-    // Transmettre erreur à popup.js
-    throw error;
-  }
-}
+});
 
 // ################################## //
 // ########## Add category ########## //
 // ################################## //
-export async function createCategory(categoryName) {
-  const payload = { name: categoryName };
+chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
+  if (request.action === 'addCategory') {
+    (async () => {
+      const { categoryName } = request;
+      const payload = { name: categoryName };
 
-  try {
-    const response = await fetch(`${apiBaseUrl}category`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    });
+      try {
+        const response = await fetch(`${apiBaseUrl}category`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        });
 
-    if (!response.ok) {
-      throw new Error(`Erreur HTTP : ${response.status}`);
-    }
+        if (!response.ok) {
+          throw new Error(`Erreur HTTP : ${response.status}`);
+        }
 
-    const result = await response.json();
-    return result;
+        const result = await response.json();
+        console.log('Category added:', result);
+
+        sendResponse({ success: true, data: result });
+      }
+      catch (error) {
+        handleApiError(error, sendResponse);
+      }
+    })();
+
+    return true;
   }
-  catch (error) {
-    console.error("Erreur dans addCategory :", error);
-    // Transmettre erreur à popup.js
-    throw error;
+});
+
+// ##################################### //
+// ########## Update category ########## //
+// ##################################### //
+chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
+  if (request.action === 'updateCategory') {
+    (async () => {
+      const { oldCategoryId, newCategoryName } = request;
+      const payload = { oldCategoryId, newCategoryName };
+
+      try {
+        const response = await fetch(`${apiBaseUrl}category/${oldCategoryId}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Erreur HTTP : ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log('Category updated:', result);
+
+        sendResponse({ success: true, data: result });
+      }
+      catch (error) {
+        handleApiError(error, sendResponse);
+      }
+    })();
+
+    return true;
   }
-};
+});
 
-// ########################################## //
-// ########## PATCH / PUT category ########## //
-// ########################################## //
-export async function updateCategory(oldCategoryId, newCategoryName) {
-  const payload = { oldCategoryId, newCategoryName };
+// ######################################### //
+// ########## Fonction utilitaire ########## //
+// ######################################### //
+function handleApiError(error, sendResponse) {
+  console.error('Error occurred:', error);
 
-  try {
-    const response = await fetch(`${apiBaseUrl}category/${oldCategoryId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload),
-    });
-
-    if (!response.ok) {
-      throw new Error(`Erreur HTTP : ${response.status}`);
-    }
-
-    const result = await response.json();
-    return result;
+  // Gérer erreur en fonction du type
+  if (error.message.includes('NetworkError')) {
+    sendResponse({ success: false, error: 'offline' });
   }
-  catch (error) {
-    console.error("Erreur dans updateCategory :", error);
-    // Transmettre erreur à popup.js
-    throw error;
+  else {
+    sendResponse({ success: false, error: error.message });
   }
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -207,3 +224,82 @@ export async function updateCategory(oldCategoryId, newCategoryName) {
 //     return true;
 //   }
 // });
+
+// #################################### //
+// ########## Get categories ########## //
+// #################################### //
+// export async function loadCategories() {
+//   try {
+//     const response = await fetch(`${apiBaseUrl}categories`);
+
+//     if (!response.ok) {
+//       throw new Error(`Erreur HTTP : ${response.status}`);
+//     }
+
+//     const result = await response.json();
+//     return result;
+//   }
+//   catch (error) {
+//     console.error("Erreur dans loadCategories :", error);
+//     // Transmettre erreur à popup.js
+//     throw error;
+//   }
+// }
+
+// ################################## //
+// ########## Add category ########## //
+// ################################## //
+// export async function addCategory(categoryName) {
+//   const payload = { name: categoryName };
+
+//   try {
+//     const response = await fetch(`${apiBaseUrl}category`, {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify(payload),
+//     });
+
+//     if (!response.ok) {
+//       throw new Error(`Erreur HTTP : ${response.status}`);
+//     }
+
+//     const result = await response.json();
+//     return result;
+//   }
+//   catch (error) {
+//     console.error("Erreur dans addCategory :", error);
+//     // Transmettre erreur à popup.js
+//     throw error;
+//   }
+// };
+
+// ##################################### //
+// ########## Update category ########## //
+// ########################################## //
+// export async function updateCategory(oldCategoryId, newCategoryName) {
+//   const payload = { oldCategoryId, newCategoryName };
+
+//   try {
+//     const response = await fetch(`${apiBaseUrl}category/${oldCategoryId}`, {
+//       method: 'PATCH',
+//       headers: {
+//         'Content-Type': 'application/json'
+//       },
+//       body: JSON.stringify(payload),
+//     });
+
+//     if (!response.ok) {
+//       throw new Error(`Erreur HTTP : ${response.status}`);
+//     }
+
+//     const result = await response.json();
+//     return result;
+//   }
+//   catch (error) {
+//     console.error("Erreur dans updateCategory :", error);
+//     // Transmettre erreur à popup.js
+//     throw error;
+//   }
+// }
