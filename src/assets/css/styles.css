@@ -1,4 +1,27 @@
-/*======RESET======*/
+/*
+====================================
+------------------------------------
+    1. Reset
+    2. Variables
+    3. App
+    4. H1
+    5. Logo
+    6. Form
+        - Add bookmark
+        - Add category
+        - Get category
+        - Update category
+    7. Error Message
+        - Add category
+    8. Notifications
+    9. Request result
+-------------------------------------
+=====================================
+*/
+
+
+
+/*===============RESET===============*/
 *,
 *::before,
 *::after {
@@ -7,7 +30,7 @@
     box-sizing: border-box;
 }
 
-/*======VARIABLES======*/
+/*===============VARIABLES===============*/
 :root {
     /*------Colors------*/
     --white: white;
@@ -78,8 +101,7 @@
 }
 
 
-/*======APPLY======*/
-/*------App------*/
+/*===============APP===============*/
 div.sortify-app {
     font-family: var(--font-size-body) var(--text-serif);
     font-size: var(--font-size-body);
@@ -90,7 +112,6 @@ div.sortify-app-content {
     width: 320px;
     height: fit-content;
 }
-/*------Content / Container------*/
 div.sortify-content {
     display: flex;
     justify-content: center;
@@ -98,62 +119,12 @@ div.sortify-content {
     flex-direction: column;
     width: 100%;
 }
+
+/*===============H1===============*/
 .h1-container {
     position: relative;
     display: inline-block;
 }
-.notifs-border-container {
-    display: inline-block;
-    background: linear-gradient(var(--gradient-angle1), var(--primary-color), var(--fourth-color));
-    width: 170px;
-    margin: 10px 0 30px 0;
-    padding: 2px;
-    border-radius: 5px;
-    box-shadow: var(--box-shadow);
-}
-#notifs-container {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    background: var(--background-color);
-    padding: 13px 3px 11px 3px;
-    border-radius: 3px;
-    z-index: 1;
-}
-.notifs-icon-container {
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--background-color);
-    width: 36px;
-    height: 36px;
-    top: -18px;
-    border: var(--border-width2) var(--border-solid) var(--primary-color);
-    border-radius: 50%;
-    z-index: 2;
-}
-#category-error-message {
-    display: block;
-    visibility: hidden;
-    font-size: var(--font-size-error);
-    color: var(--error-color);
-    height: 10px;
-    margin-top: 10px;
-}
-#category-error-message.show {
-    visibility: visible;
-}
-/*------Form------*/
-#bookmark-form {
-    margin: 5px 0 25px 0;
-}
-#category-form {
-    margin-bottom: 25px;
-}
-/*------Title------*/
 h1.sortify-title {
     position: relative;
     font-size: var(--font-size-h1);
@@ -176,7 +147,21 @@ h1.sortify-title.border-layer {
     text-shadow: var(--h1-shadow);
     z-index: 0;
 }
-/*------Button------*/
+
+/*===============LOGO===============*/
+img.sortify-logo {
+    width: 135px;
+    height: auto;
+    margin-bottom: 25px;
+}
+
+/*===============FORM===============*/
+/*------Add Bookmark------*/
+/* Form */
+#bookmark-form {
+    margin: 5px 0 25px 0;
+}
+/* Container */
 .bookmark-btn-container {
     display: flex;
     align-items: center;
@@ -187,15 +172,7 @@ h1.sortify-title.border-layer {
     border-radius: 5px;
     overflow: hidden;
 }
-.rotating-border-line {
-    display: none;
-    width: 106px;
-    height: 23px;
-    background: linear-gradient(90deg, var(--fourth-color), var(--fourth-color));
-    rotate: -30deg;
-    animation: spinningBorderPoint 2s linear infinite;
-    animation-play-state: paused;
-}
+/* Button */
 button#add-bookmark-btn {
     position: absolute;
     cursor: pointer;
@@ -210,45 +187,34 @@ button#add-bookmark-btn {
     outline: var(--border-width2) var(--border-solid) rgba(0, 0, 0, 0);
     transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
 }
-button#add-category-btn {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    background: none;
-    border: none;
-    padding: 5px;
-    top: -5px;
-    transition: transform 0.3s ease;
+/* Border */
+.rotating-border-line {
+    display: none;
+    width: 106px;
+    height: 23px;
+    background: linear-gradient(90deg, var(--fourth-color), var(--fourth-color));
+    rotate: -30deg;
+    animation: spinningBorderPoint 2s linear infinite;
+    animation-play-state: paused;
 }
-button#enable-notifs {
-    cursor: pointer;
-    font-size: var(--font-size-p);
+/* Hover */
+button#add-bookmark-btn:hover {
     color: var(--primary-color);
-    background-color: transparent;
-    padding-top: 10px;
-    border: none;
-    text-shadow: var(--text-shadow);
+    background-image: none;
+    background-color: var(--white);
+    outline-color: var(--hover-border-color);
+    box-shadow: none;
 }
-/*------Img / Icon------*/
-img.sortify-logo {
-    width: 135px;
-    height: auto;
+.bookmark-btn-container:hover .rotating-border-line {
+    animation-play-state: running;
+}
+
+/*------Add Category------*/
+/* Form */
+#category-form {
     margin-bottom: 25px;
 }
-.notifs-icon img {
-    display: none;
-}
-.notifs-icon {
-    position: relative;
-    background: linear-gradient(var(--gradient-angle1), var(--gradient1), var(--gradient2));
-    width: 16px;
-    height: 16px;
-    mask: url('/src/assets/icons/bell_16.png') no-repeat center;
-    mask-size: contain;
-}
-/*------Input------*/
+/* Input */
 div.category-input-container{
 	position: relative;
     width: 200px;
@@ -287,7 +253,20 @@ div.category-input-container label {
     transition: top 0.5s, font-size 0.5s, color 0.5s;
     opacity: 1;
 }
-/*------Tooltip------*/
+/* Button */
+button#add-category-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 5px;
+    top: -5px;
+    transition: transform 0.3s ease;
+}
+/* Tooltip */
 .category-tooltip {
     position: absolute;
     visibility: hidden;
@@ -305,26 +284,7 @@ div.category-input-container label {
     opacity: 0;
     z-index: 1;
 }
-/*------Result------*/
-div.request-result {
-    display: none;
-    font-size: var(--font-size-result);
-    color: var(--text-result-color);
-    margin-top: 20px;
-}
-
-/*------Hover------*/
-/*Button*/
-.bookmark-btn-container:hover .rotating-border-line {
-    animation-play-state: running;
-}
-button#add-bookmark-btn:hover {
-    color: var(--primary-color);
-    background-image: none;
-    background-color: var(--white);
-    outline-color: var(--hover-border-color);
-    box-shadow: none;
-}
+/* Hover */
 button#add-category-btn:hover img.category-icon {
     transform: scale(1.4);
     transform-origin: center;
@@ -332,14 +292,9 @@ button#add-category-btn:hover img.category-icon {
     transition: opacity 0.3s ease, transform 0.3s ease-in, drop-shadow 0.3s ease-out;
     opacity: 1;
 }
-button#enable-notifs:hover {
-    text-decoration: underline;
-}
-/*Label*/
 div.category-input-container input:hover ~ label {
     animation: bounce 1.2s ease-in-out infinite;
 }
-/*Span*/
 div.category-input-container input:hover ~ span#category-border-input {
     display: block;
     position: absolute;
@@ -351,13 +306,11 @@ div.category-input-container input:hover ~ span#category-border-input {
     left: 0;
     transition: width 0.5s cubic-bezier(0.2, 0, 0.03, 1);
 }
-/*Tooltip*/
 #add-category-btn:hover .category-tooltip {
     visibility: visible;
     opacity: 1;
 }
-
-/*------Focus------*/
+/* Focus */
 div.category-input-container input:focus {
     outline: none;
     color: var(--primary-color);
@@ -376,8 +329,7 @@ div.category-input-container input:focus ~ span#category-border-input {
     top: 26px;
     transition: width 0.5s cubic-bezier(0.2, 0, 0.03, 1);
 }
-
-/*------Placeholder------*/
+/* Placeholder */
 div.category-input-container input::placeholder {
     color: transparent;
 }
@@ -391,16 +343,7 @@ div.category-input-container input:not(:placeholder-shown) ~ label {
     background: linear-gradient(to right, var(--gradient1), var(--gradient2) 60%);
     top: 26px;
 }
-
-/*------Disabled------*/
-button#add-category-btn:disabled {
-    cursor: not-allowed;
-}
-button#add-category-btn:disabled img.category-icon {
-    opacity: 0.5;
-}
-
-/*------Valid / Invalid------*/
+/* Valid / Invalid */
 span#category-border-input.valid {
     animation: fillValidBorder 0.5s cubic-bezier(0.2, 0, 0.03, 1);
     background: var(--valid-color) !important;
@@ -411,4 +354,100 @@ span#category-border-input.invalid {
 }
 input#category-input.invalid {
     color: var(--invalid-color);
+}
+/* Disabled */
+button#add-category-btn:disabled {
+    cursor: not-allowed;
+}
+button#add-category-btn:disabled img.category-icon {
+    opacity: 0.5;
+}
+
+/*------Get Category------*/
+
+/*------Update Category------*/
+
+/*===============ERROR MESSAGE===============*/
+/*------Add Category------*/
+#category-error-message {
+    display: block;
+    visibility: hidden;
+    font-size: var(--font-size-error);
+    color: var(--error-color);
+    height: 10px;
+    margin-top: 10px;
+}
+#category-error-message.show {
+    visibility: visible;
+}
+
+/*===============NOTIFICATIONS===============*/
+/*------Container------*/
+#notifs-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: var(--background-color);
+    padding: 13px 3px 11px 3px;
+    border-radius: 3px;
+    z-index: 1;
+}
+/*------Button------*/
+button#enable-notifs {
+    cursor: pointer;
+    font-size: var(--font-size-p);
+    color: var(--primary-color);
+    background-color: transparent;
+    padding-top: 10px;
+    border: none;
+    text-shadow: var(--text-shadow);
+}
+/*------Border------*/
+.notifs-border-container {
+    display: inline-block;
+    background: linear-gradient(var(--gradient-angle1), var(--primary-color), var(--fourth-color));
+    width: 170px;
+    margin: 10px 0 30px 0;
+    padding: 2px;
+    border-radius: 5px;
+    box-shadow: var(--box-shadow);
+}
+/*------Icon / Img------*/
+.notifs-icon-container {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--background-color);
+    width: 36px;
+    height: 36px;
+    top: -18px;
+    border: var(--border-width2) var(--border-solid) var(--primary-color);
+    border-radius: 50%;
+    z-index: 2;
+}
+.notifs-icon img {
+    display: none;
+}
+.notifs-icon {
+    position: relative;
+    background: linear-gradient(var(--gradient-angle1), var(--gradient1), var(--gradient2));
+    width: 16px;
+    height: 16px;
+    mask: url('/src/assets/icons/bell_16.png') no-repeat center;
+    mask-size: contain;
+}
+/*------Hover------*/
+button#enable-notifs:hover {
+    text-decoration: underline;
+}
+
+/*===============REQUEST RESULT===============*/
+div.request-result {
+    display: none;
+    font-size: var(--font-size-result);
+    color: var(--text-result-color);
+    margin-top: 20px;
 }

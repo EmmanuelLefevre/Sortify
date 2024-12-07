@@ -1,3 +1,7 @@
+// ################################## //
+// ########## Add bookmark ########## //
+// ################################## //
+// Code 200
 chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
 
   if (request.action === 'sendActiveTabUrl') {
@@ -15,7 +19,7 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
       console.log('URL of active tab:', activeTab.url);
 
       // Envoyer l'URL au back-end
-      fetch('https://votre-backend.com/api/bookmarks', {
+      fetch('https://sortify/api/bookmarks', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -41,3 +45,20 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
     return true;
   }
 });
+
+// ################################## //
+// ########## Get category ########## //
+// ################################## //
+// Code 200
+
+
+// ################################## //
+// ########## Add category ########## //
+// ################################## //
+// Code 201
+
+
+// #################################### //
+// ########## Patch category ########## //
+// #################################### //
+// Code 200
