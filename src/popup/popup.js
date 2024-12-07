@@ -349,7 +349,7 @@ const addBtnBookmarkAnimations = () => {
   }
 
   // Ajouter la classe d'animation
-  submitBookmarkButton.classList.add("lightSpeedInLeft");
+  submitBookmarkButton.classList.add("leftEntrance");
 
   // Ajouter l'animation au hover
   const toggleDisplay = (state) => rotatingBorder.style.display = state ? 'block' : 'none';
@@ -475,7 +475,7 @@ const updateValidationState = () => {
     categoryInput.setCustomValidity('invalid');
     spanCategoryBorder.classList.add('invalid');
     categoryInput.classList.add('invalid');
-    categoryInput.classList.add('headshake');
+    categoryInput.classList.add('headShake');
 
     // Afficher message d'erreur
     categoryErrorMessage.textContent = error;
@@ -489,7 +489,7 @@ const updateValidationState = () => {
     spanCategoryBorder.classList.remove('invalid');
     spanCategoryBorder.classList.add('valid');
     categoryInput.classList.remove('invalid');
-    categoryInput.classList.remove('headshake');
+    categoryInput.classList.remove('headShake');
 
     // Effacer message d'erreur
     categoryErrorMessage.textContent = '';
@@ -526,7 +526,7 @@ categoryInput.addEventListener('blur', () => {
   if (!categoryInput.validity.valid && categoryInput.value.trim() === '') {
     spanCategoryBorder.classList.remove('invalid');
     spanCategoryBorder.classList.remove('valid');
-    categoryInput.classList.remove('headshake');
+    categoryInput.classList.remove('headShake');
     categoryErrorMessage.textContent = '';
     categoryErrorMessage.classList.remove('show');
     spanCategoryTooltip.textContent = 'Saisir';
