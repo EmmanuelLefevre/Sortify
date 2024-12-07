@@ -31,7 +31,7 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
             return;
           }
 
-          console.log('URL of active tab:', activeTab.url);
+          console.log('URL of active tab: ', activeTab.url);
 
           // Requête pour ajouter le favori
           const response = await fetch(`${apiBaseUrl}bookmark`, {
@@ -42,8 +42,14 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
             body: JSON.stringify({ url: activeTab.url }),
           });
 
+          // Vérifier si réponse OK, sinon passer l'erreur à handleApiError()
+          if (!response.ok) {
+            handleApiError({ message: `Erreur HTTP: ${response.status}`, response }, sendResponse);
+            return;
+          }
+
           const result = await response.json();
-          console.log('Bookmark added:', result);
+          console.log('Bookmark added: ', result);
 
           // Retourner les données au popup.js
           sendResponse({ success: true, data: result });
@@ -70,11 +76,12 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
         const response = await fetch(`${apiBaseUrl}categories`);
 
         if (!response.ok) {
-          throw new Error(`Erreur HTTP : ${response.status}`);
+          handleApiError({ message: `Erreur HTTP: ${response.status}`, response }, sendResponse);
+          return;
         }
 
         const result = await response.json();
-        console.log('Categories loaded:', result);
+        console.log('Categories loaded: ', result);
 
         sendResponse({ success: true, data: result });
       }
@@ -106,11 +113,12 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
         });
 
         if (!response.ok) {
-          throw new Error(`Erreur HTTP : ${response.status}`);
+          handleApiError({ message: `Erreur HTTP: ${response.status}`, response }, sendResponse);
+          return;
         }
 
         const result = await response.json();
-        console.log('Category added:', result);
+        console.log('Category added: ', result);
 
         sendResponse({ success: true, data: result });
       }
@@ -142,11 +150,12 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
         });
 
         if (!response.ok) {
-          throw new Error(`Erreur HTTP : ${response.status}`);
+          handleApiError({ message: `Erreur HTTP: ${response.status}`, response }, sendResponse);
+          return;
         }
 
         const result = await response.json();
-        console.log('Category updated:', result);
+        console.log('Category updated: ', result);
 
         sendResponse({ success: true, data: result });
       }
@@ -163,18 +172,29 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
 // ########## Fonctions utilitaires ########## //
 // ########################################### //
 function handleApiError(error, sendResponse) {
-  console.error('Error occurred:', error);
+  console.error('Error occurred: ', error);
 
-  // Gérer erreur en fonction du type
-  if (error.message.includes('NetworkError')) {
-    sendResponse({ success: false, error: 'offline' });
+  if (error.response) {
+    const status = error.response.status;
+
+    // Gestion des erreurs HTTP en fonction du code
+    if (status >= 500 && status <= 599) {
+      sendResponse({ success: false, error: 'server-error' });
+    }
+    else if (status === 404) {
+      sendResponse({ success: false, error: 'not-found' });
+    }
+    else if (status >= 400 && status <= 499) {
+      sendResponse({ success: false, error: 'client-error' });
+    }
   }
-  // Gérer erreur HTTP spécifique
-  else if (error.message.includes('Erreur HTTP')) {
-    sendResponse({ success: false, error: 'server-error' });
+  // Gérer erreur en fonction du type
+  else if (error.message.includes('NetworkError')) {
+    sendResponse({ success: false, error: 'offline' });
   }
   // Gérer autres erreurs
   else {
     sendResponse({ success: false, error: error.message });
   }
+  console.log('Response sent to popup.js from handleApiError() in api.js: ', error);
 }

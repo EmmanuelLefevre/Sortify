@@ -8,11 +8,6 @@
  * Pour plus de détails, consultez le fichier LICENSE.md
 */
 
-// ############################# //
-// ########## Imports ########## //
-// ############################# //
-import { addCategory, loadCategories, updateCategory } from '../api/api.js';
-
 // ###################################### //
 // ########## Chrome extension ########## //
 // ###################################### //
@@ -185,6 +180,11 @@ const createNotification = (type) => {
       body = '✔️ La catégorie a été modifiée!';
       icon = '../assets/logo/logo.png';
       break;
+    case 'not-found':
+      message = 'Sortify';
+      body = '👀 404 not found!';
+      icon = '../assets/logo/logo.png';
+      break;
     case 'error':
       message = 'Sortify';
       body = '⚰️ Une erreur est survenue!';
@@ -193,6 +193,11 @@ const createNotification = (type) => {
     case 'server-error':
       message = 'Sortify';
       body = '💣 Une erreur serveur est survenue!';
+      icon = '../assets/logo/logo.png';
+      break;
+    case 'client-error':
+      message = 'Sortify';
+      body = '🖥️ Une erreur client est survenue!';
       icon = '../assets/logo/logo.png';
       break;
     case 'offline-server':
@@ -357,44 +362,86 @@ const addBtnBookmarkAnimations = () => {
   submitBookmarkButton.addEventListener('mouseleave', () => toggleDisplay(false));
 };
 
+// ############################################################################ //
+// ########## Fonctions utilitaires formulaires API/Validation/Error ########## //
+// ############################################################################ //
+// Fonction asynchrone pour envoyer l'action à effectuer dans api.js
+async function sendMessageAsync(requestData) {
+  return new Promise((resolve, reject) => {
+    chrome.runtime.sendMessage(requestData , function(response) {
+
+      console.log('Response in popup.js from handleApiError() in api.js:', response);
+
+      if (response.success) {
+        resolve(response);
+      }
+      else {
+        reject(response);
+      }
+    });
+  });
+}
+
 // ################################################# //
 // ########## Formulaire ajout de favoris ########## //
 // ################################################# //
-document.getElementById('bookmark-form').addEventListener('submit', function (event) {
+const bookmarkForm = document.getElementById('bookmark-form');
+
+bookmarkForm.addEventListener('submit', async function (event) {
   // Empêcher le rechargement de la page
   event.preventDefault();
 
   if(isChromeExtension()) {
-    chrome.runtime.sendMessage({ action: 'sendActiveTabUrl' }, function(response) {
-      switch (true) {
-        case response.success:
-          if (Notification.permission === 'granted') {
-            createNotification('bookmark');
-          }
-          else {
-            showAlert("✔️ Le favori a été ajouté!");
-          }
-          console.log('Bookmark added:', response.data);
-          break;
+    try {
+      const response = await sendMessageAsync({ action: 'sendActiveTabUrl' });
 
-        case !response.success && response.error === 'offline':
+      // Ajouter logique pour créer le dossier (sauf si déjà existant) et ajouter le favori dans le dossier avec pour valeur le nom du site (=> fonction split url et récupérer "google" dans google.com, pas de http:// et .com/.fr...)
+
+      // Puis notifs ou alert
+      if (Notification.permission === 'granted') {
+        createNotification('bookmark');
+      }
+      else {
+        showAlert("✔️ Le favori a été ajouté!");
+      }
+      console.log('Bookmark added:', response.data);
+    }
+    catch (error) {
+      switch (error.error) {
+        case 'offline':
           if (Notification.permission === 'granted') {
             createNotification('offline-server');
           }
           else {
             showAlert("🗄️ Le serveur semble hors-ligne!");
           }
-          console.error('Offline server:', response.error);
           break;
 
-        case !response.success:
+        case 'server-error':
           if (Notification.permission === 'granted') {
             createNotification('server-error');
           }
           else {
             showAlert("💣 Une erreur serveur est survenue!");
           }
-          console.error('Server error:', response.error);
+          break;
+
+        case 'not-found':
+          if (Notification.permission === 'granted') {
+            createNotification('not-found');
+          }
+          else {
+            showAlert("👀 404 not found!");
+          }
+          break;
+
+        case 'client-error':
+          if (Notification.permission === 'granted') {
+            createNotification('client-error');
+          }
+          else {
+            showAlert("🖥️ Une erreur client est survenue!");
+          }
           break;
 
         default:
@@ -404,19 +451,18 @@ document.getElementById('bookmark-form').addEventListener('submit', function (ev
           else {
             showAlert("⚰️ Une erreur est survenue!");
           }
-          console.warn("Erreur: ", response);
           break;
       }
-    });
+    }
   }
   else {
     console.warn("You should execute this extension in a Chrome environment!");
   }
 });
 
-// ####################################################### //
-// ########## Formulaire création de catégories ########## //
-// ####################################################### //
+// #################################################### //
+// ########## Formulaire ajout de catégories ########## //
+// #################################################### //
 const categoryForm = document.getElementById('category-form');
 const categoryInput = document.getElementById('category-input');
 const spanCategoryBorder = document.getElementById('category-border-input');
@@ -547,7 +593,7 @@ categoryForm.addEventListener('submit', async (event) => {
     const categoryName = categoryInput.value.trim();
 
     try {
-      const newCategory = await createCategory(categoryName);
+      const newCategory = await addCategory(categoryName);
 
       // Traiter la réponse de l'API (notif / alert / success message )
       if (Notification.permission === 'granted') {
@@ -563,7 +609,6 @@ categoryForm.addEventListener('submit', async (event) => {
       categoryInput.reset();
     }
     catch (error) {
-      // Notifs ou alert + console.warn
       if (Notification.permission === 'granted') {
         createNotification('error');
       }
@@ -641,7 +686,6 @@ updateCategoryForm.addEventListener('submit', async (event) => {
       updateCategoryInput.reset();
     }
     catch (error) {
-      // Notifs ou alert + console.warn
       if (Notification.permission === 'granted') {
         createNotification('error');
       }
