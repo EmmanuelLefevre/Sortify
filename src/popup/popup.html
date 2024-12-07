@@ -1,3 +1,9 @@
+<!-- Copyright (c) Novembre 2024 LEFEVRE Emmanuel (Cod!ngT3kSolutions, SIRET: 50863331000026)
+Tous droits réservés.
+
+Licence propriétaire pour le logiciel Sortify. Aucun droit n'est accordé en dehors des conditions spécifiées dans la présente licence.
+Pour plus de détails, consultez le fichier LICENSE. -->
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -67,6 +73,34 @@
               <label for="category-input">Créer une catégorie</label>
             </div>
           </form>
+
+          <!-- Formulaire de modification de catégories -->
+            <form id="update-category-form"
+                  method="post"
+                  novalidate>
+              <div class="update-category-container">
+                <select id="update-categories-select"
+                        name="category">
+                </select>
+                <input type="text"
+                       id="update-category-input"
+                       name="update-category"
+                       autocomplete="off"
+                       spellcheck="false"
+                       placeholder="Modifier la catégorie"
+                       aria-label="Champ de saisie de modification d'une catégorie pour les favoris"
+                       required/>
+                <button type="submit"
+                        id="update-category-btn"
+                        aria-label="Modifier une catégorie pour les favoris">
+                  <img src="/src/assets/icons/label_24.png"
+                       class="update-category-icon"
+                       alt="Icône représentant le bouton permettant de modifier une catégorie">
+                 <span class="update-category-tooltip">Saisir</span>
+               </button>
+               <span id="update-category-border-input"></span>
+              </div>
+            </form>
 
           <!-- Activer les notifications desktop -->
           <div class="notifs-border-container">
