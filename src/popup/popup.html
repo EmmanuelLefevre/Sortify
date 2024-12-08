@@ -44,7 +44,7 @@ Pour plus de détails, consultez le fichier LICENSE. -->
             <div class="bookmark-btn-container">
               <div class="rotating-border-line"></div>
               <button type="submit"
-                      id="add-bookmark-btn"
+                      id="bookmark-btn"
                       aria-label="Ajouter cet élément aux favoris">Ajouter
               </button>
             </div>
@@ -64,7 +64,7 @@ Pour plus de détails, consultez le fichier LICENSE. -->
                      aria-label="Champ de saisie de création d'une catégorie pour les favoris"
                      required/>
               <button type="submit"
-                      id="add-category-btn"
+                      id="category-btn"
                       aria-label="Créer une catégorie pour les favoris">
                 <img src="/src/assets/icons/label_24.png"
                      class="category-icon"
@@ -77,32 +77,42 @@ Pour plus de détails, consultez le fichier LICENSE. -->
           </form>
 
           <!-- Formulaire de modification de catégories -->
-            <form id="update-category-form"
-                  method="post"
-                  novalidate>
-              <div class="update-category-container">
+          <form id="update-category-form"
+                method="post"
+                novalidate>
+            <div class="update-category-container">
+              <div class="update-category-select-container">
+                <div class="rotating-select-border-line"></div>
                 <select id="update-categories-select"
                         name="category">
+                  <option value="" hidden>Modifier catégorie</option>
+                  <option value="1">Développement</option>
+                  <option value="2">Symfony</option>
+                  <option value="3">Programmation</option>
                 </select>
+              </div>
+              <div class="update-category-input-container">
                 <input type="text"
-                       id="update-category-input"
-                       name="update-category"
-                       autocomplete="off"
-                       spellcheck="false"
-                       placeholder="Modifier la catégorie"
-                       aria-label="Champ de saisie de modification d'une catégorie pour les favoris"
-                       required/>
+                        id="update-category-input"
+                        name="update-category"
+                        autocomplete="off"
+                        spellcheck="false"
+                        placeholder="Modifier la catégorie"
+                        aria-label="Champ de saisie de modification d'une catégorie pour les favoris"
+                        required/>
                 <button type="submit"
                         id="update-category-btn"
                         aria-label="Modifier une catégorie pour les favoris">
                   <img src="/src/assets/icons/label_24.png"
-                       class="update-category-icon"
-                       alt="Icône représentant le bouton permettant de modifier une catégorie">
-                 <span class="update-category-tooltip">Saisir</span>
-               </button>
-               <span id="update-category-border-input"></span>
+                        class="update-category-icon"
+                        alt="Icône représentant le bouton permettant de modifier une catégorie">
+                  <span class="update-category-tooltip">Saisir</span>
+                </button>
+                <span id="update-category-border-input"></span>
+                <label for="update-category-input">Modifier la catégorie</label>
               </div>
-            </form>
+            </div>
+          </form>
 
           <!-- Activer les notifications desktop -->
           <div class="notifs-border-container">
