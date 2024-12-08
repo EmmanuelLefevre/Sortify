@@ -210,10 +210,6 @@ function handleApiError(error, sendResponse) {
         sendResponse({ success: false, error: 'forbidden' });
         break;
 
-      case error.message.includes('net::ERR_INTERNET_DISCONNECTED'):
-        sendResponse({ success: false, error: 'offline' });
-        break;
-
       case error.message.includes('net::ERR_CONNECTION_TIMED_OUT'):
         sendResponse({ success: false, error: 'offline-server' });
         break;
