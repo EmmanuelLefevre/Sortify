@@ -46,9 +46,9 @@ const getLocalStorage = (key) => {
           return parsedValue;
         }
         else if (key === 'SortifyAlerts' &&
-                         'denied_notifications' in parsedValue &&
-                         'default_notifications' in parsedValue &&
-                         'unsupported_notifications' in parsedValue) {
+                        'denied_notifications' in parsedValue &&
+                        'default_notifications' in parsedValue &&
+                        'unsupported_notifications' in parsedValue) {
           return parsedValue;
         }
       }
