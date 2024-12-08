@@ -64,6 +64,7 @@
     --font-size-label-focus: 9px;
     --font-size-p: 14px;
     --font-size-result: 14px;
+    --font-size-select: 14px;
 
     /*------Background------*/
     --background-color: #f5f5f5;
@@ -95,12 +96,14 @@
     --button-shadow-color: rgba(0, 0, 0, 0.7);
     --h1-shadow-color: rgba(0, 0, 0, 0.1);
     --icon-shadow-color: rgba(0, 0, 0, 0.2);
+    --select-shadow-color: rgba(0, 0, 0, 0.5);
     --text-shadow-color: rgba(0, 0, 0, 0.2);
 
     --box-shadow: 0px 11px 5px -8px var(--box-shadow-color);
     --button-shadow: 0px 7px 6px -4px var(--button-shadow-color);
     --h1-shadow: 3px 3px 0px var(--h1-shadow-color);
     --icon-shadow: drop-shadow(2px 1px 0px var(--icon-shadow-color));
+    --select-shadow: 0px 7px 5px -6px var(--select-shadow-color);
     --text-shadow: 0px 2px 2px var(--text-shadow-color);
 
     /*------Fonts------*/
@@ -109,7 +112,6 @@
     --text-weight-regular: 400;
     --text-weight-bold: bold;
 }
-
 
 /*===============APP===============*/
 div.sortify-app {
@@ -128,6 +130,7 @@ div.sortify-content {
     align-items: center;
     flex-direction: column;
     width: 100%;
+    padding-bottom: 15px;
 }
 
 /*===============H1===============*/
@@ -169,7 +172,7 @@ img.sortify-logo {
 /*------Add Bookmark------*/
 /* Form */
 #bookmark-form {
-    margin: 5px 0 25px 0;
+    margin: 5px 0 15px 0;
 }
 /* Container */
 .bookmark-btn-container {
@@ -183,7 +186,7 @@ img.sortify-logo {
     overflow: hidden;
 }
 /* Button */
-button#add-bookmark-btn {
+button#bookmark-btn {
     position: absolute;
     cursor: pointer;
     font-size: var(--font-size-button);
@@ -208,7 +211,7 @@ button#add-bookmark-btn {
     animation-play-state: paused;
 }
 /* Hover */
-button#add-bookmark-btn:hover {
+button#bookmark-btn:hover {
     color: var(--primary-color);
     background-image: none;
     background-color: var(--white);
@@ -219,21 +222,25 @@ button#add-bookmark-btn:hover {
     animation-play-state: running;
 }
 
-/*------Add Category------*/
+/*------Category Identical Settings------*/
 /* Form */
-#category-form {
-    margin-bottom: 25px;
+#category-form,
+#update-category-form {
+    margin-bottom: 15px;
 }
-/* Input */
-div.category-input-container{
+/* Container */
+div.category-input-container,
+div.update-category-input-container {
 	position: relative;
-    width: 200px;
-    margin-top: 22px;
     display: flex;
     align-items: center;
+    width: 200px;
+    margin-top: 22px;
     gap: 2px;
 }
-div.category-input-container input {
+/* Input */
+div.category-input-container input,
+div.update-category-input-container input {
     font-size: var(--font-size-input);
     color: var(--primary-color);
     width: 100%;
@@ -244,7 +251,8 @@ div.category-input-container input {
     transition: width 0.2s linear 0.2s;
     flex: 1;
 }
-div.category-input-container input ~ span#category-border-input {
+div.category-input-container input ~ span#category-border-input,
+div.update-category-input-container input ~ span#update-category-border-input {
     position: absolute;
     display: block;
     width: 0;
@@ -253,18 +261,21 @@ div.category-input-container input ~ span#category-border-input {
     left: 0;
     background: linear-gradient(to right, var(--gradient1), var(--gradient2) 60%);
 }
-div.category-input-container label {
+/* Label */
+div.category-input-container label,
+div.update-category-input-container label {
     position: absolute;
     font-size: var(--font-size-label);
     color: var(--primary-color);
-    top: -2px;
+    top: 2px;
     left: 0;
     pointer-events: none;
     transition: top 0.5s, font-size 0.5s, color 0.5s;
     opacity: 1;
 }
 /* Button */
-button#add-category-btn {
+button#category-btn,
+button#update-category-btn {
     position: relative;
     display: flex;
     align-items: center;
@@ -277,7 +288,8 @@ button#add-category-btn {
     transition: transform 0.3s ease;
 }
 /* Tooltip */
-.category-tooltip {
+.category-tooltip,
+.update-category-tooltip {
     position: absolute;
     visibility: hidden;
     color: var(--primary-color);
@@ -295,17 +307,20 @@ button#add-category-btn {
     z-index: 1;
 }
 /* Hover */
-button#add-category-btn:hover img.category-icon {
+button#category-btn:hover img.category-icon,
+button#update-category-btn:hover img.update-category-icon {
     transform: scale(1.4);
     transform-origin: center;
     filter: var(--icon-shadow);
     transition: opacity 0.3s ease, transform 0.3s ease-in, drop-shadow 0.3s ease-out;
     opacity: 1;
 }
-div.category-input-container input:hover ~ label {
+div.category-input-container input:hover ~ label,
+div.update-category-input-container input:hover ~ label {
     animation: bounce 1.2s ease-in-out infinite;
 }
-div.category-input-container input:hover ~ span#category-border-input {
+div.category-input-container input:hover ~ span#category-border-input,
+div.update-category-input-container input:hover ~ span#update-category-border-input {
     display: block;
     position: absolute;
     width: calc(100% - 36px);
@@ -316,17 +331,20 @@ div.category-input-container input:hover ~ span#category-border-input {
     left: 0;
     transition: width 0.5s cubic-bezier(0.2, 0, 0.03, 1);
 }
-#add-category-btn:hover .category-tooltip {
+#category-btn:hover .category-tooltip,
+#update-category-btn:hover .update-category-tooltip {
     visibility: visible;
     opacity: 1;
 }
 /* Focus */
-div.category-input-container input:focus {
+div.category-input-container input:focus,
+div.update-category-input-container input:focus {
     outline: none;
     color: var(--primary-color);
     caret-color: var(--primary-color);
 }
-div.category-input-container input:focus ~ label {
+div.category-input-container input:focus ~ label,
+div.update-category-input-container input:focus ~ label {
     font-size: var(--font-size-label-focus);
     top: -16px;
     left: 0;
@@ -334,48 +352,107 @@ div.category-input-container input:focus ~ label {
     pointer-events: none;
     transition: opacity 0.5s ease-in-out;
 }
-div.category-input-container input:focus ~ span#category-border-input {
+div.category-input-container input:focus ~ span#category-border-input,
+div.update-category-input-container input:focus ~ span#update-category-border-input {
     width: calc(100% - 36px);
     top: 26px;
     transition: width 0.5s cubic-bezier(0.2, 0, 0.03, 1);
 }
 /* Placeholder */
-div.category-input-container input::placeholder {
+div.category-input-container input::placeholder,
+div.update-category-input-container input::placeholder {
     color: transparent;
 }
-div.category-input-container input:not(:placeholder-shown) ~ label {
+div.category-input-container input:not(:placeholder-shown) ~ label,
+div.update-category-input-container input:not(:placeholder-shown) ~ label {
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease;
 }
-.category-input-container input:not(:placeholder-shown) ~ span#category-border-input {
+.category-input-container input:not(:placeholder-shown) ~ span#category-border-input,
+.update-category-input-container input:not(:placeholder-shown) ~ span#update-category-border-input {
     width: calc(100% - 36px);
     background: linear-gradient(to right, var(--gradient1), var(--gradient2) 60%);
     top: 26px;
 }
 /* Valid / Invalid */
-span#category-border-input.valid {
+span#category-border-input.valid,
+span#update-category-border-input.valid {
     animation: fillValidBorder 0.5s cubic-bezier(0.2, 0, 0.03, 1);
     background: var(--valid-color) !important;
 }
-span#category-border-input.invalid {
+span#category-border-input.invalid,
+span#update-category-border-input.invalid {
     animation: fillErrorBorder 0.5s cubic-bezier(0.2, 0, 0.03, 1);
     background: linear-gradient(to right, var(--invalid-color), var(--error-color) 45%) !important;
 }
-input#category-input.invalid {
+input#category-input.invalid,
+input#update-category-input.invalid {
     color: var(--invalid-color);
 }
 /* Disabled */
-button#add-category-btn:disabled {
+button#category-btn:disabled,
+button#update-category-btn:disabled {
     cursor: not-allowed;
 }
-button#add-category-btn:disabled img.category-icon {
+button#category-btn:disabled img.category-icon,
+button#update-category-btn:disabled img.update-category-icon {
     opacity: 0.5;
 }
 
-/*------Get Category------*/
-
+/*------Add Category------*/
 /*------Update Category------*/
+/* Container */
+div.update-category-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+div.update-category-select-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    height: 36px;
+    margin: 0px auto;
+    border-radius: 4px;
+    overflow: hidden;
+}
+div.update-category-input-container {
+    flex-direction: row;
+    margin-top: 34px;
+}
+/* Border */
+.rotating-select-border-line {
+    width: 200px;
+    height: 23px;
+    background: linear-gradient(90deg, var(--fourth-color), var(--fourth-color));
+    rotate: -30deg;
+    animation: spinningBorderPoint 2s linear infinite;
+}
+/* Select */
+#update-categories-select {
+    position: absolute;
+    cursor: pointer;
+    color: var(--primary-color);
+    font-size: var(--font-size-select);
+    text-indent: 0.05px;
+    text-overflow: '';
+    padding: 6px 5px;
+    border-radius: 4px;
+    box-shadow: var(--select-shadow);
+    border: var(--border-width1) var(--border-solid) var(--primary-color);
+    background-color: var(--background-color);
+    outline: var(--border-width2) var(--border-solid) rgba(0, 0, 0, 0);
+    transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
+}
+/* Option */
+/* Focus */
+#update-categories-select:focus {
+    /* outline: none; */
+    border: var(--border-width1) var(--border-solid) var(--primary-color);
+}
 
 /*===============ERROR MESSAGE===============*/
 /*------Add Category------*/
@@ -402,7 +479,7 @@ button#add-category-btn:disabled img.category-icon {
     background: var(--background-color);
     padding: 13px 3px 11px 3px;
     border-radius: 3px;
-    z-index: 1;
+    z-index: 9999;
 }
 /*------Button------*/
 button#enable-notifs {
@@ -419,7 +496,7 @@ button#enable-notifs {
     display: inline-block;
     background: linear-gradient(var(--gradient-angle1), var(--primary-color), var(--fourth-color));
     width: 170px;
-    margin: 10px 0 30px 0;
+    margin: 30px 0 20px 0;
     padding: 2px;
     border-radius: 5px;
     box-shadow: var(--box-shadow);
