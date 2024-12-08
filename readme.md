@@ -15,17 +15,16 @@ Cette extension vise à offrir une expérience de gestion des favoris plus fluid
 1. Activer mode développeur
 2. Repérer le bouton "Charger l'extension non empaquetée"  
 
-![Chrome extension settings](https://github.com/EmmanuelLefevre/MarkdownImg/blob/main/chrome_settings.png)
+![Chrome extension settings](https://github.com/EmmanuelLefevre/MarkdownImg/blob/main/chrome_settings.png)  
+
 3. Ouvrir l'URL ci dessous dans le navigateur Chrome
 ```bash
 chrome://extensions/
 ```
-
 4. Vérifier les permissions d'extension Chrome
 ```bash
 chrome://settings/content/notifications
 ```
-
 5. Ajouter/Bloquer permission de notifications
 ```bash
 chrome-extension://<id>
@@ -33,8 +32,8 @@ chrome-extension://<id>
 ```bash
 chrome-extension://hajlfpcnjgppoapaaieccblofcgpmbpc
 ```
-
 ![Chrome extension id](https://github.com/EmmanuelLefevre/MarkdownImg/blob/main/chrome_extension_id.png)  
+
 6. Accéder aux requêtes réseau du service worker
 
 ![Chrome extension requête](https://github.com/EmmanuelLefevre/MarkdownImg/blob/main/chrome_extension_requête.png)  
