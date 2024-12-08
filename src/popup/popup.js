@@ -60,7 +60,7 @@ const getLocalStorage = (key) => {
     return null;
   }
   catch (error) {
-    console.error(`Error tretrieving "${key}" from localStorage:`, error);
+    console.error(`Error retrieving "${key}" from localStorage:`, error);
     // Retourner null en cas de données corrompues
     return null;
   }
@@ -101,7 +101,7 @@ const initializeAlertStorage = () => {
 // ########## Gestion des alertes ########## //
 // ######################################### //
 // Afficher une alerte personnalisée si elle n'a pas déjà été affichée
-const showAlert = (key, message, timeout = 2000) => {
+const showAlertOnce = (key, message, timeout = 2000) => {
   // Vérifier si key est passer en paramètre
   if (key !== undefined) {
     // Récupérer état des alertes depuis le localStorage ou initialiser objet vide (en guise de fallback si données inexistantes)
@@ -125,6 +125,11 @@ const resetAlertStatus = (key) => {
   alertStatus[key] = true;
   setLocalStorage("SortifyAlerts", alertStatus);
 };
+
+// Alerte normale
+const showAlert = (message, timeout = 2000) => {
+  setTimeout(() => alert(message), timeout);
+}
 
 // ########################################################### //
 // ########## Gérer MAJ de l'état des notifications ########## //
@@ -265,7 +270,7 @@ const createNotification = (type) => {
     });
   }
   else {
-    showAlert("unsupported_notifications", "💀💀💀 Les notifications ne sont pas supportées par ce navigateur!");
+    showAlertOnce("unsupported_notifications", "💀💀💀 Les notifications ne sont pas supportées par ce navigateur!");
   }
 };
 
@@ -302,14 +307,14 @@ const initializeNotificationPermissions = () => {
     case "denied":
       updateNotifContainerVisibility(notifsContainer, true);
       updateNotificationStatus(false);
-      showAlert("denied_notifications", "🤬 Réactiver vos notifications! 🤬");
+      showAlertOnce("denied_notifications", "🤬 Réactiver vos notifications! 🤬");
       break;
 
     // Afficher bouton si état "default" + alert
     case "default":
       updateNotifContainerVisibility(notifsContainer, true);
       updateNotificationStatus(false);
-      showAlert("default_notifications", "Activer vos notifications svp 👉");
+      showAlertOnce("default_notifications", "Activer vos notifications svp 👉");
       break;
 
     default:
@@ -405,7 +410,7 @@ async function sendMessageAsync(requestData) {
   return new Promise((resolve, reject) => {
     chrome.runtime.sendMessage(requestData , function(response) {
 
-      console.log('Response in popup.js from handleApiError() in api.js:', response);
+      // console.log('Response in popup.js from handleApiError() in api.js:', response);
 
       if (response.success) {
         resolve(response);
@@ -416,56 +421,61 @@ async function sendMessageAsync(requestData) {
     });
   });
 }
-// Afficher notifications / alertes en fonction de la permission
-function handleError(notificationType, alertMessage) {
+
+// Afficher erreurs (notifications / alertes) du service worker en fonction de la permission
+function displayServiceWorkerError(notificationType, message) {
   if (Notification.permission === 'granted') {
     createNotification(notificationType);
   }
   else {
-    showAlert(alertMessage);
+    showAlert(message);
   }
 }
-// Gérer erreurs provenant de api.js
+
+// Gérer erreurs provenant du service worker
 function handleServiceWorkerError(error) {
-  switch (error.error) {
+  // Accéder directement à l'objet error (propriété 'error' ou objet entier.)
+  const errorType = error.error || error;
+
+  switch (errorType) {
     case 'offline-server':
-      handleError('offline-server', "🗄️ Le serveur semble hors-ligne!");
+      displayServiceWorkerError('offline-server', "🗄️ Le serveur semble hors-ligne!");
       break;
 
     case 'server-error':
-      handleError('server-error', "💣 Une erreur serveur est survenue!");
+      displayServiceWorkerError('server-error', "💣 Une erreur serveur est survenue!");
       break;
 
     case 'not-found':
-      handleError('not-found', "👀 404 not found!");
+      displayServiceWorkerError('not-found', "👀 404 not found!");
       break;
 
     case 'client-error':
-      handleError('client-error', "🖥️ Une erreur client est survenue!");
+      displayServiceWorkerError('client-error', "🖥️ Une erreur client est survenue!");
       break;
 
     case 'unexpected-http-error':
-      handleError('unexpected-http-error', "❓ Erreur http inconnue!");
+      displayServiceWorkerError('unexpected-http-error', "❓ Erreur http inconnue!");
       break;
 
     case 'dns-error':
-      handleError('dns-error', "🌍 Domaine introuvable!");
+      displayServiceWorkerError('dns-error', "🌍 Domaine introuvable!");
       break;
 
     case 'forbidden':
-      handleError('forbidden', "⛔ Connexion refusée!");
+      displayServiceWorkerError('forbidden', "⛔ Connexion refusée!");
       break;
 
     case 'offline':
-      handleError('offline', "💥 Pas de connexion internet!");
+      displayServiceWorkerError('offline', "💥 Pas de connexion internet!");
       break;
 
     case 'network-error':
-      handleError('network-error', "🌩️ Une erreur réseau est survenue!");
+      displayServiceWorkerError('network-error', "🌩️ Une erreur réseau est survenue!");
       break;
 
     default:
-      handleError('unexpected-error', "⚰️ Une erreur est survenue!");
+      displayServiceWorkerError('unexpected-error', "⚰️ Une erreur est survenue!");
       break;
   }
 }
@@ -519,7 +529,7 @@ bookmarkForm.addEventListener('submit', async function (event) {
       else {
         showAlert("✔️ Le favori a été ajouté!");
       }
-      console.log('Bookmark added:', response.data);
+      // console.log('Bookmark added:', response.data);
     }
     catch (error) {
       handleServiceWorkerError(error);
