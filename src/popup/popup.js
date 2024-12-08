@@ -225,12 +225,6 @@ const createNotification = (type) => {
       icon = '../assets/logo/logo.png';
       break;
 
-    case 'offline':
-      message = 'Sortify';
-      body = '💥 Pas de connexion internet!';
-      icon = '../assets/logo/logo.png';
-      break;
-
     case 'offline-server':
       message = 'Sortify';
       body = '🗄️ Le serveur semble hors-ligne!';
@@ -377,21 +371,13 @@ const handleNotificationButtonClick = () => {
   });
 };
 
-// ########################################################### //
-// ########## Animations bouton d'ajout des favoris ########## //
-// ########################################################### //
+// ################################# //
+// ########## Animations  ########## //
+// ################################# //
+// Bouton ajout des favoris
 const addBtnBookmarkAnimations = () => {
-  const submitBookmarkButton = document.getElementById("add-bookmark-btn");
+  const submitBookmarkButton = document.getElementById("bookmark-btn");
   const rotatingBorder = document.querySelector('.rotating-border-line');
-
-  if (!submitBookmarkButton) {
-    console.error("Button with ID 'add-bookmark-btn' was not found in the DOM.");
-    return;
-  }
-  if (!rotatingBorder) {
-    console.error("Element with class 'rotating-border-line' was not found in the DOM.");
-    return;
-  }
 
   // Ajouter la classe d'animation
   submitBookmarkButton.classList.add("leftEntrance");
@@ -401,6 +387,11 @@ const addBtnBookmarkAnimations = () => {
   submitBookmarkButton.addEventListener('mouseenter', () => toggleDisplay(true));
   submitBookmarkButton.addEventListener('mouseleave', () => toggleDisplay(false));
 };
+// Select modifier la catégorie
+const addSelectUpdateCategoryAnimation = () => {
+  const selectUpdateCategory = document.querySelector('.update-category-select-container');
+  selectUpdateCategory.classList.add("bounce");
+}
 
 // ############################################################################ //
 // ########## Fonctions utilitaires formulaires API/Validation/Error ########## //
@@ -434,7 +425,7 @@ function displayServiceWorkerError(notificationType, message) {
 
 // Gérer erreurs provenant du service worker
 function handleServiceWorkerError(error) {
-  // Accéder directement à l'objet error (propriété 'error' ou objet entier.)
+  // Accéder directement à l'objet error (propriété 'error' ou objet entier)
   const errorType = error.error || error;
 
   switch (errorType) {
@@ -464,10 +455,6 @@ function handleServiceWorkerError(error) {
 
     case 'forbidden':
       displayServiceWorkerError('forbidden', "⛔ Connexion refusée!");
-      break;
-
-    case 'offline':
-      displayServiceWorkerError('offline', "💥 Pas de connexion internet!");
       break;
 
     case 'network-error':
@@ -506,6 +493,35 @@ async function updateCategoriesSelectList() {
     }
   }
 }
+
+// ######################################################### //
+// ########## Afficher l'input du select au focus ########## //
+// ######################################################### //
+const selectUpdateCategory = document.getElementById('update-categories-select');
+const updateCategoryInputContainer = document.querySelector('.update-category-input-container');
+
+document.addEventListener('DOMContentLoaded', () => {
+  updateCategoryInputContainer.style.display = 'none';
+});
+
+// Afficher l'input au focus
+selectUpdateCategory.addEventListener('focus', () => {
+  updateCategoryInputContainer.style.display = 'flex';
+});
+
+// Cacher input au blur si valeur du select = false
+selectUpdateCategory.addEventListener('blur', () => {
+  if (!selectUpdateCategory.value) {
+    updateCategoryInputContainer.style.display = 'none';
+  }
+});
+
+// Afficher input si valeur du select = true
+selectUpdateCategory.addEventListener('change', () => {
+  if (selectUpdateCategory.value) {
+    updateCategoryInputContainer.style.display = 'flex';
+  }
+});
 
 // ################################################# //
 // ########## Formulaire ajout de favoris ########## //
@@ -546,7 +562,7 @@ bookmarkForm.addEventListener('submit', async function (event) {
 const categoryForm = document.getElementById('category-form');
 const categoryInput = document.getElementById('category-input');
 const spanCategoryBorder = document.getElementById('category-border-input');
-const submitCategoryButton = document.getElementById('add-category-btn');
+const submitCategoryButton = document.getElementById('category-btn');
 const categoryInputContainer = document.querySelector('.category-input-container');
 const spanCategoryTooltip = document.querySelector('.category-tooltip');
 
@@ -565,7 +581,7 @@ const categoryErrorMessage = document.createElement('span');
 categoryErrorMessage.id = 'category-error-message';
 categoryInputContainer.insertAdjacentElement('afterend', categoryErrorMessage);
 
-// Activer / désactiver bouton soumission
+// Activer/désactiver bouton soumission
 const toggleSubmitButtonState = () => {
   submitCategoryButton.disabled = !categoryInput.validity.valid;
 };
@@ -769,6 +785,7 @@ updateCategoryForm.addEventListener('submit', async (event) => {
 document.addEventListener('DOMContentLoaded', () => {
   updateCategoriesSelectList();
   addBtnBookmarkAnimations();
+  addSelectUpdateCategoryAnimation();
   initializeNotificationPermissions();
   handleNotificationButtonClick();
   toggleSubmitButtonState();
