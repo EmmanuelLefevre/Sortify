@@ -32,12 +32,10 @@ chrome-extension://<id>
 chrome-extension://hajlfpcnjgppoapaaieccblofcgpmbpc
 ```
 
-![Chrome extension id](https://github.com/EmmanuelLefevre/MarkdownImg/blob/main/chrome_extension_id.png)
+![Chrome extension id](https://github.com/EmmanuelLefevre/MarkdownImg/blob/main/chrome_extension_id.png)  
 6. Accéder aux requêtes réseau du service worker
 
-![Chrome extension requête](https://github.com/EmmanuelLefevre/MarkdownImg/blob/main/chrome_extension_requête.png)
-
-
+![Chrome extension requête](https://github.com/EmmanuelLefevre/MarkdownImg/blob/main/chrome_extension_requête.png)  
 
 ## SERVEO CONFIGURATION
 Serveo.net est un service de tunneling SSH qui permet de rendre vos applications locales accessibles sur Internet sans avoir à configurer un serveur ou à manipuler des paramètres complexes de réseau. Il vous suffit de disposer d'une connexion SSH et d'un terminal pour créer un tunnel sécurisé vers votre machine locale.  
