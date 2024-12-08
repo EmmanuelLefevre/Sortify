@@ -165,76 +165,91 @@ const createNotification = (type) => {
       body = '🚀 Les notifications sont activées!';
       icon = '../assets/logo/logo.png';
       break;
+
     case 'bookmark':
       message = 'Sortify';
       body = '✔️ Le favori a été ajouté!';
       icon = '../assets/logo/logo.png';
       break;
+
     case 'category':
       message = 'Sortify';
       body = '✔️ La catégorie a été ajoutée!';
       icon = '../assets/logo/logo.png';
       break;
+
     case 'update-category':
       message = 'Sortify';
       body = '✔️ La catégorie a été modifiée!';
       icon = '../assets/logo/logo.png';
       break;
+
     case 'not-found':
       message = 'Sortify';
       body = '👀 404 not found!';
       icon = '../assets/logo/logo.png';
       break;
+
     case 'unexpected-error':
       message = 'Sortify';
       body = '⚰️ Une erreur est survenue!';
       icon = '../assets/logo/logo.png';
       break;
+
     case 'server-error':
       message = 'Sortify';
       body = '💣 Une erreur serveur est survenue!';
       icon = '../assets/logo/logo.png';
       break;
+
     case 'client-error':
       message = 'Sortify';
       body = '🖥️ Une erreur client est survenue!';
       icon = '../assets/logo/logo.png';
       break;
+
     case 'unexpected-http-error':
       message = 'Sortify';
       body = '❓ Erreur http inconnue!';
       icon = '../assets/logo/logo.png';
       break;
+
     case 'network-error':
       message = 'Sortify';
       body = '🌩️ Une erreur réseau est survenue!';
       icon = '../assets/logo/logo.png';
       break;
+
     case 'offline':
       message = 'Sortify';
       body = '💥 Pas de connexion internet!';
       icon = '../assets/logo/logo.png';
       break;
+
     case 'offline-server':
       message = 'Sortify';
       body = '🗄️ Le serveur semble hors-ligne!';
       icon = '../assets/logo/logo.png';
       break;
+
     case 'dns-error':
       message = 'Sortify';
       body = '🌍 Domaine introuvable!';
       icon = '../assets/logo/logo.png';
       break;
+
     case 'forbidden':
       message = 'Sortify';
       body = '⛔ Connexion refusée!';
       icon = '../assets/logo/logo.png';
       break;
+
     case 'chrome':
       message = 'Sortify';
       body = '🛜 API Chrome non disponible!';
       icon = '../assets/logo/logo.png';
       break;
+
     default:
       console.error(`Unknown notification type: "${type}".`);
       // Quitter si type invalide
@@ -413,7 +428,7 @@ function handleError(notificationType, alertMessage) {
 // Gérer erreurs provenant de api.js
 function handleServiceWorkerError(error) {
   switch (error.error) {
-    case 'offline':
+    case 'offline-server':
       handleError('offline-server', "🗄️ Le serveur semble hors-ligne!");
       break;
 
@@ -427,6 +442,26 @@ function handleServiceWorkerError(error) {
 
     case 'client-error':
       handleError('client-error', "🖥️ Une erreur client est survenue!");
+      break;
+
+    case 'unexpected-http-error':
+      handleError('unexpected-http-error', "❓ Erreur http inconnue!");
+      break;
+
+    case 'dns-error':
+      handleError('dns-error', "🌍 Domaine introuvable!");
+      break;
+
+    case 'forbidden':
+      handleError('forbidden', "⛔ Connexion refusée!");
+      break;
+
+    case 'offline':
+      handleError('offline', "💥 Pas de connexion internet!");
+      break;
+
+    case 'network-error':
+      handleError('network-error', "🌩️ Une erreur réseau est survenue!");
       break;
 
     default:
