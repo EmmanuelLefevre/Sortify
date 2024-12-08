@@ -19,11 +19,13 @@ Cette extension vise à offrir une expérience de gestion des favoris plus fluid
 3. Ouvrir l'URL ci dessous dans le navigateur Chrome
 ```bash
 chrome://extensions/
-```  
+```
+
 4. Vérifier les permissions d'extension Chrome
 ```bash
 chrome://settings/content/notifications
 ```
+
 5. Ajouter/Bloquer permission de notifications
 ```bash
 chrome-extension://<id>
