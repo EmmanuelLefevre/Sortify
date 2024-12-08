@@ -17,6 +17,7 @@ const apiBaseUrl = 'https://sortify/api/';
 // ########## Add bookmark ########## //
 // ################################## //
 chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
+  // console.log('Add bookmark in background.js:', request);
   if (request.action === 'sendActiveTabUrl') {
     (async () => {
       try {
@@ -70,6 +71,7 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
 // ########## Get categories ########## //
 // #################################### //
 chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
+  // console.log('Get categories in background.js:', request);
   if (request.action === 'loadCategories') {
     (async () => {
       try {
@@ -98,6 +100,7 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
 // ########## Add category ########## //
 // ################################## //
 chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
+  // console.log('Add category in background.js:', request);
   if (request.action === 'addCategory') {
     (async () => {
       const { categoryName } = request;
@@ -135,6 +138,7 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
 // ########## Update category ########## //
 // ##################################### //
 chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
+  // console.log('Update category in background.js:', request);
   if (request.action === 'updateCategory') {
     (async () => {
       const { oldCategoryId, newCategoryName } = request;
@@ -172,29 +176,49 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
 // ########## Fonctions utilitaires ########## //
 // ########################################### //
 function handleApiError(error, sendResponse) {
-  console.error('Error occurred: ', error);
-
+  // console.error('Error occurred: ', error);
   if (error.response) {
     const status = error.response.status;
 
-    // Gestion des erreurs HTTP en fonction du code
-    if (status >= 500 && status <= 599) {
-      sendResponse({ success: false, error: 'server-error' });
-    }
-    else if (status === 404) {
-      sendResponse({ success: false, error: 'not-found' });
-    }
-    else if (status >= 400 && status <= 499) {
-      sendResponse({ success: false, error: 'client-error' });
+    // Erreurs HTTP
+    switch (true) {
+      case status >= 500 && status <= 599:
+        sendResponse({ success: false, error: 'server-error' });
+        break;
+      case status === 404:
+        sendResponse({ success: false, error: 'not-found' });
+        break;
+      case status >= 400 && status <= 499:
+        sendResponse({ success: false, error: 'client-error' });
+        break;
+      default:
+        sendResponse({ success: false, error: 'unexpected-http-error' });
+        break;
     }
   }
-  // Gérer erreur en fonction du type
-  else if (error.message.includes('NetworkError')) {
-    sendResponse({ success: false, error: 'offline' });
+  // Erreurs réseau
+  else if (error.message.includes('Failed to fetch')) {
+    switch (true) {
+      case error.message.includes('net::ERR_NAME_NOT_RESOLVED'):
+        sendResponse({ success: false, error: 'dns-error' });
+        break;
+      case error.message.includes('net::ERR_CONNECTION_REFUSED'):
+        sendResponse({ success: false, error: 'forbidden' });
+        break;
+      case error.message.includes('net::ERR_INTERNET_DISCONNECTED'):
+        sendResponse({ success: false, error: 'offline' });
+        break;
+      case error.message.includes('net::ERR_CONNECTION_TIMED_OUT'):
+        sendResponse({ success: false, error: 'offline-server' });
+        break;
+      default:
+        sendResponse({ success: false, error: 'network-error' });
+        break;
+    }
   }
-  // Gérer autres erreurs
+  // Autres erreurs
   else {
-    sendResponse({ success: false, error: error.message });
+    sendResponse({ success: false, error: 'unexpected-error' });
   }
   console.log('Response sent to popup.js from handleApiError() in api.js: ', error);
 }
