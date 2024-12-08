@@ -185,7 +185,7 @@ const createNotification = (type) => {
       body = '👀 404 not found!';
       icon = '../assets/logo/logo.png';
       break;
-    case 'error':
+    case 'unexpected-error':
       message = 'Sortify';
       body = '⚰️ Une erreur est survenue!';
       icon = '../assets/logo/logo.png';
@@ -200,19 +200,39 @@ const createNotification = (type) => {
       body = '🖥️ Une erreur client est survenue!';
       icon = '../assets/logo/logo.png';
       break;
+    case 'unexpected-http-error':
+      message = 'Sortify';
+      body = '❓ Erreur http inconnue!';
+      icon = '../assets/logo/logo.png';
+      break;
+    case 'network-error':
+      message = 'Sortify';
+      body = '🌩️ Une erreur réseau est survenue!';
+      icon = '../assets/logo/logo.png';
+      break;
+    case 'offline':
+      message = 'Sortify';
+      body = '💥 Pas de connexion internet!';
+      icon = '../assets/logo/logo.png';
+      break;
     case 'offline-server':
       message = 'Sortify';
       body = '🗄️ Le serveur semble hors-ligne!';
       icon = '../assets/logo/logo.png';
       break;
+    case 'dns-error':
+      message = 'Sortify';
+      body = '🌍 Domaine introuvable!';
+      icon = '../assets/logo/logo.png';
+      break;
+    case 'forbidden':
+      message = 'Sortify';
+      body = '⛔ Connexion refusée!';
+      icon = '../assets/logo/logo.png';
+      break;
     case 'chrome':
       message = 'Sortify';
       body = '🛜 API Chrome non disponible!';
-      icon = '../assets/logo/logo.png';
-      break;
-    case 'info':
-      message = 'Sortify';
-      body = 'ℹ️ Informations string...';
       icon = '../assets/logo/logo.png';
       break;
     default:
@@ -281,7 +301,7 @@ const initializeNotificationPermissions = () => {
       updateNotifContainerVisibility(notifsContainer, true);
       updateNotificationStatus(false);
       if ("Notification" in window && Notification.permission === "granted") {
-        createNotification('error');
+        createNotification('unexpected-error');
       }
       else {
         showAlert("⚰️ Une erreur est survenue!");
@@ -332,7 +352,7 @@ const handleNotificationButtonClick = () => {
     }
     catch (err) {
       console.error("Error: ", err);
-      createNotification('error');
+      createNotification('unexpected-error');
     }
   });
 };
@@ -381,6 +401,15 @@ async function sendMessageAsync(requestData) {
     });
   });
 }
+// Afficher notifications / alertes en fonction de la permission
+function handleError(notificationType, alertMessage) {
+  if (Notification.permission === 'granted') {
+    createNotification(notificationType);
+  }
+  else {
+    showAlert(alertMessage);
+  }
+}
 // Gérer erreurs provenant de api.js
 function handleServiceWorkerError(error) {
   switch (error.error) {
@@ -401,17 +430,8 @@ function handleServiceWorkerError(error) {
       break;
 
     default:
-      handleError('error', "⚰️ Une erreur est survenue!");
+      handleError('unexpected-error', "⚰️ Une erreur est survenue!");
       break;
-  }
-}
-// Afficher notifications / alertes en fonction de la permission
-function handleError(notificationType, alertMessage) {
-  if (Notification.permission === 'granted') {
-    createNotification(notificationType);
-  }
-  else {
-    showAlert(alertMessage);
   }
 }
 
