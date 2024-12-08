@@ -32,7 +32,7 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
             return;
           }
 
-          console.log('URL of active tab: ', activeTab.url);
+          // console.log('URL of active tab: ', activeTab.url);
 
           // Requête pour ajouter le favori
           const response = await fetch(`${apiBaseUrl}bookmark`, {
@@ -50,7 +50,7 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
           }
 
           const result = await response.json();
-          console.log('Bookmark added: ', result);
+          // console.log('Bookmark added: ', result);
 
           // Retourner les données au popup.js
           sendResponse({ success: true, data: result });
@@ -83,7 +83,7 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
         }
 
         const result = await response.json();
-        console.log('Categories loaded: ', result);
+        // console.log('Categories loaded: ', result);
 
         sendResponse({ success: true, data: result });
       }
@@ -121,7 +121,7 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
         }
 
         const result = await response.json();
-        console.log('Category added: ', result);
+        // console.log('Category added: ', result);
 
         sendResponse({ success: true, data: result });
       }
@@ -159,7 +159,7 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
         }
 
         const result = await response.json();
-        console.log('Category updated: ', result);
+        // console.log('Category updated: ', result);
 
         sendResponse({ success: true, data: result });
       }
@@ -185,12 +185,15 @@ function handleApiError(error, sendResponse) {
       case status >= 500 && status <= 599:
         sendResponse({ success: false, error: 'server-error' });
         break;
+
       case status === 404:
         sendResponse({ success: false, error: 'not-found' });
         break;
+
       case status >= 400 && status <= 499:
         sendResponse({ success: false, error: 'client-error' });
         break;
+
       default:
         sendResponse({ success: false, error: 'unexpected-http-error' });
         break;
@@ -202,15 +205,19 @@ function handleApiError(error, sendResponse) {
       case error.message.includes('net::ERR_NAME_NOT_RESOLVED'):
         sendResponse({ success: false, error: 'dns-error' });
         break;
+
       case error.message.includes('net::ERR_CONNECTION_REFUSED'):
         sendResponse({ success: false, error: 'forbidden' });
         break;
+
       case error.message.includes('net::ERR_INTERNET_DISCONNECTED'):
         sendResponse({ success: false, error: 'offline' });
         break;
+
       case error.message.includes('net::ERR_CONNECTION_TIMED_OUT'):
         sendResponse({ success: false, error: 'offline-server' });
         break;
+
       default:
         sendResponse({ success: false, error: 'network-error' });
         break;
@@ -220,5 +227,5 @@ function handleApiError(error, sendResponse) {
   else {
     sendResponse({ success: false, error: 'unexpected-error' });
   }
-  console.log('Response sent to popup.js from handleApiError() in api.js: ', error);
+  // console.log('Response sent to popup.js from handleApiError() in api.js: ', error);
 }
