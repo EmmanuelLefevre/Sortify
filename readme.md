@@ -30,7 +30,7 @@ chrome://settings/content/notifications
 chrome-extension://<id>
 ```
 ```bash
-chrome-extension://hajlfpcnjgppoapaaieccblofcgpmbpc
+chrome-extension://mphajpdnlknfhohmjkdkljjjkgdfello
 ```
 ![Chrome extension id](https://github.com/EmmanuelLefevre/MarkdownImg/blob/main/chrome_extension_id.png)  
 
