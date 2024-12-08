@@ -31,7 +31,12 @@ chrome-extension://<id>
 ```bash
 chrome-extension://hajlfpcnjgppoapaaieccblofcgpmbpc
 ```
+
 ![Chrome extension id](https://github.com/EmmanuelLefevre/MarkdownImg/blob/main/chrome_extension_id.png)
+6. Accéder aux requêtes réseau du service worker
+
+![Chrome extension requête](https://github.com/EmmanuelLefevre/MarkdownImg/blob/main/chrome_extension_requête.png)
+
 
 
 ## SERVEO CONFIGURATION
