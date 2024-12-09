@@ -92,18 +92,18 @@
     --h1-gradient-effect: linear-gradient(var(--gradient-angle1), var(--gradient1) var(--start-position), var(--gradient2) var(--end-position1));
 
     /*------Shadows------*/
-    --box-shadow-color: rgba(0, 0, 0, 0.6);
+    --notifs-container-shadow-color: rgba(0, 0, 0, 0.6);
     --button-shadow-color: rgba(0, 0, 0, 0.7);
     --h1-shadow-color: rgba(0, 0, 0, 0.1);
     --icon-shadow-color: rgba(0, 0, 0, 0.2);
     --select-shadow-color: rgba(0, 0, 0, 0.5);
     --text-shadow-color: rgba(0, 0, 0, 0.2);
 
-    --box-shadow: 0px 11px 5px -8px var(--box-shadow-color);
+    --notifs-container-shadow: 0px 11px 5px -8px var(--notifs-container-shadow-color);
     --button-shadow: 0px 7px 6px -4px var(--button-shadow-color);
     --h1-shadow: 3px 3px 0px var(--h1-shadow-color);
     --icon-shadow: drop-shadow(2px 1px 0px var(--icon-shadow-color));
-    --select-shadow: 0px 7px 5px -6px var(--select-shadow-color);
+    --select-shadow: 0px 7px 3px -6px var(--select-shadow-color);
     --text-shadow: 0px 2px 2px var(--text-shadow-color);
 
     /*------Fonts------*/
@@ -410,11 +410,14 @@ div.update-category-container {
     flex-direction: column;
 }
 div.update-category-select-container {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 150px;
-    height: 36px;
+    /* width: 150px;
+    height: 36px; */
+    width: 135px;
+    height: 35px;
     margin: 0px auto;
     border-radius: 4px;
     overflow: hidden;
@@ -423,16 +426,54 @@ div.update-category-input-container {
     flex-direction: row;
     margin-top: 34px;
 }
+div.update-category-select-container.open ul#update-category-select-options {
+    display: block;
+}
 /* Border */
 .rotating-select-border-line {
     width: 200px;
-    height: 23px;
+    height: 19px;
     background: linear-gradient(90deg, var(--fourth-color), var(--fourth-color));
     rotate: -30deg;
-    animation: spinningBorderPoint 4s linear infinite;
+    animation: spinningBorderPoint 5s linear infinite;
 }
-/* Select */
-#update-categories-select {
+/* Select Button */
+button#update-category-select {
+    position: absolute;
+    cursor: pointer;
+    /* text-align: left; */
+    color: var(--primary-color);
+    font-size: var(--font-size-select);
+    width: 130px;
+    height: 31px;
+    top: 2px;
+    border-radius: 4px;
+    box-shadow: var(--select-shadow);
+    border: var(--border-width1) var(--border-solid) var(--primary-color);
+    background-color: var(--background-color);
+    outline: var(--border-width2) var(--border-solid) rgba(0, 0, 0, 0);
+    transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
+}
+/* Liste */
+ul#update-category-select-options {
+    position: absolute;
+    display: none;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    top: 100%;
+    left: 0;
+    list-style: none;
+    border: var(--border-width1) var(--border-solid) var(--primary-color);
+    border-top: none;
+    background-color: var(--background-color);
+    z-index: 1000;
+}
+ul#update-category-select-options li {
+    cursor: pointer;
+    padding: 10px;
+}
+/* #update-category-select {
     position: absolute;
     cursor: pointer;
     color: var(--primary-color);
@@ -446,13 +487,19 @@ div.update-category-input-container {
     background-color: var(--background-color);
     outline: var(--border-width2) var(--border-solid) rgba(0, 0, 0, 0);
     transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
-}
+} */
 /* Option */
 /* Focus */
-#update-categories-select:focus {
-    /* outline: none; */
-    border: var(--border-width1) var(--border-solid) var(--primary-color);
+#update-category-select:focus {
+    outline: none;
+    border: var(--border-width2) var(--border-solid) var(--primary-color);
 }
+/* Hover */
+ul#update-category-select-options li:hover {
+    color: var(--white);
+    background-color: var(--primary-color);
+}
+
 
 /*===============ERROR MESSAGE===============*/
 /*------Add Category------*/
@@ -499,7 +546,7 @@ button#enable-notifs {
     margin: 30px 0 20px 0;
     padding: 2px;
     border-radius: 5px;
-    box-shadow: var(--box-shadow);
+    box-shadow: var(--notifs-container-shadow);
 }
 /*------Icon / Img------*/
 .notifs-icon-container {
