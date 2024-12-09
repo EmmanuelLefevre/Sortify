@@ -64,9 +64,6 @@
 }
 
 /*------Spinning Border Point------*/
-.spinningBorderPoint {
-  animation: spinningBorderPoint 4s linear infinite;
-}
 @keyframes spinningBorderPoint {
   from {
     transform: rotate(0deg);
