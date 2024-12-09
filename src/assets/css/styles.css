@@ -473,6 +473,8 @@ ul#update-category-select-options li {
     cursor: pointer;
     padding: 10px;
 }
+
+/* Select option => css avec balise html < select > */
 /* #update-category-select {
     position: absolute;
     cursor: pointer;
@@ -488,7 +490,9 @@ ul#update-category-select-options li {
     outline: var(--border-width2) var(--border-solid) rgba(0, 0, 0, 0);
     transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
 } */
+
 /* Option */
+
 /* Focus */
 #update-category-select:focus {
     outline: none;
