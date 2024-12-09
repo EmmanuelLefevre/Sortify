@@ -501,12 +501,12 @@ async function updateCategoriesSelectList() {
 // ##### Afficher l'input du select au focus ##### //
 const selectUpdateCategory = document.getElementById('update-category-select');
 const updateCategoryInputContainer = document.querySelector('.update-category-input-container');
+const updateCategoryInputContent = document.querySelector('.update-category-input-content');
 
 document.addEventListener('DOMContentLoaded', () => {
   updateCategoryInputContainer.style.display = 'none';
 });
 
-// ##### Afficher l'input au focus ##### //
 selectUpdateCategory.addEventListener('focus', () => {
   updateCategoryInputContainer.style.display = 'flex';
 });
@@ -527,8 +527,8 @@ selectUpdateCategory.addEventListener('change', () => {
 
 // ##### Dropdown select options ##### //
 document.getElementById('update-category-select').addEventListener('click', function () {
-  const updateCategorySelectContainer = this.parentElement;
-  updateCategorySelectContainer.classList.toggle('open');
+  const updateCategoryInputContent = this.parentElement;
+  updateCategoryInputContent.classList.toggle('open');
 });
 
 // ##### Ajouter classe qui affiche la liste déroulante lorsque le conteneur a la classe .open ##### //
