@@ -1,0 +1,37 @@
+{
+    "categories": {
+        "13185838-457e-49e4-ae80-5422baf4abc5": "Information",
+        "46ee6227-6ad8-43ae-bf78-926e9ed032b1": "R\u00e9seaux sociaux",
+        "4c9953de-b3f0-4332-96b9-a795a7ca7dba": "Shopping",
+        "77f48bc2-a2b3-4ea0-8f58-59b9ed8f0ba1": "Divertissement",
+        "5735c64e-a244-460c-8da3-917101c9d908": "\u00c9ducation",
+        "629e6151-2921-4997-916c-d1fc8cda3700": "Technologie",
+        "9cedcc3b-e0b1-4144-97d8-81ce5e343a24": "Sport",
+        "a72a6e6e-f7fa-4b09-805a-eb8c68c17ab8": "Sant\u00e9",
+        "452c601c-a4e7-4ece-9ce7-55507e3eecd8": "Voyage",
+        "93afc661-0560-42ef-bf81-bf97d7994fb2": "Finance",
+        "15a38170-7374-4fe4-af79-2cd182fd94d1": "Musique"
+    },
+    "urls": {
+        "f1772e9b-fe75-4396-b028-eedb77cfcd73": {
+            "url": "https://www.youtube.com",
+            "title": "YouTube",
+            "category_id": "77f48bc2-a2b3-4ea0-8f58-59b9ed8f0ba1"
+        },
+        "0aa67737-ed1e-40c5-aa5c-88df6d5e1db6": {
+            "url": "https://www.github.com",
+            "title": "GitHub \u00b7 Build and ship software on a single, collaborative platform \u00b7 GitHub",
+            "category_id": "629e6151-2921-4997-916c-d1fc8cda3700"
+        },
+        "0ee71aba-5b18-49e0-942b-bda0a4eb11c0": {
+            "url": "https://www.facebook.com",
+            "title": "Facebook - Connexion ou inscription",
+            "category_id": "46ee6227-6ad8-43ae-bf78-926e9ed032b1"
+        },
+        "b4b98aec-b986-4924-b2ca-ae44b84fbf58": {
+            "url": "https://www.tiktok.com",
+            "title": "TikTok - Make Your Day",
+            "category_id": "46ee6227-6ad8-43ae-bf78-926e9ed032b1"
+        }
+    }
+}
