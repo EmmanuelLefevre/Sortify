@@ -63,6 +63,7 @@
     --font-size-label: 14px;
     --font-size-label-focus: 9px;
     --font-size-p: 14px;
+    --font-size-select-option: 14px;
     --font-size-result: 14px;
     --font-size-select: 14px;
 
@@ -402,7 +403,10 @@ button#update-category-btn:disabled img.update-category-icon {
 
 /*------Add Category------*/
 /*------Update Category------*/
-/* Container */
+/* Content/Container */
+div.update-category-select-content {
+    position: relative;
+}
 div.update-category-container {
     display: flex;
     justify-content: center;
@@ -426,12 +430,12 @@ div.update-category-input-container {
     flex-direction: row;
     margin-top: 34px;
 }
-div.update-category-select-container.open ul#update-category-select-options {
-    display: block;
-}
+/* div.update-category-select-container.open ul#update-category-select-options {
+    display: flex;
+} */
 /* Border */
 .rotating-select-border-line {
-    width: 200px;
+    width: 210px;
     height: 19px;
     background: linear-gradient(90deg, var(--fourth-color), var(--fourth-color));
     rotate: -30deg;
@@ -441,11 +445,13 @@ div.update-category-select-container.open ul#update-category-select-options {
 button#update-category-select {
     position: absolute;
     cursor: pointer;
+    /* text-shadow: var(--text-shadow); */
     /* text-align: left; */
     color: var(--primary-color);
     font-size: var(--font-size-select);
-    width: 130px;
-    height: 31px;
+    width: 135px;
+    height: 33px;
+    padding: 5px 6px;
     top: 2px;
     border-radius: 4px;
     box-shadow: var(--select-shadow);
@@ -456,9 +462,15 @@ button#update-category-select {
 }
 /* Liste */
 ul#update-category-select-options {
-    position: absolute;
     display: none;
-    width: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: absolute;
+    font-size: var(--font-size-select-option);
+    color: var(--primary-color);
+    width: 130px;
+    height: fit-content;
     margin: 0;
     padding: 0;
     top: 100%;
@@ -467,7 +479,10 @@ ul#update-category-select-options {
     border: var(--border-width1) var(--border-solid) var(--primary-color);
     border-top: none;
     background-color: var(--background-color);
-    z-index: 1000;
+    z-index: 7500;
+}
+div.update-category-select-content.open ul#update-category-select-options {
+    display: flex;
 }
 ul#update-category-select-options li {
     cursor: pointer;
@@ -496,14 +511,22 @@ ul#update-category-select-options li {
 /* Focus */
 #update-category-select:focus {
     outline: none;
+    color: var(--white);
+    background-image: var(--button-gradient-effect);
     border: var(--border-width2) var(--border-solid) var(--primary-color);
 }
 /* Hover */
+button#update-category-select:hover {
+    color: var(--white);
+    background-image: var(--button-gradient-effect);
+}
+#update-category-select:hover + .rotating-select-border-line {
+    animation-play-state: none;
+}
 ul#update-category-select-options li:hover {
     color: var(--white);
     background-color: var(--primary-color);
 }
-
 
 /*===============ERROR MESSAGE===============*/
 /*------Add Category------*/
@@ -530,7 +553,7 @@ ul#update-category-select-options li:hover {
     background: var(--background-color);
     padding: 13px 3px 11px 3px;
     border-radius: 3px;
-    z-index: 9999;
+    z-index: 5000;
 }
 /*------Button------*/
 button#enable-notifs {
