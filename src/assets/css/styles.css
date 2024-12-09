@@ -429,7 +429,7 @@ div.update-category-input-container {
     height: 23px;
     background: linear-gradient(90deg, var(--fourth-color), var(--fourth-color));
     rotate: -30deg;
-    animation: spinningBorderPoint 2s linear infinite;
+    animation: spinningBorderPoint 4s linear infinite;
 }
 /* Select */
 #update-categories-select {
