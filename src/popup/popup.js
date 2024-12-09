@@ -531,6 +531,30 @@ document.getElementById('update-category-select').addEventListener('click', func
   updateCategorySelectContainer.classList.toggle('open');
 });
 
+// Ajouter classe qui affiche la liste déroulante lorsque le conteneur a la classe .open
+// document.getElementById('update-category-select').addEventListener('click', function () {
+//   const updateCategorySelectContainer = this.parentElement;
+//   updateCategorySelectContainer.classList.toggle('open');
+
+//   // Basculer l'affichage de la liste
+//   const optionsList = document.getElementById('update-category-select-options');
+//   if (updateCategorySelectContainer.classList.contains('open')) {
+//     optionsList.style.display = 'block';
+//   }
+//   else {
+//     optionsList.style.display = 'none';
+//   }
+// });
+
+// Amélioration => fermer la liste si user click en dehors du menu
+// document.addEventListener('click', function (event) {
+//   const container = document.querySelector('.update-category-select-container');
+//   if (!container.contains(event.target)) {
+//     container.classList.remove('open');
+//     document.getElementById('update-category-select-options').style.display = 'none';
+//   }
+// });
+
 
 // ################################################# //
 // ########## Formulaire ajout de favoris ########## //
