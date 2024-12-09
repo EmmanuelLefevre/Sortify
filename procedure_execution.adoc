@@ -1,0 +1,23 @@
+### Installer les librairies
+
+```
+pip install -r requirements.txt
+```
+
+### Lancer l'application python
+
+```
+python api/app.py
+```
+
+### Lancer une instance ollama
+
+```
+ollama serve
+```
+
+### Faire une requète à partir d'un url (ex. https://www.youtube.com)
+
+```
+curl -X POST http://127.0.0.1:5000/fetch-data -H "Content-Type: application/json" -d '{"url": "https://www.youtube.com"}'
+```
