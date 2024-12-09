@@ -18,7 +18,7 @@ const isChromeExtension = () => {
 // ################################################################ //
 // ########## Getter/Setter local storage Sortify (JSON) ########## //
 // ################################################################ //
-// Setter
+// ##### Setter ##### //
 const setLocalStorage = (key, value) => {
   // Validation
   if (typeof value !== 'object' || value === null) {
@@ -33,7 +33,7 @@ const setLocalStorage = (key, value) => {
   }
 };
 
-// Getter avec fallback en cas de données invalides
+// ##### Getter avec fallback en cas de données invalides ##### //
 const getLocalStorage = (key) => {
   try {
     const value = localStorage.getItem(key);
@@ -69,7 +69,7 @@ const getLocalStorage = (key) => {
 // ####################################################### //
 // ########## Initialiser JSON du local storage ########## //
 // ####################################################### //
-// Initialiser données des notifications
+// ##### Initialiser données des notifications ##### //
 const initializeNotificationsStorage = () => {
   const defaultNotificationPermission = { notifications: false };
   const notifData = getLocalStorage("SortifyNotifications");
@@ -81,7 +81,7 @@ const initializeNotificationsStorage = () => {
   return notifData;
 };
 
-// Initialiser les données des alertes
+// ##### Initialiser les données des alertes ##### //
 const initializeAlertStorage = () => {
   const defaultAlertSettings = {
     denied_notifications: true,
@@ -100,7 +100,7 @@ const initializeAlertStorage = () => {
 // ######################################### //
 // ########## Gestion des alertes ########## //
 // ######################################### //
-// Afficher une alerte personnalisée si elle n'a pas déjà été affichée
+// ##### Afficher une alerte personnalisée si elle n'a pas déjà été affichée ##### //
 const showAlertOnce = (key, message, timeout = 2000) => {
   // Vérifier si key est passer en paramètre
   if (key !== undefined) {
@@ -115,18 +115,18 @@ const showAlertOnce = (key, message, timeout = 2000) => {
     setLocalStorage("SortifyAlerts", alertStatus);
   }
 
-  // Afficher l'alerte après le délai spécifié
+  // Afficher l'alerte après le délai spécifié ##### //
   setTimeout(() => alert(message), timeout);
 };
 
-// Réactiver une alerte spécifique
+// ##### Réactiver une alerte spécifique
 const resetAlertStatus = (key) => {
   const alertStatus = getLocalStorage("SortifyAlerts") || {};
   alertStatus[key] = true;
   setLocalStorage("SortifyAlerts", alertStatus);
 };
 
-// Alerte normale
+// ##### Alerte normale ##### //
 const showAlert = (message, timeout = 2000) => {
   setTimeout(() => alert(message), timeout);
 }
@@ -374,7 +374,7 @@ const handleNotificationButtonClick = () => {
 // ################################# //
 // ########## Animations  ########## //
 // ################################# //
-// Bouton ajout des favoris
+// ##### Bouton ajout des favoris ##### //
 const addBtnBookmarkAnimations = () => {
   const submitBookmarkButton = document.getElementById("bookmark-btn");
   const rotatingBorder = document.querySelector('.rotating-border-line');
@@ -387,7 +387,8 @@ const addBtnBookmarkAnimations = () => {
   submitBookmarkButton.addEventListener('mouseenter', () => toggleDisplay(true));
   submitBookmarkButton.addEventListener('mouseleave', () => toggleDisplay(false));
 };
-// Select modifier la catégorie
+
+// ##### Select modifier la catégorie ##### //
 const addSelectUpdateCategoryAnimation = () => {
   const selectUpdateCategory = document.querySelector('.update-category-select-container');
   selectUpdateCategory.classList.add("bounce");
@@ -396,7 +397,7 @@ const addSelectUpdateCategoryAnimation = () => {
 // ############################################################################ //
 // ########## Fonctions utilitaires formulaires API/Validation/Error ########## //
 // ############################################################################ //
-// Fonction asynchrone pour envoyer l'action à effectuer dans api.js
+// ##### Fonction asynchrone pour envoyer l'action à effectuer dans api.js ##### //
 async function sendMessageAsync(requestData) {
   return new Promise((resolve, reject) => {
     chrome.runtime.sendMessage(requestData , function(response) {
@@ -413,7 +414,7 @@ async function sendMessageAsync(requestData) {
   });
 }
 
-// Afficher erreurs (notifications / alertes) du service worker en fonction de la permission
+// ##### Afficher erreurs (notifications / alertes) du service worker en fonction de la permission ##### //
 function displayServiceWorkerError(notificationType, message) {
   if (Notification.permission === 'granted') {
     createNotification(notificationType);
@@ -423,7 +424,7 @@ function displayServiceWorkerError(notificationType, message) {
   }
 }
 
-// Gérer erreurs provenant du service worker
+// ##### Gérer erreurs provenant du service worker ##### //
 function handleServiceWorkerError(error) {
   // Accéder directement à l'objet error (propriété 'error' ou objet entier)
   const errorType = error.error || error;
@@ -494,34 +495,42 @@ async function updateCategoriesSelectList() {
   }
 }
 
-// ######################################################### //
-// ########## Afficher l'input du select au focus ########## //
-// ######################################################### //
-const selectUpdateCategory = document.getElementById('update-categories-select');
+// ############################################ //
+// ########## Select update category ########## //
+// ############################################ //
+// ##### Afficher l'input du select au focus ##### //
+const selectUpdateCategory = document.getElementById('update-category-select');
 const updateCategoryInputContainer = document.querySelector('.update-category-input-container');
 
 document.addEventListener('DOMContentLoaded', () => {
   updateCategoryInputContainer.style.display = 'none';
 });
 
-// Afficher l'input au focus
+// ##### Afficher l'input au focus ##### //
 selectUpdateCategory.addEventListener('focus', () => {
   updateCategoryInputContainer.style.display = 'flex';
 });
 
-// Cacher input au blur si valeur du select = false
+// ##### Cacher input au blur si valeur du select = false ##### //
 selectUpdateCategory.addEventListener('blur', () => {
   if (!selectUpdateCategory.value) {
     updateCategoryInputContainer.style.display = 'none';
   }
 });
 
-// Afficher input si valeur du select = true
+// ##### Afficher input si valeur du select = true ##### //
 selectUpdateCategory.addEventListener('change', () => {
   if (selectUpdateCategory.value) {
     updateCategoryInputContainer.style.display = 'flex';
   }
 });
+
+// ##### Dropdown select options ##### //
+document.getElementById('update-category-select').addEventListener('click', function () {
+  const updateCategorySelectContainer = this.parentElement;
+  updateCategorySelectContainer.classList.toggle('open');
+});
+
 
 // ################################################# //
 // ########## Formulaire ajout de favoris ########## //
@@ -566,27 +575,27 @@ const submitCategoryButton = document.getElementById('category-btn');
 const categoryInputContainer = document.querySelector('.category-input-container');
 const spanCategoryTooltip = document.querySelector('.category-tooltip');
 
-// Désactiver submit bouton
+// ##### Désactiver submit bouton ##### //
 submitCategoryButton.disabled = true;
 
-// Vérifier si utilisateur a déjà saisi
+// ##### Vérifier si utilisateur a déjà saisi ##### //
 let categoryHasTyped = false;
 
-// Injecter les contraintes de validation
+// ##### Injecter les contraintes de validation ##### //
 categoryInput.setAttribute('required', true);
 categoryInput.setAttribute('minlength', 3);
 
-// Message d'erreur
+// ##### Message d'erreur ##### //
 const categoryErrorMessage = document.createElement('span');
 categoryErrorMessage.id = 'category-error-message';
 categoryInputContainer.insertAdjacentElement('afterend', categoryErrorMessage);
 
-// Activer/désactiver bouton soumission
+// ##### Activer/désactiver bouton soumission ##### //
 const toggleSubmitButtonState = () => {
   submitCategoryButton.disabled = !categoryInput.validity.valid;
 };
 
-// Comportement de validation
+// ##### Comportement de validation ##### //
 const updateValidationState = () => {
   const value = categoryInput.value.trim();
   let error = '';
@@ -642,7 +651,7 @@ const updateValidationState = () => {
   }
 };
 
-// Écouter événements changements d'état de l'input
+// ##### Écouter événements changements d'état de l'input ##### //
 categoryInput.addEventListener('input', () => {
   // MAJ état de saisie
   const value = categoryInput.value.trim();
@@ -663,7 +672,7 @@ categoryInput.addEventListener('input', () => {
   toggleSubmitButtonState();
 });
 
-// Input unfocus (masquer message d'erreur + retirer classe de validation si input vide)
+// ##### Input unfocus (masquer message d'erreur + retirer classe de validation si input vide) ##### //
 categoryInput.addEventListener('blur', () => {
   if (!categoryInput.validity.valid && categoryInput.value.trim() === '') {
     spanCategoryBorder.classList.remove('invalid');
@@ -676,7 +685,7 @@ categoryInput.addEventListener('blur', () => {
   }
 });
 
-// Soumission formulaire
+// ##### Soumission formulaire ##### //
 categoryForm.addEventListener('submit', async (event) => {
   // Empêcher soumission classique du formulaire
   event.preventDefault();
@@ -722,15 +731,15 @@ categoryForm.addEventListener('submit', async (event) => {
 // ########################################################### //
 // ########## Formulaire modification de catégories ########## //
 // ########################################################### //
-// Désactiver submit bouton
-// Vérifier si utilisateur a déjà saisi
+// ##### Désactiver submit bouton ##### //
+// ##### Vérifier si utilisateur a déjà saisi ##### //
 let categoriesHasTyped = false;
-// Injecter les contraintes de validation
-// Message d'erreur
-// Activer / désactiver bouton soumission
-// Comportement de validation
+// ##### Injecter les contraintes de validation ##### //
+// ##### Message d'erreur ##### //
+// ##### Activer / désactiver bouton soumission ##### //
+// ##### Comportement de validation ##### //
 
-// Soumission formulaire
+// ##### Soumission formulaire ##### //
 updateCategoryForm.addEventListener('submit', async (event) => {
   // Empêcher soumission classique du formulaire
   event.preventDefault();
