@@ -1,0 +1,158 @@
+<!-- Copyright (c) Novembre 2024
+LEFEVRE Emmanuel
+Cod!ngT3kSolutions, SIRET: 50863331000026
+Tous droits réservés.
+
+Licence propriétaire Sortify. Aucun droit n'est accordé en dehors des conditions spécifiées dans la présente licence.
+Pour plus de détails, consultez le fichier LICENSE. -->
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sortify est une application Chrome qui facilite la gestion et l'organisation de vos favoris en s'appuyant sur l'IA. Celle-ci automatise le classement de ces derniers en les labélisant.">
+  <meta name="description" content="Extension développée en JavaScript vanilla, HTML5/CSS3, Llama 3.2">
+  <meta name="author" content="Emmanuel Lefevre, Camille Hoareau, Adrien Lazaille">
+  <meta name="keywords" content="Favoris, bookmarks, IA, gestion de tri, automatisation">
+  <meta name="theme-color" content="#008080">
+
+  <link rel="stylesheet" href="/src/assets/css/styles.css">
+  <link rel="stylesheet" href="/src/assets/css/animations.css">
+
+  <title>Sortify</title>
+</head>
+
+<body>
+  <div class="sortify-app">
+    <main>
+
+      <div class="sortify-app-content">
+        <div class="sortify-content">
+
+          <div class="h1-container">
+            <h1 class="sortify-title">Sortify</h1>
+            <h1 class="sortify-title border-layer">Sortify</h1>
+          </div>
+          <img src="/src/assets/logo/logo.png"
+               class="sortify-logo"
+               alt="Logo de Sortify, l'application de gestion des favoris">
+
+          <!-- Formulaire d'ajout de favoris -->
+          <form id="bookmark-form"
+                method="post"
+                novalidate>
+            <div class="bookmark-btn-container">
+              <div class="rotating-border-line"></div>
+              <button type="submit"
+                      id="bookmark-btn"
+                      aria-label="Ajouter cet élément aux favoris">Ajouter
+              </button>
+            </div>
+          </form>
+
+          <!-- Formulaire de création de catégories -->
+          <form id="category-form"
+                method="post"
+                novalidate>
+            <div class="category-input-container">
+              <input type="text"
+                     id="category-input"
+                     name="category"
+                     autocomplete="off"
+                     spellcheck="false"
+                     placeholder="Créer une catégorie"
+                     aria-label="Champ de saisie de création d'une catégorie pour les favoris"
+                     required/>
+              <button type="submit"
+                      id="category-btn"
+                      aria-label="Créer une catégorie pour les favoris">
+                <img src="/src/assets/icons/label_24.png"
+                     class="category-icon"
+                     alt="Icône représentant le bouton permettant de créer une catégorie">
+                <span class="category-tooltip">Saisir</span>
+              </button>
+              <span id="category-border-input"></span>
+              <label for="category-input">Créer une catégorie</label>
+            </div>
+          </form>
+
+          <!-- Formulaire de modification de catégories -->
+          <form id="update-category-form"
+                method="post"
+                novalidate>
+            <div class="update-category-container">
+              <!-- <div class="update-category-select-container">
+                <div class="rotating-select-border-line"></div>
+                <select id="update-category-select"
+                        name="category">
+                  <option value="" hidden>Modifier catégorie</option>
+                  <option value="1">Développement</option>
+                  <option value="2">Symfony</option>
+                  <option value="3">Programmation</option>
+                </select>
+              </div> -->
+              <div class="update-category-select-content">
+                <div class="update-category-select-container">
+                  <div class="rotating-select-border-line"></div>
+                  <button id="update-category-select"
+                          aria-label="Sélectionner la catégorie à modifier">Modifier catégorie
+                  </button>
+                </div>
+                <ul id="update-category-select-options">
+                  <li data-value="1">Développement</li>
+                  <li data-value="2">Symfony</li>
+                  <li data-value="3">Programmation</li>
+                </ul>
+              </div>
+              <div class="update-category-input-container">
+                <input type="text"
+                        id="update-category-input"
+                        name="update-category"
+                        autocomplete="off"
+                        spellcheck="false"
+                        placeholder="Modifier la catégorie"
+                        aria-label="Champ de saisie de modification d'une catégorie pour les favoris"
+                        required/>
+                <button type="submit"
+                        id="update-category-btn"
+                        aria-label="Modifier une catégorie pour les favoris">
+                  <img src="/src/assets/icons/label_24.png"
+                        class="update-category-icon"
+                        alt="Icône représentant le bouton permettant de modifier une catégorie">
+                  <span class="update-category-tooltip">Saisir</span>
+                </button>
+                <span id="update-category-border-input"></span>
+                <label for="update-category-input">Modifier la catégorie</label>
+              </div>
+            </div>
+          </form>
+
+          <!-- Activer les notifications desktop -->
+          <div class="notifs-border-container">
+            <div id="notifs-container">
+              <div class="notifs-icon-container">
+                <div class="notifs-icon ringingBell">
+                  <img alt="Image de cloche représentant une alerte de notifications">
+                </div>
+              </div>
+              <button id="enable-notifs"
+                      aria-label="Activer les notifications">Activer les notifications
+              </button>
+            </div>
+          </div>
+
+        </div> <!-- sortify-content -->
+        <div class="request-result"
+             role="status"
+             aria-live="polite">
+        </div>
+      </div> <!-- sortify-app-content -->
+
+    </main>
+  </div> <!-- sortify-app -->
+
+  <script defer src="/src/popup/popup.js"></script>
+
+</body>
+</html>

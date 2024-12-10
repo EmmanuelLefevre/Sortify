@@ -1,0 +1,54 @@
+{
+  "manifest_version": 3,
+  "name": "Sortify",
+  "version": "1.0",
+  "description": "Extension Chrome de tri automatique des favoris",
+  "permissions": [
+    "scripting",
+    "tabs",
+    "storage"
+  ],
+  "optional_permissions": [],
+  "action": {
+    "default_icon": {
+      "16": "src/assets/icons/logo_16.png",
+      "48": "src/assets/icons/logo_48.png",
+      "128": "src/assets/icons/logo_128.png"
+    },
+    "default_popup": "src/popup/popup.html",
+    "default_title": "Cliquez ici pour gérer vos favoris"
+  },
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
+  "background": {
+    "service_worker": "src/api/api.js"
+  },
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "windows": "Ctrl+Shift+Y",
+        "mac": "Command+Shift+Y",
+        "linux": "Ctrl+Shift+J"
+      }
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "css": [
+        "src/assets/css/styles.css",
+        "src/assets/css/animations.css"
+      ],
+      "js": [
+        "src/assets/js/browser.js"
+      ]
+    }
+  ],
+  "icons": {
+    "16": "src/assets/icons/logo_16.png",
+    "48": "src/assets/icons/logo_48.png",
+    "128": "src/assets/icons/logo_128.png"
+  }
+}
