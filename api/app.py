@@ -18,7 +18,7 @@ def fetch_data():
         label = answer_question(url)
         try:
             return label, 200
-        except:
+        except Exception:
             return str(label), 500
     except requests.exceptions.RequestException as e:
         return jsonify({'error': str(e)}), 500

@@ -4,6 +4,8 @@
 pip install -r requirements.txt
 ```
 
+### Changer le path du DATAMODEL dans classify_url.py (ligne 9)
+
 ### Lancer l'application python
 
 ```
