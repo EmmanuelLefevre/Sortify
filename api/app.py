@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import requests
 import json
 
@@ -6,6 +7,9 @@ from classify_url import answer_question
 
 
 app = Flask(__name__)
+
+# Application de CORS à toute l'application (permettre les requêtes de toutes les origines par défaut)
+CORS(app)
 
 @app.route('/fetch-data', methods=['POST'])
 def fetch_data():
@@ -24,4 +28,5 @@ def fetch_data():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
+    # Le mode debug active le rechargement automatique
     app.run(debug=True)

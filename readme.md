@@ -82,7 +82,7 @@ python api/app.py
 ```bash
 ollama serve
 ```
-5. Faire une requète à partir d'un url (ex. https://www.youtube.com)
+5. Faire une requète à partir d'une url (ex. https://www.youtube.com)
 ```bash
 curl -X POST http://127.0.0.1:5000/fetch-data -H "Content-Type: application/json" -d '{"url": "https://www.youtube.com"}'
 ```
