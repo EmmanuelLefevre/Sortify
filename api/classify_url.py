@@ -4,7 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 
 
-API_URL = "http://localhost:11434/api/bookmark"
+API_URL = "http://localhost:11434/api/generate"
 
 PATH_DATAMODEL = "/users/Darka/Desktop/Projets/Sortify/api/datamodel.json"
 with open(PATH_DATAMODEL, "r") as f:
@@ -45,7 +45,7 @@ def create_prompt(url, scraped_data):
     if scraped_data.get('meta_info').get('keywords'):
         prompt += f"Meta keywords: {scraped_data.get('meta_info').get('keywords')}\n"
     categories = list(DATAMODEL.get("categories").values())
-    prompt += f"Catégorise cet url selon les informations ci-dessus en choisissant la catégorie de la plus appropriée dans la liste suivante : {categories}. Ta réponse doit consister uniquement de la catégorie."
+    prompt += f"Catégorise cet url selon les informations ci-dessus en choisissant la catégorie la plus appropriée dans la liste suivante : {categories}. Ta réponse doit consister uniquement de la catégorie."
     return prompt
 
 
