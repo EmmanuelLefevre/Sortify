@@ -395,14 +395,14 @@ const addSelectUpdateCategoryAnimation = () => {
 }
 
 // ############################################################################ //
-// ########## Fonctions utilitaires formulaires API/Validation/Error ########## //
+// ########## Fonctions utilitaires formulaires Background/Validation/Error ########## //
 // ############################################################################ //
-// ##### Fonction asynchrone pour envoyer l'action à effectuer dans api.js ##### //
+// ##### Fonction asynchrone pour envoyer l'action à effectuer dans background.js ##### //
 async function sendMessageAsync(requestData) {
   return new Promise((resolve, reject) => {
     chrome.runtime.sendMessage(requestData , function(response) {
 
-      // console.log('Response in popup.js from handleApiError() in api.js:', response);
+      // console.log('Response in popup.js from handleApiError() in background.js:', response);
 
       if (response.success) {
         resolve(response);
@@ -732,7 +732,7 @@ categoryForm.addEventListener('submit', async (event) => {
             categoryName: categoryName
           });
 
-          // Traiter la réponse de l'API (notif / alert / success message )
+          // Traiter la réponse de background.js (notif / alert / success message )
           if (Notification.permission === 'granted') {
             createNotification('category');
           }

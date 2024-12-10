@@ -3,7 +3,11 @@
 ## SOMMAIRE
 - [INTRODUCTION](#introduction)
 - [CHROME EXTENSIONS SETTINGS](#chrome-extensions-settings)
-- [API REQUIREMENTS](#api-requirements)
+- [API](#api)
+  - [Installer Python](#installer-python)
+  - [Installer Ollama](#installer-ollama)
+  - [Requirements](#requirements)
+  - [Procedure](#Procedure)
 - [SERVEO CONFIGURATION](#serveo-configuration)
 - [LIENS UTILES](#liens-utiles)
 
@@ -39,11 +43,49 @@ chrome-extension://mphajpdnlknfhohmjkdkljjjkgdfello
 
 ![Chrome extension requête](https://github.com/EmmanuelLefevre/MarkdownImg/blob/main/chrome_extension_requête.png)  
 
-## API REQUIREMENTS
+## API
+### Installer Python
+[Télécharger Python 3.13.1](https://www.python.org/downloads/)  
+
+- Checker l'installation de Python
+```bash
+python --version
+```
+- Checker l'installation de Pip
+```bash
+pip --version
+```
+
+### Installer Ollama
+[Télécharger Ollama](https://ollama.com/download)  
+
+- Checker l'installation de Ollama
+```bash
+ollama --version
+```
+### Requirements
 - Flask
-- Beatifulsoup4
+- Beautifulsoup4
 - Requests
 
+### Procedure
+1. Installer les librairies (se placer dans le répertoire /api)
+```bash
+pip install -r requirements.txt
+```
+2. Changer le path du DATAMODEL dans classify_url.py (ligne 9).
+3. Lancer l'application python
+```bash
+python api/app.py
+```
+4. Lancer une instance ollama
+```bash
+ollama serve
+```
+5. Faire une requète à partir d'un url (ex. https://www.youtube.com)
+```bash
+curl -X POST http://127.0.0.1:5000/fetch-data -H "Content-Type: application/json" -d '{"url": "https://www.youtube.com"}'
+```
 
 ## SERVEO CONFIGURATION
 Serveo.net est un service de tunneling SSH qui permet de rendre vos applications locales accessibles sur Internet sans avoir à configurer un serveur ou à manipuler des paramètres complexes de réseau. Il vous suffit de disposer d'une connexion SSH et d'un terminal pour créer un tunnel sécurisé vers votre machine locale.  
