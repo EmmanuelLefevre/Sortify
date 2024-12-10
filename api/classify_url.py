@@ -4,9 +4,9 @@ import requests
 from bs4 import BeautifulSoup
 
 
-API_URL = "http://localhost:11434/api/generate"
+API_URL = "http://localhost:11434/api/bookmark"
 
-PATH_DATAMODEL = "/home/camille/code/Camille9999/EPSI/integration-donnee/Sortify/api/datamodel.json"
+PATH_DATAMODEL = "/users/Darka/Desktop/Projets/Sortify/api/datamodel.json"
 with open(PATH_DATAMODEL, "r") as f:
     DATAMODEL = json.load(f)
 
