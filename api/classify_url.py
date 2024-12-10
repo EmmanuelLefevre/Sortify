@@ -49,6 +49,12 @@ def create_prompt(url, scraped_data):
     return prompt
 
 
+def post_process_label(label):
+    label = label.split('\n')[-1]
+    label = label[:-1] if label[-1] == '.' else label
+    label = label.replace("'", "")
+    return label
+
 
 def answer_question(url, model="llama3.2"):
 
@@ -71,9 +77,8 @@ def answer_question(url, model="llama3.2"):
     }
     response = requests.post(API_URL, json=query)
     label = response.json().get('response')
-    label = label.split('\n')[-1]
-    label = label[:-1] if label[-1] == '.' else label
-    label = label.replace("'", "")
+    label = post_process_label(label)
+
     try:
         label_id = [key for key, value in DATAMODEL.get("categories").items() if value == label][0]
         DATAMODEL.get("urls")[str(uuid.uuid4())] = {
@@ -84,5 +89,6 @@ def answer_question(url, model="llama3.2"):
         with open(PATH_DATAMODEL, "w") as f:
             json.dump(DATAMODEL, f, indent=4)
         return DATAMODEL.get("categories").get(label_id)
+
     except Exception as _:
         return "Something went wrong"
