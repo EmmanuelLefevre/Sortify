@@ -568,7 +568,13 @@ bookmarkForm.addEventListener('submit', async function (event) {
 
   if(isChromeExtension()) {
     try {
-      const response = await sendMessageAsync({ action: 'sendActiveTabUrl' });
+      // Récupérer le User-Agent du navigateur
+      const userAgent = navigator.userAgent;
+
+      const response = await sendMessageAsync({
+        action: 'sendActiveTabUrl',
+        userAgent: userAgent
+      });
 
       // Ajouter logique pour créer le dossier (sauf si déjà existant) et ajouter le favori dans le dossier avec pour valeur le nom du site (=> fonction split url et récupérer "google" dans google.com, pas de http:// et .com/.fr...)
 
