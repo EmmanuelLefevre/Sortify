@@ -9,17 +9,24 @@ from classify_url import process_url
 app = Flask(__name__)
 
 # Application de CORS à toute l'application (permettre les requêtes de toutes les origines par défaut)
-CORS(app)
+CORS(app, resources={
+    r"/api/bookmark": {
+        "methods": ["POST"]
+    }
+})
 
-@app.route('/api/bookmark', methods=['GET','POST'])
+@app.route('/api/bookmark', methods=['POST'])
 def fetch_data():
     data = request.get_json()
     url = data.get('url')
+    user_agent = data.get('userAgent')
     if not url:
         return jsonify({'error': 'URL is required'}), 400
+    if not user_agent:
+        return jsonify({'error': 'User-Agent is required'}), 400
 
     try:
-        response, status = process_url(url)
+        response, status = process_url(url, user_agent)
         return jsonify(response), status
 
     except requests.exceptions.RequestException as e:
