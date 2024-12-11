@@ -1,41 +1,45 @@
+import os
 import uuid
 import json
 import requests
 from bs4 import BeautifulSoup
+from dotenv import load_dotenv
+
+load_dotenv()
+PATH_DATAMODEL = os.getenv("DATAMODEL")
 
 
-API_URL = "http://localhost:11434/api/generate"
+API_URL = "http://localhost:11434/api/generate"  # API ollama
 
-PATH_DATAMODEL = "/users/Darka/Desktop/Projets/Sortify/api/datamodel.json"
 with open(PATH_DATAMODEL, "r") as f:
     DATAMODEL = json.load(f)
 
 
-def scrape_page(url):
+
+def scrape_page(url: str) -> dict | None:
+    """
+    Fonction scrapant une page web à partir de son url et récupérant des informations utiles pour la classifier.
+    """
     response = requests.get(url)
-    if response.status_code == 200:
-        soup = BeautifulSoup(response.content, 'html.parser')
-
-        # Extract title
-        title = soup.title.string if soup.title else 'No title'
-
-        # Extract all meta tags
-        meta_tags = soup.find_all('meta')
-        meta_info = {}
-        for tag in meta_tags:
-            if 'name' in tag.attrs and 'content' in tag.attrs:
-                    if tag.attrs['name'] in ['title', 'description', 'keywords']:
-                        meta_info[tag.attrs['name']] = tag.attrs['content']
-
-        return {
-            'title': title,
-            'meta_info': meta_info
-        }
-    else:
-        return None
+    response.raise_for_status()
+    soup = BeautifulSoup(response.content, 'html.parser')
+    title = soup.title.string if soup.title else 'No title'
+    meta_tags = soup.find_all('meta')
+    meta_info = {}
+    for tag in meta_tags:
+        if 'name' in tag.attrs and 'content' in tag.attrs:
+            if tag.attrs['name'] in ['title', 'description', 'keywords']:
+                meta_info[tag.attrs['name']] = tag.attrs['content']
+    return {
+        'title': title,
+        'meta_info': meta_info
+    }
 
 
-def create_prompt(url, scraped_data):
+def create_prompt(url: str, scraped_data: dict) -> str:
+    """
+    Fonction générant le prompt à partir des informations récupérées.
+    """
     prompt = f"URL: {url}\n"
     prompt += f"Titre de page: {scraped_data['title']}\n"
     if scraped_data.get('meta_info').get('title'):
@@ -49,46 +53,55 @@ def create_prompt(url, scraped_data):
     return prompt
 
 
-def post_process_label(label):
+def post_process_label(label: str) -> str:
+    """
+    Fonction permettant de nettoyer la sortie du LLM afin de s'assurer qu'elle correspond bien à une catégorie existante.
+    """
     label = label.split('\n')[-1]
     label = label[:-1] if label[-1] == '.' else label
     label = label.replace("'", "")
     return label
 
 
-def answer_question(url, model="llama3.2"):
+def process_url(url: str, model: str = "llama3.2") -> tuple[dict, int]:
 
-    for key, val in DATAMODEL.get("urls").items():
+    for _, val in DATAMODEL.get("urls").items():
         if url == val.get('url'):
             category_id = val.get('category_id')
             label = DATAMODEL.get("categories").get(category_id)
-            return label
+            title = val.get('title')
+            return {"label": label, "title": title}, 200
 
-    scraped_data = scrape_page(url)
-    prompt = create_prompt(url, scraped_data)
+    try:
+        scraped_data = scrape_page(url)
+    except Exception as e:
+        return {"error": f"url inaccessible : {e}"}, 500
+
     query = {
         "model": model,
-        "prompt": prompt,
+        "prompt": create_prompt(url, scraped_data),
         "temperature": 0,
         "stream": False,
         "options": {
-            "seed": 42  # Fixed seed for reproducibility
+            "seed": 42  # Fixed seed for reproducibility (temperature set at 0 doesn't seem to ensure a reproducible result for an indentical prompt)
         }
     }
-    response = requests.post(API_URL, json=query)
-    label = response.json().get('response')
-    label = post_process_label(label)
 
     try:
+        response = requests.post(API_URL, json=query)
+        label = response.json().get('response')
+        label = post_process_label(label)
         label_id = [key for key, value in DATAMODEL.get("categories").items() if value == label][0]
+        title = scraped_data.get('title')
         DATAMODEL.get("urls")[str(uuid.uuid4())] = {
                 "url": url,
-                "title": scraped_data.get('title'),
+                "title": title,
                 "category_id": label_id
             }
         with open(PATH_DATAMODEL, "w") as f:
             json.dump(DATAMODEL, f, indent=4)
-        return DATAMODEL.get("categories").get(label_id)
 
-    except Exception as _:
-        return "Something went wrong"
+        return {"label": label, "title": title}, 200
+
+    except Exception as e:
+        return {"error": f"Something went wrong: {e}"}, 500
