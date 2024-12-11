@@ -70,9 +70,13 @@ ollama --version
 - Dotenv
 
 ### Procedure
-1. Installer les librairies (se placer dans le répertoire /api)
+1. Installer les librairies (en local dans python)
 ```bash
 pip install -r api/requirements.txt
+```
+Vérifier l'installation des librairies
+```bash
+pip list
 ```
 2. Créer un .env à partir du .env.template et changer **MANUELLEMENT** les valeurs pertinentes
 ```bash
