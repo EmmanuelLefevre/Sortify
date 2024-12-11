@@ -8,7 +8,7 @@ from classify_url import process_url
 
 app = Flask(__name__)
 
-# Application de CORS à toute l'application (permettre les requêtes de toutes les origines par défaut)
+# Application de CORS à toute l'application (middleware)
 CORS(app, resources={
     r"/api/bookmark": {
         "methods": ["POST"]
