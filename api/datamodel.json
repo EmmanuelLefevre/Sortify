@@ -37,6 +37,21 @@
             "url": "https://www.twitch.tv",
             "title": "Twitch",
             "category_id": "77f48bc2-a2b3-4ea0-8f58-59b9ed8f0ba1"
+        },
+        "89bc7645-bb5d-473b-a83b-910934124e28": {
+            "url": "https://www.emmanuellefevre.com/",
+            "title": "Emmanuel Lefevre Portfolio",
+            "category_id": "629e6151-2921-4997-916c-d1fc8cda3700"
+        },
+        "492dadd1-70f3-41b2-9350-29adeb4e97f0": {
+            "url": "https://www.cabinet-curiosites.fr/",
+            "title": "No title",
+            "category_id": "46ee6227-6ad8-43ae-bf78-926e9ed032b1"
+        },
+        "7fbedd54-3400-4ca9-b0be-89ab33cc802f": {
+            "url": "https://www.youtube.com/",
+            "title": "YouTube",
+            "category_id": "46ee6227-6ad8-43ae-bf78-926e9ed032b1"
         }
     }
 }
