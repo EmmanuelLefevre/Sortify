@@ -7,7 +7,7 @@
   - [Installer Python](#installer-python)
   - [Installer Ollama](#installer-ollama)
   - [Requirements](#requirements)
-  - [Procedure](#Procedure)
+  - [Procedure](#procedure)
 - [SERVEO CONFIGURATION](#serveo-configuration)
 - [LIENS UTILES](#liens-utiles)
 
@@ -67,6 +67,7 @@ ollama --version
 - Flask
 - Beautifulsoup4
 - Requests
+- Dotenv
 
 ### Procedure
 1. Installer les librairies (se placer dans le répertoire /api)
