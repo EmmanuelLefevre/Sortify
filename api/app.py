@@ -3,7 +3,7 @@ from flask_cors import CORS
 import requests
 import json
 
-from classify_url import answer_question
+from classify_url import process_url
 
 
 app = Flask(__name__)
@@ -19,12 +19,9 @@ def fetch_data():
         return jsonify({'error': 'URL is required'}), 400
 
     try:
-        print("hello world")
-        label = answer_question(url)
-        try:
-            return label, 200
-        except Exception:
-            return str(label), 500
+        response, status = process_url(url)
+        return jsonify(response), status
+
     except requests.exceptions.RequestException as e:
         return jsonify({'error': str(e)}), 500
 

@@ -32,6 +32,11 @@
             "url": "https://www.tiktok.com",
             "title": "TikTok - Make Your Day",
             "category_id": "46ee6227-6ad8-43ae-bf78-926e9ed032b1"
+        },
+        "0d800024-f70f-469f-9ac9-9429ac0d4cb2": {
+            "url": "https://www.twitch.tv",
+            "title": "Twitch",
+            "category_id": "77f48bc2-a2b3-4ea0-8f58-59b9ed8f0ba1"
         }
     }
 }
