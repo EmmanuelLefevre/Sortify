@@ -16,11 +16,14 @@ with open(PATH_DATAMODEL, "r") as f:
 
 
 
-def scrape_page(url: str) -> dict | None:
+def scrape_page(url: str, user_agent: str) -> dict | None:
     """
     Fonction scrapant une page web à partir de son url et récupérant des informations utiles pour la classifier.
     """
-    response = requests.get(url)
+    headers = {
+        "User-Agent": user_agent
+    }
+    response = requests.get(url, headers=headers)
     response.raise_for_status()
     soup = BeautifulSoup(response.content, 'html.parser')
     title = soup.title.string if soup.title else 'No title'
@@ -63,7 +66,7 @@ def post_process_label(label: str) -> str:
     return label
 
 
-def process_url(url: str, model: str = "llama3.2") -> tuple[dict, int]:
+def process_url(url: str, user_agent: str, model: str = "llama3.2") -> tuple[dict, int]:
 
     for _, val in DATAMODEL.get("urls").items():
         if url == val.get('url'):
@@ -73,7 +76,7 @@ def process_url(url: str, model: str = "llama3.2") -> tuple[dict, int]:
             return {"label": label, "title": title}, 200
 
     try:
-        scraped_data = scrape_page(url)
+        scraped_data = scrape_page(url, user_agent)
     except Exception as e:
         return {"error": f"url inaccessible : {e}"}, 500
 
