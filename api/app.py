@@ -11,7 +11,7 @@ app = Flask(__name__)
 # Application de CORS à toute l'application (permettre les requêtes de toutes les origines par défaut)
 CORS(app)
 
-@app.route('/bookmark', methods=['POST'])
+@app.route('/api/bookmark', methods=['GET','POST'])
 def fetch_data():
     data = request.get_json()
     url = data.get('url')
@@ -19,6 +19,7 @@ def fetch_data():
         return jsonify({'error': 'URL is required'}), 400
 
     try:
+        print("hello world")
         label = answer_question(url)
         try:
             return label, 200
