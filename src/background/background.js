@@ -23,6 +23,9 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
       try {
         // Utiliser chrome.windows.getCurrent pour obtenir la fenêtre active
         chrome.windows.getCurrent({ populate: true }, async function(window) {
+          // Récupérer le User-Agent depuis la requête
+          const userAgent = request.userAgent;
+
           // Trouver l'onglet actif dans la fenêtre
           const activeTab = window.tabs.find(tab => tab.active);
 
@@ -40,7 +43,10 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ url: activeTab.url }),
+            body: JSON.stringify({
+              url: activeTab.url,
+              userAgent: userAgent
+            }),
           });
 
           // Vérifier si réponse OK, sinon passer l'erreur à handleApiError()
