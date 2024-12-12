@@ -28,7 +28,7 @@ CORS(app, resources={
     },
     r"/api/category": {
         "origins": "*",
-        "methods": ["POST"]
+        "methods": ["POST", "PATCH", "DELETE"]
     }
 })
 
@@ -72,6 +72,41 @@ def post_data():
         with open(PATH_DATAMODEL, "w") as f:
             json.dump(DATAMODEL, f, indent=4)
         return jsonify({"label": category}), 201
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+
+@app.route('/api/category/<uuid>', methods=['PATCH'])
+def patch_category(uuid):
+    try:
+        data = request.get_json()
+        new_label = data.get('name')
+
+        if uuid in DATAMODEL["categories"]:
+            DATAMODEL["categories"][uuid] = new_label
+            with open(PATH_DATAMODEL, "w") as f:
+                json.dump(DATAMODEL, f, indent=4)
+            return jsonify({"label": new_label}), 200
+        else:
+            return jsonify({'error': 'UUID not found'}), 404
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+
+@app.route('/api/category/<uuid>', methods=['DELETE'])
+def delete_category(uuid):
+    try:
+        if uuid in DATAMODEL["categories"]:
+            del DATAMODEL["categories"][uuid]
+            with open(PATH_DATAMODEL, "w") as f:
+                json.dump(DATAMODEL, f, indent=4)
+            return jsonify({"message": "Category deleted"}), 200
+        else:
+            return jsonify({'error': 'UUID not found'}), 404
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
