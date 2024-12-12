@@ -576,16 +576,17 @@ bookmarkForm.addEventListener('submit', async function (event) {
         userAgent: userAgent
       });
 
-      // Ajouter logique pour créer le dossier (sauf si déjà existant) et ajouter le favori dans le dossier avec pour valeur le nom du site (=> fonction split url et récupérer "google" dans google.com, pas de http:// et .com/.fr...)
-
-      // Puis notifs ou alert
-      if (Notification.permission === 'granted') {
-        createNotification('bookmark');
+      if (response.success) {
+        if (Notification.permission === 'granted') {
+          createNotification('bookmark');
+        }
+        else {
+          showAlert("✔️ Le favori a été ajouté!");
+        }
       }
       else {
-        showAlert("✔️ Le favori a été ajouté!");
+        // Do something notif/alert
       }
-      // console.log('Bookmark added:', response.data);
     }
     catch (error) {
       handleServiceWorkerError(error);

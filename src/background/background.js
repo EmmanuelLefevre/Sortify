@@ -31,7 +31,6 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
             const activeTab = tabs[0];
 
             if (!activeTab || !activeTab.url) {
-              console.error('Active tab or URL not available!');
               sendResponse({ success: false, error: 'url' });
               return;
             }
@@ -55,10 +54,16 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
             }
 
             const result = await response.json();
-            // console.log('Bookmark added: ', result);
 
-            // Retourner les données au popup.js
-            sendResponse({ success: true, data: result });
+            // Extraire les valeurs du JSON reçu
+            const { label, title } = result;
+            if (!label || !title) {
+              sendResponse({ success: false, error: 'data' });
+              return;
+            }
+
+            // Call fonction de création du favori
+            handleBookmarkCreation(label, title, activeTab.url, sendResponse);
           }
         });
       }
@@ -77,7 +82,6 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
 // ########## Get categories ########## //
 // #################################### //
 chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
-  // console.log('Get categories in background.js:', request);
   if (request.action === 'loadCategories') {
     (async () => {
       try {
@@ -89,7 +93,6 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
         }
 
         const result = await response.json();
-        // console.log('Categories loaded: ', result);
 
         sendResponse({ success: true, data: result });
       }
@@ -106,7 +109,6 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
 // ########## Add category ########## //
 // ################################## //
 chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
-  // console.log('Add category in background.js:', request);
   if (request.action === 'addCategory') {
     (async () => {
       const { categoryName } = request;
@@ -127,7 +129,6 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
         }
 
         const result = await response.json();
-        // console.log('Category added: ', result);
 
         sendResponse({ success: true, data: result });
       }
@@ -144,7 +145,6 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
 // ########## Update category ########## //
 // ##################################### //
 chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
-  // console.log('Update category in background.js:', request);
   if (request.action === 'updateCategory') {
     (async () => {
       const { oldCategoryId, newCategoryName } = request;
@@ -166,9 +166,6 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
 
         const result = await response.json();
 
-        // console.log('Category updated: ', result);
-        // Ajouter logique pour créer le dossier (sauf si déjà existant) et ajouter le favori dans le dossier avec pour valeur le nom du site (=> fonction split url et récupérer "google" dans google.com, pas de http:// et .com/.fr...)
-
         sendResponse({ success: true, data: result });
       }
       catch (error) {
@@ -183,8 +180,8 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
 // ########################################### //
 // ########## Fonctions utilitaires ########## //
 // ########################################### //
+// ########## Fonction pour retourner les cas d'erreurs de l'api à popup.js ########## //
 function handleApiError(error, sendResponse) {
-  // console.error('Error occurred: ', error);
   if (error.response) {
     const status = error.response.status;
 
@@ -234,64 +231,51 @@ function handleApiError(error, sendResponse) {
   // console.log('Response sent to popup.js from handleApiError() in api.js: ', error);
 }
 
+// ########## Fonction pour créer le dossier de favori ########## //
+function handleBookmarkCreation(label, title, url, sendResponse) {
+  chrome.bookmarks.search({ title: label }, function(results) {
+    // Dossier inexistant
+    if (results.length === 0) {
+      chrome.bookmarks.create({
+        parentId: "1",
+        title: label
+      }, function(folder) {
+        // Erreur lors de la création du dossier
+        if (chrome.runtime.lastError) {
+          sendResponse({ success: false });
+          return;
+        }
 
-// // ################################## //
-// // ########## Add bookmark ########## //
-// // ################################## //
-// chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
-//   // console.log('Add bookmark in background.js:', request);
-//   if (request.action === 'sendActiveTabUrl') {
-//     (async () => {
-//       try {
-//         // Utiliser chrome.windows.getCurrent pour obtenir la fenêtre active
-//         chrome.windows.getCurrent({ populate: true }, async function(window) {
-//           // Récupérer le User-Agent depuis la requête
-//           const userAgent = request.userAgent;
+        chrome.bookmarks.create({
+          parentId: folder.id,
+          title: title,
+          url: url
+        }, function(bookmark) {
+          // Erreur lors de la création du favori
+          if (chrome.runtime.lastError) {
+            sendResponse({ success: false });
+            return;
+          }
 
-//           // Trouver l'onglet actif dans la fenêtre
-//           const activeTab = window.tabs.find(tab => tab.active);
-//           console.log("URL de l'onglet actif : ", activeTab);
+          sendResponse({ success: true });
+        });
+      });
+    }
+    // Dossier déjà existant
+    else {
+      chrome.bookmarks.create({
+        parentId: results[0].id,
+        title: title,
+        url: url
+      }, function(bookmark) {
+        // Erreur lors de la création du favori
+        if (chrome.runtime.lastError) {
+          sendResponse({ success: false });
+          return;
+        }
 
-//           if (!activeTab || !activeTab.url) {
-//             console.error('Active tab or URL not available!');
-//             sendResponse({ success: false, error: 'url' });
-//             return;
-//           }
-
-//           // console.log('URL of active tab: ', activeTab.url);
-
-//           // Requête pour ajouter le favori
-//           const response = await fetch(`${apiBaseUrl}bookmark`, {
-//             method: 'POST',
-//             headers: {
-//               'Content-Type': 'application/json',
-//             },
-//             body: JSON.stringify({
-//               url: activeTab.url,
-//               userAgent: userAgent
-//             }),
-//           });
-
-//           // Vérifier si réponse OK, sinon passer l'erreur à handleApiError()
-//           if (!response.ok) {
-//             handleApiError({ message: `Erreur HTTP: ${response.status}`, response }, sendResponse);
-//             return;
-//           }
-
-//           const result = await response.json();
-//           // console.log('Bookmark added: ', result);
-
-//           // Retourner les données au popup.js
-//           sendResponse({ success: true, data: result });
-//         });
-//       }
-//       catch (error) {
-//         handleApiError(error, sendResponse);
-//       }
-//     // L'API Chrome, comme chrome.windows.getCurrent ne retourne pas de promesses. Par conséquent, on ne peut pas directement utiliser await sur ces fonctions. Il convient donc d'auto-invoquer cette fonction pour l'exécuter immédiatement.
-//     })();
-
-//     // Dans une extension Chrome, lorsqu'une réponse doit être envoyée de manière asynchrone, il est nécessaire de retourner true depuis l'écouteur pour indiquer que la réponse sera différée.
-//     return true;
-//   }
-// });
+        sendResponse({ success: true });
+      });
+    }
+  });
+}

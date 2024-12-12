@@ -6,7 +6,8 @@
   "permissions": [
     "scripting",
     "tabs",
-    "storage"
+    "storage",
+    "bookmarks"
   ],
   "optional_permissions": [],
   "action": {

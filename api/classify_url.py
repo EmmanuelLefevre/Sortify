@@ -4,6 +4,8 @@ import json
 import requests
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
+from urllib.parse import urlparse
+
 
 load_dotenv()
 PATH_DATAMODEL = os.getenv("DATAMODEL")
@@ -17,15 +19,27 @@ with open(PATH_DATAMODEL, "r") as f:
 
 # Fonction de formatage de l'URL
 def format_url(url: str) -> str:
-    # Retirer schéma (https:// ou http://) si présent
-    if "://" in url:
-        url = url.split("://")[1]
+    # Parser l'URL pour extraire les composants
+    parsed_url = urlparse(url)
 
-    # Récupérer le domaine
-    domain = url.split('/')[0]
+    # Récupérer le domaine (netloc)
+    domain = parsed_url.netloc
+
+    # Si le domaine est vide, retourner "invalide"
+    if not domain:
+        return "Invalide!"
+
+    # Supprimer "www." si présent
+    if domain.startswith("www."):
+        # Retirer les 4 premiers caractères
+        domain = domain[4:]
 
     # Extraire première partie du domaine (avant le premier ".")
-    domain_name = domain.split('.')[0]
+    domain_parts = domain.split('.')
+    if not domain_parts or len(domain_parts) < 1:
+        return "Invalide!"
+
+    domain_name = domain_parts[0]
 
     return domain_name
 
