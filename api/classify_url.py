@@ -8,31 +8,44 @@ from dotenv import load_dotenv
 load_dotenv()
 PATH_DATAMODEL = os.getenv("DATAMODEL")
 
-
-API_URL = "http://localhost:11434/api/generate"  # API ollama
+# Endpoint API Ollama
+API_URL = "http://localhost:11434/api/generate"
 
 with open(PATH_DATAMODEL, "r") as f:
     DATAMODEL = json.load(f)
 
 
+# Fonction de formatage de l'URL
+def format_url(url: str) -> str:
+    # Retirer schéma (https:// ou http://) si présent
+    if "://" in url:
+        url = url.split("://")[1]
 
-def scrape_page(url: str, user_agent: str) -> dict | None:
+    # Récupérer le domaine
+    domain = url.split('/')[0]
+
+    # Extraire première partie du domaine (avant le premier ".")
+    domain_name = domain.split('.')[0]
+
+    return domain_name
+
+
+def scrape_page(url: str) -> dict | None:
     """
     Fonction scrapant une page web à partir de son url et récupérant des informations utiles pour la classifier.
     """
-    headers = {
-        "User-Agent": user_agent
-    }
-    response = requests.get(url, headers=headers)
+    response = requests.get(url)
     response.raise_for_status()
     soup = BeautifulSoup(response.content, 'html.parser')
-    title = soup.title.string if soup.title else 'No title'
     meta_tags = soup.find_all('meta')
     meta_info = {}
+
     for tag in meta_tags:
         if 'name' in tag.attrs and 'content' in tag.attrs:
             if tag.attrs['name'] in ['title', 'description', 'keywords']:
                 meta_info[tag.attrs['name']] = tag.attrs['content']
+    title = soup.title.string if soup.title else meta_info.get('title', format_url(url))
+
     return {
         'title': title,
         'meta_info': meta_info
@@ -45,14 +58,19 @@ def create_prompt(url: str, scraped_data: dict) -> str:
     """
     prompt = f"URL: {url}\n"
     prompt += f"Titre de page: {scraped_data['title']}\n"
-    if scraped_data.get('meta_info').get('title'):
-        prompt += f"Meta titre: {scraped_data.get('meta_info').get('title')}\n"
+
+    meta_title = scraped_data.get('meta_info', {}).get('title', '')
+
+    if meta_title:
+        prompt += f"Meta titre: {meta_title}\n"
     if scraped_data.get('meta_info').get('description'):
         prompt += f"Meta description: {scraped_data.get('meta_info').get('description')}\n"
     if scraped_data.get('meta_info').get('keywords'):
         prompt += f"Meta keywords: {scraped_data.get('meta_info').get('keywords')}\n"
+
     categories = list(DATAMODEL.get("categories").values())
-    prompt += f"Catégorise cet url selon les informations ci-dessus en choisissant la catégorie la plus appropriée dans la liste suivante : {categories}. Ta réponse doit consister uniquement de la catégorie."
+
+    prompt += f"Catégorise cette url selon les informations ci-dessus en choisissant la catégorie la plus appropriée dans la liste suivante : {categories}. Ta réponse ne doit être que l'une de celles contenues dans la liste des catégories."
     return prompt
 
 
@@ -66,7 +84,7 @@ def post_process_label(label: str) -> str:
     return label
 
 
-def process_url(url: str, user_agent: str, model: str = "llama3.2") -> tuple[dict, int]:
+def process_url(url: str, model: str = "llama3.2") -> tuple[dict, int]:
 
     for _, val in DATAMODEL.get("urls").items():
         if url == val.get('url'):
@@ -76,7 +94,7 @@ def process_url(url: str, user_agent: str, model: str = "llama3.2") -> tuple[dic
             return {"label": label, "title": title}, 200
 
     try:
-        scraped_data = scrape_page(url, user_agent)
+        scraped_data = scrape_page(url)
     except Exception as e:
         return {"error": f"url inaccessible : {e}"}, 500
 

@@ -21,45 +21,45 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
   if (request.action === 'sendActiveTabUrl') {
     (async () => {
       try {
-        // Utiliser chrome.windows.getCurrent pour obtenir la fenêtre active
-        chrome.windows.getCurrent({ populate: true }, async function(window) {
-          // Récupérer le User-Agent depuis la requête
-          const userAgent = request.userAgent;
+        // Récupérer le User-Agent depuis la requête popup.js
+        const userAgent = request.userAgent;
 
-          // Trouver l'onglet actif dans la fenêtre
-          const activeTab = window.tabs.find(tab => tab.active);
+        // Utiliser chrome.tabs.query pour obtenir l'onglet actif dans la fenêtre au premier plan
+        chrome.tabs.query({ active: true, currentWindow: true }, async function(tabs) {
+          if (tabs.length > 0) {
+            // Onglet actif
+            const activeTab = tabs[0];
 
-          if (!activeTab || !activeTab.url) {
-            console.error('Active tab or URL not available!');
-            sendResponse({ success: false, error: 'url' });
-            return;
+            if (!activeTab || !activeTab.url) {
+              console.error('Active tab or URL not available!');
+              sendResponse({ success: false, error: 'url' });
+              return;
+            }
+
+            // Requête pour ajouter le favori
+            const response = await fetch(`${apiBaseUrl}bookmark`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                url: activeTab.url,
+                userAgent: userAgent
+              }),
+            });
+
+            // Vérifier si réponse OK, sinon passer l'erreur à handleApiError()
+            if (!response.ok) {
+              handleApiError({ message: `Erreur HTTP: ${response.status}`, response }, sendResponse);
+              return;
+            }
+
+            const result = await response.json();
+            // console.log('Bookmark added: ', result);
+
+            // Retourner les données au popup.js
+            sendResponse({ success: true, data: result });
           }
-
-          // console.log('URL of active tab: ', activeTab.url);
-
-          // Requête pour ajouter le favori
-          const response = await fetch(`${apiBaseUrl}bookmark`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              url: activeTab.url,
-              userAgent: userAgent
-            }),
-          });
-
-          // Vérifier si réponse OK, sinon passer l'erreur à handleApiError()
-          if (!response.ok) {
-            handleApiError({ message: `Erreur HTTP: ${response.status}`, response }, sendResponse);
-            return;
-          }
-
-          const result = await response.json();
-          // console.log('Bookmark added: ', result);
-
-          // Retourner les données au popup.js
-          sendResponse({ success: true, data: result });
         });
       }
       catch (error) {
@@ -165,7 +165,9 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
         }
 
         const result = await response.json();
+
         // console.log('Category updated: ', result);
+        // Ajouter logique pour créer le dossier (sauf si déjà existant) et ajouter le favori dans le dossier avec pour valeur le nom du site (=> fonction split url et récupérer "google" dans google.com, pas de http:// et .com/.fr...)
 
         sendResponse({ success: true, data: result });
       }
@@ -231,3 +233,65 @@ function handleApiError(error, sendResponse) {
   }
   // console.log('Response sent to popup.js from handleApiError() in api.js: ', error);
 }
+
+
+// // ################################## //
+// // ########## Add bookmark ########## //
+// // ################################## //
+// chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
+//   // console.log('Add bookmark in background.js:', request);
+//   if (request.action === 'sendActiveTabUrl') {
+//     (async () => {
+//       try {
+//         // Utiliser chrome.windows.getCurrent pour obtenir la fenêtre active
+//         chrome.windows.getCurrent({ populate: true }, async function(window) {
+//           // Récupérer le User-Agent depuis la requête
+//           const userAgent = request.userAgent;
+
+//           // Trouver l'onglet actif dans la fenêtre
+//           const activeTab = window.tabs.find(tab => tab.active);
+//           console.log("URL de l'onglet actif : ", activeTab);
+
+//           if (!activeTab || !activeTab.url) {
+//             console.error('Active tab or URL not available!');
+//             sendResponse({ success: false, error: 'url' });
+//             return;
+//           }
+
+//           // console.log('URL of active tab: ', activeTab.url);
+
+//           // Requête pour ajouter le favori
+//           const response = await fetch(`${apiBaseUrl}bookmark`, {
+//             method: 'POST',
+//             headers: {
+//               'Content-Type': 'application/json',
+//             },
+//             body: JSON.stringify({
+//               url: activeTab.url,
+//               userAgent: userAgent
+//             }),
+//           });
+
+//           // Vérifier si réponse OK, sinon passer l'erreur à handleApiError()
+//           if (!response.ok) {
+//             handleApiError({ message: `Erreur HTTP: ${response.status}`, response }, sendResponse);
+//             return;
+//           }
+
+//           const result = await response.json();
+//           // console.log('Bookmark added: ', result);
+
+//           // Retourner les données au popup.js
+//           sendResponse({ success: true, data: result });
+//         });
+//       }
+//       catch (error) {
+//         handleApiError(error, sendResponse);
+//       }
+//     // L'API Chrome, comme chrome.windows.getCurrent ne retourne pas de promesses. Par conséquent, on ne peut pas directement utiliser await sur ces fonctions. Il convient donc d'auto-invoquer cette fonction pour l'exécuter immédiatement.
+//     })();
+
+//     // Dans une extension Chrome, lorsqu'une réponse doit être envoyée de manière asynchrone, il est nécessaire de retourner true depuis l'écouteur pour indiquer que la réponse sera différée.
+//     return true;
+//   }
+// });
