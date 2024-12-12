@@ -60,6 +60,8 @@ def get_categories():
     except requests.exceptions.RequestException as e:
         return jsonify({'error': str(e)}), 500
 
+
+
 @app.route('/api/category', methods=['POST'])
 def post_data():
     try:
@@ -74,7 +76,6 @@ def post_data():
 
     except Exception as e :
         return jsonify({'error': str(e)}), 500
-
 
 
 
