@@ -65,16 +65,15 @@ def get_categories():
 @app.route('/api/category', methods=['POST'])
 def post_data():
     try:
-        category = request.get_json()
+        data = request.get_json()
+        category = data.get('name')
         category_uuid = str(uuid.uuid4())
         DATAMODEL["categories"][category_uuid] = category
-
         with open(PATH_DATAMODEL, "w") as f:
             json.dump(DATAMODEL, f, indent=4)
+        return jsonify({"label": category}), 201
 
-        return jsonify({"label":category}),201
-
-    except Exception as e :
+    except Exception as e:
         return jsonify({'error': str(e)}), 500
 
 
