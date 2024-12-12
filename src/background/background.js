@@ -165,7 +165,9 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
         }
 
         const result = await response.json();
+
         // console.log('Category updated: ', result);
+        // Ajouter logique pour créer le dossier (sauf si déjà existant) et ajouter le favori dans le dossier avec pour valeur le nom du site (=> fonction split url et récupérer "google" dans google.com, pas de http:// et .com/.fr...)
 
         sendResponse({ success: true, data: result });
       }

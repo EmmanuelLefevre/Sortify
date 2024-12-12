@@ -18,12 +18,15 @@ app = Flask(__name__)
 # Application de CORS à toute l'application (middleware)
 CORS(app, resources={
     r"/api/bookmark": {
+        "origins": "*",
         "methods": ["POST"]
     },
     r"/api/categories": {
+        "origins": "*",
         "methods": ["GET"]
     }
 })
+
 
 @app.route('/api/bookmark', methods=['POST'])
 def fetch_data():
@@ -42,11 +45,17 @@ def fetch_data():
     except requests.exceptions.RequestException as e:
         return jsonify({'error': str(e)}), 500
 
-if __name__ == '__main__':
-    # Le mode debug active le rechargement automatique
-    app.run(debug=True)
 
 
 @app.route('/api/categories', methods=['GET'])
 def get_categories():
-    return DATAMODEL.get("categories", {}), 200
+    try:
+        return jsonify(DATAMODEL.get("categories", {})), 200
+
+    except requests.exceptions.RequestException as e:
+        return jsonify({'error': str(e)}), 500
+
+
+if __name__ == '__main__':
+    # Le mode debug active le rechargement automatique
+    app.run(debug=True)
