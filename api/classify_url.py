@@ -15,24 +15,24 @@ with open(PATH_DATAMODEL, "r") as f:
     DATAMODEL = json.load(f)
 
 
+def format_url(url: str) -> str:
+    pass
 
-def scrape_page(url: str, user_agent: str) -> dict | None:
+
+def scrape_page(url: str) -> dict | None:
     """
     Fonction scrapant une page web à partir de son url et récupérant des informations utiles pour la classifier.
     """
-    headers = {
-        "User-Agent": user_agent
-    }
-    response = requests.get(url, headers=headers)
+    response = requests.get(url)
     response.raise_for_status()
     soup = BeautifulSoup(response.content, 'html.parser')
-    title = soup.title.string if soup.title else 'No title'
     meta_tags = soup.find_all('meta')
     meta_info = {}
     for tag in meta_tags:
         if 'name' in tag.attrs and 'content' in tag.attrs:
             if tag.attrs['name'] in ['title', 'description', 'keywords']:
                 meta_info[tag.attrs['name']] = tag.attrs['content']
+    title = soup.title.string if soup.title else meta_info.get('title', format_url(url))
     return {
         'title': title,
         'meta_info': meta_info
@@ -66,7 +66,7 @@ def post_process_label(label: str) -> str:
     return label
 
 
-def process_url(url: str, user_agent: str, model: str = "llama3.2") -> tuple[dict, int]:
+def process_url(url: str, model: str = "llama3.2") -> tuple[dict, int]:
 
     for _, val in DATAMODEL.get("urls").items():
         if url == val.get('url'):
@@ -76,7 +76,7 @@ def process_url(url: str, user_agent: str, model: str = "llama3.2") -> tuple[dic
             return {"label": label, "title": title}, 200
 
     try:
-        scraped_data = scrape_page(url, user_agent)
+        scraped_data = scrape_page(url)
     except Exception as e:
         return {"error": f"url inaccessible : {e}"}, 500
 
