@@ -40,16 +40,12 @@ def scrape_page(url: str) -> dict | None:
     meta_tags = soup.find_all('meta')
     meta_info = {}
 
-    # Ajout d'une variable pour stocker si le meta title est présent
-    meta_title = None
-    # Idem pour meta description
-    meta_description = None
-
     for tag in meta_tags:
         if 'name' in tag.attrs and 'content' in tag.attrs:
             if tag.attrs['name'] in ['title', 'description', 'keywords']:
                 meta_info[tag.attrs['name']] = tag.attrs['content']
     title = soup.title.string if soup.title else meta_info.get('title', format_url(url))
+
     return {
         'title': title,
         'meta_info': meta_info
