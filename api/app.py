@@ -8,10 +8,16 @@ from classify_url import process_url
 
 app = Flask(__name__)
 
-# Application de CORS à toute l'application (permettre les requêtes de toutes les origines par défaut)
+# Configuration des règles CORS
 CORS(app, resources={
     r"/api/bookmark": {
-        "methods": ["POST"]
+        "origins": "*",  # Autorise toutes les origines (modifiable selon vos besoins)
+        "methods": ["POST"],  # Limité aux requêtes POST
+        "allow_headers": ["Content-Type", "Authorization"]  # Spécifiez les en-têtes autorisés
+    },
+    r"/api/categories": {
+        "origins": "*",
+        "methods": ["GET"],  # Limité aux requêtes GET
     }
 })
 
