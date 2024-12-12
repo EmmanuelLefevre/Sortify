@@ -347,7 +347,7 @@ const handleNotificationButtonClick = () => {
         chrome.tabs.create({url:'chrome://settings/content/notifications'});
       }
       else {
-        console.error("API Chrome not supported!");
+        console.error("You should execute this extension in a Chrome environment!");
         return;
       }
 
@@ -394,9 +394,9 @@ const addSelectUpdateCategoryAnimation = () => {
   selectUpdateCategory.classList.add("bounce");
 }
 
-// ############################################################################ //
+// ################################################################################### //
 // ########## Fonctions utilitaires formulaires Background/Validation/Error ########## //
-// ############################################################################ //
+// ################################################################################### //
 // ##### Fonction asynchrone pour envoyer l'action à effectuer dans background.js ##### //
 async function sendMessageAsync(requestData) {
   return new Promise((resolve, reject) => {
@@ -756,6 +756,9 @@ categoryForm.addEventListener('submit', async (event) => {
         }
       }
     }
+    else {
+      console.error("You should execute this extension in a Chrome environment!");
+    }
   }
 });
 
@@ -814,6 +817,9 @@ updateCategoryForm.addEventListener('submit', async (event) => {
           handleServiceWorkerError(error);
         }
       }
+    }
+    else {
+      console.error("You should execute this extension in a Chrome environment!");
     }
   }
 });
