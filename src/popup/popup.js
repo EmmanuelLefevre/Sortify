@@ -618,7 +618,11 @@ updateCategorySelectOptions.addEventListener('click', function(event) {
           oldCategoryId = '';
         });
       }
+
+      // Focus sur l'input
+      updateCategoryInput.focus();
     }
+
     // Fermer la liste des options
     updateCategorySelectContent.classList.remove('open');
   }
