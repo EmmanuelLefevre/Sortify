@@ -87,7 +87,7 @@ def post_data():
 def patch_category(uuid):
     try:
         data = request.get_json()
-        new_label = data.get('name')
+        new_label = data.get('newCategoryName')
 
         if uuid in DATAMODEL["categories"]:
             DATAMODEL["categories"][uuid] = new_label
