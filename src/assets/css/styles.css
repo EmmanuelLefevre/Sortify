@@ -459,11 +459,9 @@ button#update-category-select {
 /* Liste */
 ul#update-category-select-options {
     display: none;
-    /* justify-content: center;
-    align-items: center; */
-    align-items: stretch;
     justify-content: flex-start;
     flex-direction: column;
+    align-items: stretch;
     position: absolute;
     font-size: var(--font-size-select-option);
     color: var(--primary-color);
@@ -481,12 +479,9 @@ ul#update-category-select-options {
     transform: translateX(-50%);
     box-shadow: var(--options-shadow);
     overflow-y: auto;
-    scrollbar-width: thin;
 }
 div.update-category-select-content.open ul#update-category-select-options {
     display: flex;
-    justify-content: center;
-    align-items: center;
 }
 ul#update-category-select-options li {
     cursor: pointer;
@@ -510,16 +505,19 @@ ul#update-category-select-options li:hover {
     color: var(--white);
     background-color: var(--primary-color);
 }
-/* Divers */
-ul#update-category-select-options::-webkit-scrollbar {
-    width: 3px;
+ul#update-category-select-options::-webkit-scrollbar-thumb:hover{
+	background-color: var(--fourth-color);
 }
-ul#update-category-select-options::-webkit-scrollbar-thumb {
-    background: var(--primary-color);
-    border-radius: 10px;
+/* Scrollbar */
+ul#update-category-select-options::-webkit-scrollbar-track{
+	background-color: #dbdbdb;
 }
-ul#update-category-select-options::-webkit-scrollbar-track {
-    background: var(--primary-color);
+ul#update-category-select-options::-webkit-scrollbar{
+	width: 5px;
+	background-color: var(--background-color);
+}
+ul#update-category-select-options::-webkit-scrollbar-thumb{
+	background-color: var(--primary-color);
 }
 
 /*===============ERROR MESSAGE===============*/
