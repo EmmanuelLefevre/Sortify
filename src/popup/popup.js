@@ -468,26 +468,30 @@ function handleServiceWorkerError(error) {
   }
 }
 
-// ########################################################### //
-// ########## Charger les catégories dans le select ########## //
-// ########################################################### //
-const updateCategoryForm = document.getElementById('update-category-form');
-const updateCategoryInput = document.getElementById('update-category-input');
+// ############################################################ //
+// ########## Hydrater les catégories dans le select ########## //
+// ############################################################ //
 const updateCategoriesSelect = document.getElementById('update-categories-select');
+const updateCategoriesList = document.getElementById('update-category-select-options');
 
 async function updateCategoriesSelectList() {
   if(isChromeExtension()) {
     try {
       const response = await sendMessageAsync({ action: 'loadCategories' });
+      console.log(response);
 
-      // Vider et remplir le select
+      // Vider la liste existante
       updateCategoriesSelect.innerHTML = '';
-      response.data.forEach(item => {
-        const option = document.createElement('option');
-        option.value = item.id;
-        option.textContent = item.name;
-        updateCategoriesSelect.appendChild(option);
-      });
+
+      // Récupérer les catégories
+      const categories = response.data;
+
+      for (const [id, name] of Object.entries(categories)) {
+        const listItem = document.createElement('li');
+        listItem.textContent = name;
+        listItem.dataset.id = id;
+        updateCategoriesList.appendChild(listItem);
+      }
     }
     catch (error) {
       handleServiceWorkerError(error);
