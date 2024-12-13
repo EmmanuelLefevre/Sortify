@@ -407,8 +407,9 @@ function capitalizeWords(str) {
     // Réassembler la chaîne
     .join(' ');
 }
-// ##### Ajouter le comportement aux inputs ##### //
-function addCapitalizationToInputs() {
+
+// ##### Ajouter le comportement capitalize aux inputs ##### //
+const addCapitalizationToInputs = () => {
   const inputs = document.querySelectorAll('input[type="text"]');
 
   inputs.forEach(input => {
@@ -417,6 +418,34 @@ function addCapitalizationToInputs() {
     });
   });
 }
+
+// ##### Validation des inputs ##### //
+const validateInput = (value) => {
+  let error = '';
+
+  switch (true) {
+    case value.length === 0:
+      error = '⚠️ Le champ ne peut pas être vide!';
+      break;
+
+    case value.length < 3:
+      error = '⚠️ Taille minimum de 3 caractères!';
+      break;
+
+    case value.length > 25:
+      error = '⚠️ Taille maximum de 25 caractères!';
+      break;
+
+    case !/^[A-Za-z0-9\u00C0-\u017F\-_ ]*$/.test(value):
+      error = '⚠️ (A-Z, a-z) et (0-9) autorisés!';
+      break;
+
+    default:
+      error = '';
+  }
+
+  return error;
+};
 
 // ################################################################################### //
 // ########## Fonctions utilitaires formulaires Background/Validation/Error ########## //
@@ -726,28 +755,7 @@ const toggleSubmitButtonState = () => {
 // ##### Comportement de validation ##### //
 const updateValidationState = () => {
   const value = categoryInput.value.trim();
-  let error = '';
-
-  switch (true) {
-    case value.length === 0:
-      error = '⚠️ Le champ ne peut pas être vide!';
-      break;
-
-    case value.length < 3:
-      error = '⚠️ Taille minimum de 3 caractères!';
-      break;
-
-    case value.length > 25:
-      error = '⚠️ Taille maximum de 25 caractères!';
-      break;
-
-    case !/^[A-Za-z0-9\u00C0-\u017F\-_ ]*$/.test(value):
-      error = '⚠️ (A-Z, a-z) et (0-9) autorisés!';
-      break;
-
-    default:
-      error = '';
-  }
+  const error = validateInput(value);
 
   // Invalidité si erreur détectée
   if (error) {
@@ -869,13 +877,64 @@ categoryForm.addEventListener('submit', async (event) => {
 // ########################################################### //
 // ########## Formulaire modification de catégories ########## //
 // ########################################################### //
+const submitUpdateCategoryButton = document.getElementById('update-category-btn');
+const spanUpdateCategoryBorder = document.getElementById('update-category-border-input');
+const spanUpdateCategoryTooltip = document.querySelector('.update-category-tooltip');
+
 // ##### Désactiver submit bouton ##### //
+submitUpdateCategoryButton.disabled = true;
+
 // ##### Vérifier si utilisateur a déjà saisi ##### //
-let categoriesHasTyped = false;
+let updateCategoryHasTyped = false;
+
 // ##### Injecter les contraintes de validation ##### //
+updateCategoryInput.setAttribute('required', true);
+updateCategoryInput.setAttribute('minlength', 3);
+
 // ##### Message d'erreur ##### //
+const updateCategoryErrorMessage = document.createElement('span');
+updateCategoryErrorMessage.id = 'update-category-error-message';
+updateCategoryInputContainer.insertAdjacentElement('afterend', updateCategoryErrorMessage);
+
 // ##### Activer / désactiver bouton soumission ##### //
+const toggleSubmitUpdateCategoryButtonState = () => {
+  submitUpdateCategoryButton.disabled = !updateCategoryInput.validity.valid;
+};
+
 // ##### Comportement de validation ##### //
+const updateCategoryValidationState = () => {
+  const value = updateCategoryInput.value.trim();
+  const error = validateInput(value);
+
+  // Invalidité si erreur détectée
+  if (error) {
+    updateCategoryInput.setCustomValidity('invalid');
+    spanUpdateCategoryBorder.classList.add('invalid');
+    updateCategoryInput.classList.add('invalid');
+    updateCategoryInput.classList.add('headShake');
+
+    // Afficher message d'erreur
+    updateCategoryErrorMessage.textContent = error;
+    updateCategoryErrorMessage.classList.add('show');
+
+    // Modifier texte tooltip
+    spanUpdateCategoryTooltip.textContent = 'Saisie invalide';
+  }
+  else {
+    updateCategoryInput.setCustomValidity('');
+    spanUpdateCategoryBorder.classList.remove('invalid');
+    spanUpdateCategoryBorder.classList.add('valid');
+    updateCategoryInput.classList.remove('invalid');
+    updateCategoryInput.classList.remove('headShake');
+
+    // Effacer message d'erreur
+    updateCategoryErrorMessage.textContent = '';
+    updateCategoryErrorMessage.classList.remove('show');
+
+    // Modifier texte tooltip
+    spanUpdateCategoryTooltip.textContent = 'Créer';
+  }
+};
 
 // ##### Soumission formulaire ##### //
 updateCategoryForm.addEventListener('submit', async (event) => {
