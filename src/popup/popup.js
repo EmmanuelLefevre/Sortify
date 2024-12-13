@@ -504,6 +504,7 @@ const updateCategorySelectContent = document.querySelector('.update-category-sel
 const updateCategorySelectOptions = document.getElementById('update-category-select-options');
 const updateCategorySelectItems = updateCategorySelectOptions.getElementsByTagName('li');
 const updateCategoryInputContainer = document.querySelector('.update-category-input-container');
+const sortifyContent = document.querySelector('.sortify-content');
 
 // ##### Masquer input au chargement du DOM ##### //
 document.addEventListener('DOMContentLoaded', () => {
@@ -512,50 +513,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ##### Toggle liste des options ##### //
 updateCategorySelectButton.addEventListener('click', function() {
-  updateCategorySelectContent.classList.toggle('open');
+  // Basculer l'état de la liste déroulante
+  const isOpen = updateCategorySelectContent.classList.toggle('open');
+  // Vérifier si l'input est déjà affiché
+  const isInputVisible = updateCategoryInputContainer.style.display === 'flex';
+
+  if (isOpen) {
+    if (!isInputVisible) {
+      // Liste ouverte, ajouter du padding si input masqué
+      sortifyContent.style.setProperty('padding-bottom', '100px');
+    }
+  }
+  else {
+    // Liste fermée => réinitialiser le padding
+    sortifyContent.style.setProperty('padding-bottom', '15px');
+  }
 });
 
 // ##### Option sélectionnée = true, maj bouton + fermer la liste des options ##### //
 for (let item of updateCategorySelectItems) {
   item.addEventListener('click', function() {
-    // Maj texte du bouton
+    // Maj texte du bouton avec la valeur texte de l'option sélectionnée
     updateCategorySelectButton.textContent = item.textContent;
-    // Maj select value
-    updateCategorySelectButton.value = item.getAttribute('data-value');
     // Fermer la liste des options
     updateCategorySelectContent.classList.remove('open');
     // Afficher l'input
     updateCategoryInputContainer.style.display = 'flex';
+    // Liste fermée => réinitialiser le padding
+    sortifyContent.style.setProperty('padding-bottom', '15px');
   });
 }
-
-// ##### Afficher input si valeur du select = true ##### //
-updateCategorySelectButton.addEventListener('change', () => {
-  // Si une valeur est sélectionnée
-  if (updateCategorySelectButton.value) {
-    // Afficher input
-    updateCategoryInputContainer.style.display = 'flex';
-    // Fermer la liste des options
-    updateCategorySelectContent.classList.remove('open');
-  }
-  // Masquer input si aucune valeur n'est sélectionnée
-  else {
-    updateCategoryInputContainer.style.display = 'none';
-  }
-});
-
-// ##### Dropdown options au focus ##### //
-updateCategorySelectButton.addEventListener('focus', () => {
-  updateCategorySelectContent.classList.add('open');
-});
-
-// ##### Cacher input au blur si valeur du select = false ##### //
-updateCategorySelectButton.addEventListener('blur', () => {
-  if (!updateCategorySelectButton.value) {
-    // Fermer la liste si aucune valeur n'est sélectionnée
-    updateCategorySelectContent.classList.remove('open');
-  }
-});
 
 // ################################################# //
 // ########## Formulaire ajout de favoris ########## //
