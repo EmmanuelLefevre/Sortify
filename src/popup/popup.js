@@ -394,6 +394,30 @@ const addSelectUpdateCategoryAnimation = () => {
   selectUpdateCategory.classList.add("bounce");
 }
 
+// ############################################################## //
+// ########## Fonctions utilitaires inputs formulaires ########## //
+// ############################################################## //
+// ##### Fonction capitalize ##### //
+function capitalizeWords(str) {
+  return str
+    // Diviser la chaîne en mots
+    .split(' ')
+    // Première lettre en majuscule et reste en minuscule
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    // Réassembler la chaîne
+    .join(' ');
+}
+// ##### Ajouter le comportement aux inputs ##### //
+function addCapitalizationToInputs() {
+  const inputs = document.querySelectorAll('input[type="text"]');
+
+  inputs.forEach(input => {
+    input.addEventListener('input', event => {
+      event.target.value = capitalizeWords(event.target.value);
+    });
+  });
+}
+
 // ################################################################################### //
 // ########## Fonctions utilitaires formulaires Background/Validation/Error ########## //
 // ################################################################################### //
@@ -709,7 +733,7 @@ const updateValidationState = () => {
       error = '⚠️ Taille maximum de 25 caractères!';
       break;
 
-    case !/^[A-Za-z0-9\u00C0-\u017F\-_]*$/.test(value):
+    case !/^[A-Za-z0-9\u00C0-\u017F\-_ ]*$/.test(value):
       error = '⚠️ (A-Z, a-z) et (0-9) autorisés!';
       break;
 
@@ -910,4 +934,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initializeNotificationPermissions();
   handleNotificationButtonClick();
   toggleSubmitButtonState();
+  addCapitalizationToInputs();
 });
