@@ -60,7 +60,8 @@ def fetch_data():
 @app.route('/api/categories', methods=['GET'])
 def get_categories():
     try:
-        return jsonify(DATAMODEL.get("categories", {})), 200
+        categories = {cat_id: label for cat_id, label in DATAMODEL.get("categories", {}) if cat_id != "4bf563ec-34ff-4db7-9bbb-df0cc089b6a9"}
+        return jsonify(categories), 200
 
     except requests.exceptions.RequestException as e:
         return jsonify({'error': str(e)}), 500
@@ -89,7 +90,7 @@ def patch_category(uuid):
         data = request.get_json()
         new_label = data.get('name')
 
-        if uuid in DATAMODEL["categories"]:
+        if uuid in DATAMODEL["categories"] and uuid != "4bf563ec-34ff-4db7-9bbb-df0cc089b6a9":
             DATAMODEL["categories"][uuid] = new_label
             with open(PATH_DATAMODEL, "w") as f:
                 json.dump(DATAMODEL, f, indent=4)
@@ -105,7 +106,7 @@ def patch_category(uuid):
 @app.route('/api/category/<uuid>', methods=['DELETE'])
 def delete_category(uuid):
     try:
-        if uuid in DATAMODEL["categories"]:
+        if uuid in DATAMODEL["categories"] and uuid != "4bf563ec-34ff-4db7-9bbb-df0cc089b6a9":
             del DATAMODEL["categories"][uuid]
             with open(PATH_DATAMODEL, "w") as f:
                 json.dump(DATAMODEL, f, indent=4)
