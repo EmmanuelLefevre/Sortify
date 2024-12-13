@@ -793,18 +793,26 @@ categoryForm.addEventListener('submit', async (event) => {
             categoryName: categoryName
           });
 
-          // Traiter la réponse de background.js (notif / alert / success message )
-          if (Notification.permission === 'granted') {
-            createNotification('category');
+          if (response.success) {
+            // Mettre à jour le select
+            updateCategoriesSelectList();
+
+            if (Notification.permission === 'granted') {
+              createNotification('category');
+            }
+            else {
+              showAlert("✔️ La catégorie a été ajoutée!");
+            }
+
+            // Reset formulaire
+            categoryForm.reset();
+            // Reset input (par sécurité car déjà effectué par le reset formulaire)
+            updateCategoryInput.value = '';
           }
           else {
-            showAlert("✔️ La catégorie a été ajoutée!");
+            // Do something notif/alert
           }
 
-          // Reset formulaire
-          categoryForm.reset();
-          // Reset input (par sécurité car déjà effectué par le reset formulaire)
-          updateCategoryInput.value = '';
         }
         catch (error) {
           handleServiceWorkerError(error);
