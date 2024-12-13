@@ -571,6 +571,7 @@ updateCategorySelectOptions.addEventListener('click', function(event) {
   if (event.target.tagName.toLowerCase() === 'li') {
     const item = event.target;
     const value = item.getAttribute('data-value');
+    const inputText = item.textContent.trim();
 
     // Récupérer UUID de la catégorie sélectionnée
     oldCategoryId = item.getAttribute('data-id');
@@ -597,6 +598,9 @@ updateCategorySelectOptions.addEventListener('click', function(event) {
       updateCategorySelectButton.textContent = item.textContent;
       updateCategoryInputContainer.style.display = 'flex';
       sortifyContent.style.setProperty('padding-bottom', '30px');
+
+      // Injecter le texte de l'option sélectionnée dans l'input
+      updateCategoryInput.value = inputText;
 
       // Ajouter l'option "Réinitialiser" si elle n'est pas déjà présente
       if (!document.querySelector('[data-value=""]')) {
@@ -907,6 +911,11 @@ updateCategoryForm.addEventListener('submit', async (event) => {
               showAlert("✔️ La catégorie a été modifiée!");
             }
 
+            // Masquer l'input container
+            updateCategorySelectButton.textContent = 'Modifier catégorie';
+            updateCategorySelectContent.classList.remove('open');
+            updateCategoryInputContainer.style.display = 'none';
+            sortifyContent.style.setProperty('padding-bottom', '15px');
             // Reset formulaire
             updateCategoryForm.reset();
             // Reset input (par sécurité car déjà effectué par le reset formulaire)
