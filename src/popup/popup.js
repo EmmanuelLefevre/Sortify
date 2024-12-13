@@ -471,6 +471,8 @@ function handleServiceWorkerError(error) {
 // ############################################################ //
 // ########## Hydrater les catégories dans le select ########## //
 // ############################################################ //
+const updateCategoryForm = document.getElementById('update-category-form');
+const updateCategoryInput = document.getElementById('update-category-input');
 const updateCategoriesSelect = document.getElementById('update-categories-select');
 const updateCategoriesList = document.getElementById('update-category-select-options');
 
@@ -478,18 +480,16 @@ async function updateCategoriesSelectList() {
   if(isChromeExtension()) {
     try {
       const response = await sendMessageAsync({ action: 'loadCategories' });
-      console.log(response);
-
-      // Vider la liste existante
-      updateCategoriesSelect.innerHTML = '';
 
       // Récupérer les catégories
       const categories = response.data;
 
+      // Ajouter les catégories dans le select
       for (const [id, name] of Object.entries(categories)) {
         const listItem = document.createElement('li');
         listItem.textContent = name;
         listItem.dataset.id = id;
+        listItem.setAttribute('data-value', id);
         updateCategoriesList.appendChild(listItem);
       }
     }
@@ -537,12 +537,14 @@ updateCategorySelectButton.addEventListener('click', function() {
   }
 });
 
-// ##### Option sélectionnée = true, maj bouton + fermer la liste des options ##### //
-for (let item of updateCategorySelectItems) {
-  item.addEventListener('click', function() {
+// ##### Option sélectionnée = true => maj bouton + fermer la liste des options + écouteur d'événements ##### //
+updateCategorySelectOptions.addEventListener('click', function(event) {
+  // Vérifier si l'élément cliqué est bien un <li>
+  if (event.target.tagName.toLowerCase() === 'li') {
+    const item = event.target;
     const value = item.getAttribute('data-value');
 
-    // Si option "Réinitialiser" est sélectionnée
+    // Si l'option "Réinitialiser" est sélectionnée
     if (value === "") {
       // Réinitialiser état initial
       updateCategorySelectButton.textContent = 'Modifier catégorie';
@@ -555,10 +557,9 @@ for (let item of updateCategorySelectItems) {
 
       // Fermer la liste des options
       updateCategorySelectContent.classList.remove('open');
-
     }
     else {
-      // Maj état pour l'option sélectionnée
+      // Mise à jour du bouton et affichage de l'input
       updateCategorySelectButton.textContent = item.textContent;
       updateCategoryInputContainer.style.display = 'flex';
       sortifyContent.style.setProperty('padding-bottom', '30px');
@@ -583,8 +584,8 @@ for (let item of updateCategorySelectItems) {
     }
     // Fermer la liste des options
     updateCategorySelectContent.classList.remove('open');
-  });
-}
+  }
+});
 
 // ##### Retirer animation du bouton au focus ##### //
 updateCategorySelectButton.addEventListener('focus', function() {
@@ -601,7 +602,7 @@ function closeSelectOptions(event) {
     // Fermer les options si le clic est en dehors du sélecteur
     updateCategorySelectContent.classList.remove('open');
     // Liste fermée => réinitialiser le padding
-    sortifyContent.style.setProperty('padding-bottom', '15px');
+    sortifyContent.style.setProperty('padding-bottom', '30px');
   }
 }
 // Ecouteur d'événements sur le document entier
