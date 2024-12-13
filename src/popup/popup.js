@@ -498,64 +498,64 @@ async function updateCategoriesSelectList() {
 // ############################################ //
 // ########## Select update category ########## //
 // ############################################ //
-// ##### Afficher l'input du select au focus ##### //
-const selectUpdateCategory = document.getElementById('update-category-select');
+// ##### Dropdown select options ##### //
+const updateCategorySelectButton = document.getElementById('update-category-select');
+const updateCategorySelectContent = document.querySelector('.update-category-select-content');
+const updateCategorySelectOptions = document.getElementById('update-category-select-options');
+const updateCategorySelectItems = updateCategorySelectOptions.getElementsByTagName('li');
 const updateCategoryInputContainer = document.querySelector('.update-category-input-container');
-const updateCategoryInputContent = document.querySelector('.update-category-input-content');
 
+// ##### Masquer input au chargement du DOM ##### //
 document.addEventListener('DOMContentLoaded', () => {
   updateCategoryInputContainer.style.display = 'none';
 });
 
-selectUpdateCategory.addEventListener('focus', () => {
-  updateCategoryInputContainer.style.display = 'flex';
+// ##### Toggle liste des options ##### //
+updateCategorySelectButton.addEventListener('click', function() {
+  updateCategorySelectContent.classList.toggle('open');
 });
 
-// ##### Cacher input au blur si valeur du select = false ##### //
-selectUpdateCategory.addEventListener('blur', () => {
-  if (!selectUpdateCategory.value) {
+// ##### Option sélectionnée = true, maj bouton + fermer la liste des options ##### //
+for (let item of updateCategorySelectItems) {
+  item.addEventListener('click', function() {
+    // Maj texte du bouton
+    updateCategorySelectButton.textContent = item.textContent;
+    // Maj select value
+    updateCategorySelectButton.value = item.getAttribute('data-value');
+    // Fermer la liste des options
+    updateCategorySelectContent.classList.remove('open');
+    // Afficher l'input
+    updateCategoryInputContainer.style.display = 'flex';
+  });
+}
+
+// ##### Afficher input si valeur du select = true ##### //
+updateCategorySelectButton.addEventListener('change', () => {
+  // Si une valeur est sélectionnée
+  if (updateCategorySelectButton.value) {
+    // Afficher input
+    updateCategoryInputContainer.style.display = 'flex';
+    // Fermer la liste des options
+    updateCategorySelectContent.classList.remove('open');
+  }
+  // Masquer input si aucune valeur n'est sélectionnée
+  else {
     updateCategoryInputContainer.style.display = 'none';
   }
 });
 
-// ##### Afficher input si valeur du select = true ##### //
-selectUpdateCategory.addEventListener('change', () => {
-  if (selectUpdateCategory.value) {
-    updateCategoryInputContainer.style.display = 'flex';
+// ##### Dropdown options au focus ##### //
+updateCategorySelectButton.addEventListener('focus', () => {
+  updateCategorySelectContent.classList.add('open');
+});
+
+// ##### Cacher input au blur si valeur du select = false ##### //
+updateCategorySelectButton.addEventListener('blur', () => {
+  if (!updateCategorySelectButton.value) {
+    // Fermer la liste si aucune valeur n'est sélectionnée
+    updateCategorySelectContent.classList.remove('open');
   }
 });
-
-// ##### Dropdown select options ##### //
-document.getElementById('update-category-select').addEventListener('click', function () {
-  const updateCategoryInputContent = this.parentElement;
-  updateCategoryInputContent.classList.toggle('open');
-});
-
-// ##### Ajouter classe qui affiche la liste déroulante lorsque le conteneur a la classe .open ##### //
-// document.getElementById('update-category-select').addEventListener('click', function () {
-//   const updateCategorySelectContainer = this.parentElement;
-//   updateCategorySelectContainer.classList.toggle('open');
-
-//   // Basculer l'affichage de la liste
-//   const optionsList = document.getElementById('update-category-select-options');
-//   if (updateCategorySelectContainer.classList.contains('open')) {
-//     optionsList.style.display = 'block';
-//   }
-//   else {
-//     optionsList.style.display = 'none';
-//   }
-// });
-
-// ##### Amélioration => fermer la liste si user click en dehors du menu ##### //
-// document.addEventListener('click', function (event) {
-//   const container = document.querySelector('.update-category-select-container');
-//   if (!container.contains(event.target)) {
-//     container.classList.remove('open');
-//     document.getElementById('update-category-select-options').style.display = 'none';
-//   }
-// });
-
-// ##### Fermer dropdown si une value est sélectionnée ##### //
 
 // ################################################# //
 // ########## Formulaire ajout de favoris ########## //
