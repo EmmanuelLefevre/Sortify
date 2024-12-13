@@ -557,7 +557,7 @@ for (let item of updateCategorySelectItems) {
       // Maj état pour l'option sélectionnée
       updateCategorySelectButton.textContent = item.textContent;
       updateCategoryInputContainer.style.display = 'flex';
-      sortifyContent.style.setProperty('padding-bottom', '15px');
+      sortifyContent.style.setProperty('padding-bottom', '30px');
 
       // Ajouter l'option "Réinitialiser" si elle n'est pas déjà présente
       if (!document.querySelector('[data-value=""]')) {
