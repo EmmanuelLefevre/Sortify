@@ -541,11 +541,15 @@ updateCategorySelectButton.addEventListener('click', function() {
 });
 
 // ##### Option sélectionnée = true => maj bouton + fermer la liste des options + écouteur d'événements ##### //
+let oldCategoryId = '';
 updateCategorySelectOptions.addEventListener('click', function(event) {
-  // Vérifier si l'élément cliqué est bien un <li>
+  // Vérifier si l'élément cliqué est bien une option
   if (event.target.tagName.toLowerCase() === 'li') {
     const item = event.target;
     const value = item.getAttribute('data-value');
+
+    // Récupérer UUID de la catégorie sélectionnée
+    oldCategoryId = item.getAttribute('data-id');
 
     // Si l'option "Réinitialiser" est sélectionnée
     if (value === "") {
@@ -560,6 +564,9 @@ updateCategorySelectOptions.addEventListener('click', function(event) {
 
       // Fermer la liste des options
       updateCategorySelectContent.classList.remove('open');
+
+      // Réinitialiser oldCategoryId (si "Réinitialiser" est sélectionnée)
+      oldCategoryId = '';
     }
     else {
       // Mise à jour du bouton et affichage de l'input
@@ -582,6 +589,9 @@ updateCategorySelectOptions.addEventListener('click', function(event) {
           sortifyContent.style.setProperty('padding-bottom', '15px');
           resetSelectedOption.remove();
           updateCategorySelectContent.classList.remove('open');
+
+          // Réinitialiser oldCategoryId
+          oldCategoryId = '';
         });
       }
     }
@@ -812,7 +822,6 @@ categoryForm.addEventListener('submit', async (event) => {
           else {
             // Do something notif/alert
           }
-
         }
         catch (error) {
           handleServiceWorkerError(error);
@@ -848,10 +857,11 @@ updateCategoryForm.addEventListener('submit', async (event) => {
     // Si formulaire valide
     if (updateCategoryInput.validity.valid) {
 
-      // Valeur actuelle sélectionnée (ID)
-      const oldCategoryId = updateCategoriesSelect.value;
       // Nouvelle valeur saisie
       const newCategoryName = updateCategoryInput.value.trim();
+
+      console.log(oldCategoryId);
+      console.log(newCategoryName);
 
       if (oldCategoryId && newCategoryName) {
         try {
@@ -861,20 +871,25 @@ updateCategoryForm.addEventListener('submit', async (event) => {
             newCategoryName: newCategoryName
           });
 
-          // MAJ select catégories
-          updateCategoriesSelectList();
+          if (response.success) {
+            // MAJ select catégories
+            updateCategoriesSelectList();
 
-          if (Notification.permission === 'granted') {
-            createNotification('update-category');
+            if (Notification.permission === 'granted') {
+              createNotification('update-category');
+            }
+            else {
+              showAlert("✔️ La catégorie a été modifiée!");
+            }
+
+            // Reset formulaire
+            updateCategoryForm.reset();
+            // Reset input (par sécurité car déjà effectué par le reset formulaire)
+            updateCategoryInput.value = '';
           }
           else {
-            showAlert("✔️ La catégorie a été modifiée!");
+            // Do something notif/alert
           }
-
-          // Reset formulaire
-          updateCategoryForm.reset();
-          // Reset input (par sécurité car déjà effectué par le reset formulaire)
-          updateCategoryInput.value = '';
         }
         catch (error) {
           handleServiceWorkerError(error);
