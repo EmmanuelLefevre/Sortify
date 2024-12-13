@@ -645,7 +645,7 @@ const updateValidationState = () => {
       error = '⚠️ Taille maximum de 25 caractères!';
       break;
 
-    case !/^[A-Za-z0-9]*$/.test(value):
+    case !/^[A-Za-z0-9\u00C0-\u017F\-_]*$/.test(value):
       error = '⚠️ (A-Z, a-z) et (0-9) autorisés!';
       break;
 
