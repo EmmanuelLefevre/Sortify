@@ -504,6 +504,7 @@ const updateCategorySelectContent = document.querySelector('.update-category-sel
 const updateCategorySelectOptions = document.getElementById('update-category-select-options');
 const updateCategorySelectItems = updateCategorySelectOptions.getElementsByTagName('li');
 const updateCategoryInputContainer = document.querySelector('.update-category-input-container');
+const rotatingSelectBorderLine = document.querySelector('.rotating-select-border-line');
 const sortifyContent = document.querySelector('.sortify-content');
 
 // ##### Masquer input au chargement du DOM ##### //
@@ -543,6 +544,27 @@ for (let item of updateCategorySelectItems) {
     sortifyContent.style.setProperty('padding-bottom', '15px');
   });
 }
+
+// ##### Retirer animation du bouton au focus ##### //
+updateCategorySelectButton.addEventListener('focus', function() {
+  rotatingSelectBorderLine.style.display = 'none';
+});
+updateCategorySelectButton.addEventListener('blur', function() {
+  rotatingSelectBorderLine.style.display = 'block';
+});
+
+// ##### Fonction pour refermer les options ##### //
+function closeSelectOptions(event) {
+  // Vérifier si le clic provient du sélecteur ou de ses options
+  if (!updateCategorySelectContent.contains(event.target)) {
+    // Fermer les options si le clic est en dehors du sélecteur
+    updateCategorySelectContent.classList.remove('open');
+    // Liste fermée => réinitialiser le padding
+    sortifyContent.style.setProperty('padding-bottom', '15px');
+  }
+}
+// Ecouteur d'événements sur le document entier
+document.addEventListener('click', closeSelectOptions);
 
 // ################################################# //
 // ########## Formulaire ajout de favoris ########## //
