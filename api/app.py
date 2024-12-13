@@ -28,11 +28,16 @@ CORS(app, resources={
     },
     r"/api/category": {
         "origins": "*",
-        "methods": ["POST", "PATCH", "DELETE"]
+        "methods": ["POST"]
+    },
+    r"/api/category/<uuid>": {
+        "origins": "*",
+        "methods": ["PATCH", "DELETE"]
     }
 })
 
 
+# Ajouter un favori
 @app.route('/api/bookmark', methods=['POST'])
 def fetch_data():
     data = request.get_json()
@@ -51,7 +56,7 @@ def fetch_data():
         return jsonify({'error': str(e)}), 500
 
 
-
+# Récupérer les catégories
 @app.route('/api/categories', methods=['GET'])
 def get_categories():
     try:
@@ -61,7 +66,7 @@ def get_categories():
         return jsonify({'error': str(e)}), 500
 
 
-
+# Ajouter une catégorie
 @app.route('/api/category', methods=['POST'])
 def post_data():
     try:
@@ -71,13 +76,13 @@ def post_data():
         DATAMODEL["categories"][category_uuid] = category
         with open(PATH_DATAMODEL, "w") as f:
             json.dump(DATAMODEL, f, indent=4)
-        return jsonify({"label": category}), 201
+        return jsonify({"uuid": category_uuid, "label": category}), 201
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
 
-
+# Modifier une catégorie
 @app.route('/api/category/<uuid>', methods=['PATCH'])
 def patch_category(uuid):
     try:
@@ -88,7 +93,7 @@ def patch_category(uuid):
             DATAMODEL["categories"][uuid] = new_label
             with open(PATH_DATAMODEL, "w") as f:
                 json.dump(DATAMODEL, f, indent=4)
-            return jsonify({"label": new_label}), 200
+            return jsonify({"uuid": uuid, "label": new_label}), 200
         else:
             return jsonify({'error': 'UUID not found'}), 404
 
@@ -96,7 +101,7 @@ def patch_category(uuid):
         return jsonify({'error': str(e)}), 500
 
 
-
+# Supprimer une catégorie
 @app.route('/api/category/<uuid>', methods=['DELETE'])
 def delete_category(uuid):
     try:
@@ -104,7 +109,7 @@ def delete_category(uuid):
             del DATAMODEL["categories"][uuid]
             with open(PATH_DATAMODEL, "w") as f:
                 json.dump(DATAMODEL, f, indent=4)
-            return jsonify({"message": "Category deleted"}), 200
+            return jsonify({"uuid": uuid, "message": "Category deleted"}), 200
         else:
             return jsonify({'error': 'UUID not found'}), 404
 
