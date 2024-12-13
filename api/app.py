@@ -60,7 +60,11 @@ def fetch_data():
 @app.route('/api/categories', methods=['GET'])
 def get_categories():
     try:
-        categories = {cat_id: label for cat_id, label in DATAMODEL.get("categories", {}) if cat_id != "4bf563ec-34ff-4db7-9bbb-df0cc089b6a9"}
+        categories = {
+            cat_id: label
+            for cat_id, label in DATAMODEL.get("categories", {}).items()
+            if cat_id != "4bf563ec-34ff-4db7-9bbb-df0cc089b6a9"
+        }
         return jsonify(categories), 200
 
     except requests.exceptions.RequestException as e:
