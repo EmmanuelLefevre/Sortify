@@ -149,7 +149,6 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
     (async () => {
       const { oldCategoryId, newCategoryName } = request;
       const payload = { newCategoryName };
-      console.log(payload);
 
       try {
         const response = await fetch(`${apiBaseUrl}category/${oldCategoryId}`, {

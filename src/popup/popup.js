@@ -860,9 +860,6 @@ updateCategoryForm.addEventListener('submit', async (event) => {
       // Nouvelle valeur saisie
       const newCategoryName = updateCategoryInput.value.trim();
 
-      console.log(oldCategoryId);
-      console.log(newCategoryName);
-
       if (oldCategoryId && newCategoryName) {
         try {
           const response = await sendMessageAsync({
