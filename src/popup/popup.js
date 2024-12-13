@@ -484,6 +484,9 @@ async function updateCategoriesSelectList() {
       // Récupérer les catégories
       const categories = response.data;
 
+      // Vider la liste existante avant de la remplir
+      updateCategoriesList.innerHTML = '';
+
       // Ajouter les catégories dans le select
       for (const [id, name] of Object.entries(categories)) {
         const listItem = document.createElement('li');
