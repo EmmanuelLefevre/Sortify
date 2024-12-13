@@ -507,13 +507,15 @@ const updateCategoryInputContainer = document.querySelector('.update-category-in
 const rotatingSelectBorderLine = document.querySelector('.rotating-select-border-line');
 const sortifyContent = document.querySelector('.sortify-content');
 
-// ##### Masquer input au chargement du DOM ##### //
+// ##### Chargement du DOM => masquer input + initialiser texte du bouton ##### //
 document.addEventListener('DOMContentLoaded', () => {
   updateCategoryInputContainer.style.display = 'none';
+  updateCategorySelectButton.textContent = 'Modifier catégorie';
 });
 
 // ##### Toggle liste des options ##### //
 updateCategorySelectButton.addEventListener('click', function() {
+
   // Basculer l'état de la liste déroulante
   const isOpen = updateCategorySelectContent.classList.toggle('open');
   // Vérifier si l'input est déjà affiché
@@ -522,7 +524,7 @@ updateCategorySelectButton.addEventListener('click', function() {
   if (isOpen) {
     if (!isInputVisible) {
       // Liste ouverte, ajouter du padding si input masqué
-      sortifyContent.style.setProperty('padding-bottom', '100px');
+      sortifyContent.style.setProperty('padding-bottom', '105px');
     }
   }
   else {
@@ -534,14 +536,49 @@ updateCategorySelectButton.addEventListener('click', function() {
 // ##### Option sélectionnée = true, maj bouton + fermer la liste des options ##### //
 for (let item of updateCategorySelectItems) {
   item.addEventListener('click', function() {
-    // Maj texte du bouton avec la valeur texte de l'option sélectionnée
-    updateCategorySelectButton.textContent = item.textContent;
+    const value = item.getAttribute('data-value');
+
+    // Si option "Réinitialiser" est sélectionnée
+    if (value === "") {
+      // Réinitialiser état initial
+      updateCategorySelectButton.textContent = 'Modifier catégorie';
+      updateCategoryInputContainer.style.display = 'none';
+      sortifyContent.style.setProperty('padding-bottom', '15px');
+
+      // Supprimer l'option "Réinitialiser"
+      const resetSelectedOption = document.querySelector('[data-value=""]');
+      if (resetSelectedOption) resetSelectedOption.remove();
+
+      // Fermer la liste des options
+      updateCategorySelectContent.classList.remove('open');
+
+    }
+    else {
+      // Maj état pour l'option sélectionnée
+      updateCategorySelectButton.textContent = item.textContent;
+      updateCategoryInputContainer.style.display = 'flex';
+      sortifyContent.style.setProperty('padding-bottom', '15px');
+
+      // Ajouter l'option "Réinitialiser" si elle n'est pas déjà présente
+      if (!document.querySelector('[data-value=""]')) {
+        const resetSelectedOption = document.createElement('li');
+        resetSelectedOption.setAttribute('data-value', '');
+        resetSelectedOption.textContent = 'Réinitialiser';
+        updateCategorySelectOptions.prepend(resetSelectedOption);
+
+        // Gestionnaire d'événement pour l'option "Réinitialiser"
+        resetSelectedOption.addEventListener('click', function() {
+          // Déclencher le comportement de réinitialisation
+          updateCategorySelectButton.textContent = 'Modifier catégorie';
+          updateCategoryInputContainer.style.display = 'none';
+          sortifyContent.style.setProperty('padding-bottom', '15px');
+          resetSelectedOption.remove();
+          updateCategorySelectContent.classList.remove('open');
+        });
+      }
+    }
     // Fermer la liste des options
     updateCategorySelectContent.classList.remove('open');
-    // Afficher l'input
-    updateCategoryInputContainer.style.display = 'flex';
-    // Liste fermée => réinitialiser le padding
-    sortifyContent.style.setProperty('padding-bottom', '15px');
   });
 }
 
@@ -553,7 +590,7 @@ updateCategorySelectButton.addEventListener('blur', function() {
   rotatingSelectBorderLine.style.display = 'block';
 });
 
-// ##### Fonction pour refermer les options ##### //
+// ##### Fonction pour refermer les options lors d'un clic dans la page ##### //
 function closeSelectOptions(event) {
   // Vérifier si le clic provient du sélecteur ou de ses options
   if (!updateCategorySelectContent.contains(event.target)) {

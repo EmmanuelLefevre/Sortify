@@ -97,6 +97,7 @@
     --button-shadow-color: rgba(0, 0, 0, 0.7);
     --h1-shadow-color: rgba(0, 0, 0, 0.1);
     --icon-shadow-color: rgba(0, 0, 0, 0.2);
+    --options-shadow-color: rgba(0, 0, 0, 0.7);
     --select-shadow-color: rgba(0, 0, 0, 0.5);
     --text-shadow-color: rgba(0, 0, 0, 0.2);
 
@@ -104,6 +105,7 @@
     --button-shadow: 0px 7px 6px -4px var(--button-shadow-color);
     --h1-shadow: 3px 3px 0px var(--h1-shadow-color);
     --icon-shadow: drop-shadow(2px 1px 0px var(--icon-shadow-color));
+    --options-shadow: 0px 7px 6px -4px var(--options-shadow-color);
     --select-shadow: 0px 7px 3px -6px var(--select-shadow-color);
     --text-shadow: 0px 2px 2px var(--text-shadow-color);
 
@@ -457,14 +459,16 @@ button#update-category-select {
 /* Liste */
 ul#update-category-select-options {
     display: none;
-    justify-content: center;
-    align-items: center;
+    /* justify-content: center;
+    align-items: center; */
+    align-items: stretch;
+    justify-content: flex-start;
     flex-direction: column;
     position: absolute;
     font-size: var(--font-size-select-option);
     color: var(--primary-color);
     width: 130px;
-    height: fit-content;
+    max-height: 90px;
     margin: 0;
     padding: 0;
     top: 100%;
@@ -475,6 +479,9 @@ ul#update-category-select-options {
     z-index: 7500;
     left: 50%;
     transform: translateX(-50%);
+    box-shadow: var(--options-shadow);
+    overflow-y: auto;
+    scrollbar-width: thin;
 }
 div.update-category-select-content.open ul#update-category-select-options {
     display: flex;
@@ -499,12 +506,20 @@ button#update-category-select:hover {
     color: var(--white);
     background-image: var(--button-gradient-effect);
 }
-#update-category-select:hover + .rotating-select-border-line {
-    animation-play-state: none;
-}
 ul#update-category-select-options li:hover {
     color: var(--white);
     background-color: var(--primary-color);
+}
+/* Divers */
+ul#update-category-select-options::-webkit-scrollbar {
+    width: 3px;
+}
+ul#update-category-select-options::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 10px;
+}
+ul#update-category-select-options::-webkit-scrollbar-track {
+    background: var(--primary-color);
 }
 
 /*===============ERROR MESSAGE===============*/
