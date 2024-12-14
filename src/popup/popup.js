@@ -936,13 +936,47 @@ const updateCategoryValidationState = () => {
   }
 };
 
+// ##### Écouter événements changements d'état de l'input ##### //
+updateCategoryInput.addEventListener('input', () => {
+  // MAJ état de saisie
+  const value = updateCategoryInput.value.trim();
+  if (value !== '') {
+    updateCategoryHasTyped = true;
+  }
+
+  updateValidationState();
+
+  // Focus + input vide + état saisie = true
+  if (updateCategoryHasTyped && value === '' && document.activeElement === updateCategoryInput) {
+    spanUpdateCategoryTooltip.textContent = 'Rejoues';
+  }
+  else if (value === '') {
+    spanUpdateCategoryTooltip.textContent = 'Saisir';
+  }
+
+  toggleSubmitUpdateCategoryButtonState();
+});
+
+// ##### Input unfocus (masquer message d'erreur + retirer classe de validation si input vide) ##### //
+updateCategoryInput.addEventListener('blur', () => {
+  if (!updateCategoryInput.validity.valid && updateCategoryInput.value.trim() === '') {
+    spanUpdateCategoryBorder.classList.remove('invalid');
+    spanUpdateCategoryBorder.classList.remove('valid');
+    updateCategoryInput.classList.remove('headShake');
+    updateCategoryErrorMessage.textContent = '';
+    updateCategoryErrorMessage.classList.remove('show');
+    spanUpdateCategoryTooltip.textContent = 'Saisir';
+    updateCategoryHasTyped = false;
+  }
+});
+
 // ##### Soumission formulaire ##### //
 updateCategoryForm.addEventListener('submit', async (event) => {
   // Empêcher soumission classique du formulaire
   event.preventDefault();
 
-  // Vérifier validité de l'input
-  // updateValidationState();
+    // Vérifier validité de l'input
+    updateValidationState();
 
   if(isChromeExtension()) {
     // Si formulaire valide
