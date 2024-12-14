@@ -82,7 +82,7 @@ def create_prompt(url: str, scraped_data: dict) -> str:
     if scraped_data.get('meta_info').get('keywords'):
         prompt += f"Meta keywords: {scraped_data.get('meta_info').get('keywords')}\n"
 
-    categories = [value for value in DATAMODEL.get("categories").values() if value != "Autre"]
+    categories = list(DATAMODEL.get("categories").values())
 
     prompt += f"Catégorise cette url selon les informations ci-dessus en choisissant la catégorie la plus appropriée dans la liste suivante : {categories}. Ta réponse ne doit être que l'une de celles contenues dans la liste des catégories."
     return prompt
@@ -92,13 +92,11 @@ def post_process_label(label: str) -> str:
     """
     Fonction permettant de nettoyer la sortie du LLM afin de s'assurer qu'elle correspond bien à une catégorie existante.
     """
-    try:
-        label = label.split('\n')[-1]
-        label = label[:-1] if label[-1] == '.' else label
-        label = label.replace("'", "")
-        return label
-    except Exception:
-        return ""
+    label = label.split('\n')[-1]
+    label = label[:-1] if label[-1] == '.' else label
+    label = label.replace("'", "")
+    return label
+
 
 def process_url(url: str, model: str = "llama3.2") -> tuple[dict, int]:
 
@@ -128,8 +126,7 @@ def process_url(url: str, model: str = "llama3.2") -> tuple[dict, int]:
         response = requests.post(API_URL, json=query)
         label = response.json().get('response')
         label = post_process_label(label)
-        label_id = [key for key, value in DATAMODEL.get("categories").items() if value == label]
-        label_id = label_id[0] if label_id else "4bf563ec-34ff-4db7-9bbb-df0cc089b6a9"
+        label_id = [key for key, value in DATAMODEL.get("categories").items() if value == label][0]
         title = scraped_data.get('title')
         DATAMODEL.get("urls")[str(uuid.uuid4())] = {
                 "url": url,

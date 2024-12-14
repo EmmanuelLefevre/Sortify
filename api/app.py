@@ -94,7 +94,7 @@ def patch_category(uuid):
         data = request.get_json()
         new_label = data.get('newCategoryName')
 
-        if uuid in DATAMODEL["categories"] and uuid != "4bf563ec-34ff-4db7-9bbb-df0cc089b6a9":
+        if uuid in DATAMODEL["categories"]:
             DATAMODEL["categories"][uuid] = new_label
             with open(PATH_DATAMODEL, "w") as f:
                 json.dump(DATAMODEL, f, indent=4)
@@ -110,7 +110,7 @@ def patch_category(uuid):
 @app.route('/api/category/<uuid>', methods=['DELETE'])
 def delete_category(uuid):
     try:
-        if uuid in DATAMODEL["categories"] and uuid != "4bf563ec-34ff-4db7-9bbb-df0cc089b6a9":
+        if uuid in DATAMODEL["categories"]:
             del DATAMODEL["categories"][uuid]
             with open(PATH_DATAMODEL, "w") as f:
                 json.dump(DATAMODEL, f, indent=4)
