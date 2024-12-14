@@ -522,7 +522,8 @@ ul#update-category-select-options::-webkit-scrollbar-thumb{
 
 /*===============ERROR MESSAGE===============*/
 /*------Add Category------*/
-#category-error-message {
+#category-error-message,
+#update-category-error-message {
     display: block;
     visibility: hidden;
     font-size: var(--font-size-error);
@@ -530,7 +531,8 @@ ul#update-category-select-options::-webkit-scrollbar-thumb{
     height: 10px;
     margin-top: 10px;
 }
-#category-error-message.show {
+#category-error-message.show,
+#update-category-error-message.show {
     visibility: visible;
 }
 
