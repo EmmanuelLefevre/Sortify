@@ -953,7 +953,7 @@ updateCategoryInput.addEventListener('input', () => {
     updateCategoryHasTyped = true;
   }
 
-  updateValidationState();
+  updateCategoryValidationState();
 
   // Focus + input vide + état saisie = true
   if (updateCategoryHasTyped && value === '' && document.activeElement === updateCategoryInput) {
@@ -985,7 +985,7 @@ updateCategoryForm.addEventListener('submit', async (event) => {
   event.preventDefault();
 
     // Vérifier validité de l'input
-    updateValidationState();
+    updateCategoryValidationState();
 
   if(isChromeExtension()) {
     // Si formulaire valide
