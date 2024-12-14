@@ -365,7 +365,6 @@ const handleNotificationButtonClick = () => {
       setTimeout(() => clearInterval(checkPermission), 15000);
     }
     catch (err) {
-      console.error("Error: ", err);
       createNotification('unexpected-error');
     }
   });
@@ -710,7 +709,12 @@ bookmarkForm.addEventListener('submit', async function (event) {
         }
       }
       else {
-        // Do something notif/alert
+        if (Notification.permission === 'granted') {
+          createNotification('unexpected-error');
+        }
+        else {
+          showAlert("⚰️ Une erreur est survenue!");
+        }
       }
     }
     catch (error) {
@@ -860,7 +864,12 @@ categoryForm.addEventListener('submit', async (event) => {
             updateCategoryInput.value = '';
           }
           else {
-            // Do something notif/alert
+            if (Notification.permission === 'granted') {
+              createNotification('unexpected-error');
+            }
+            else {
+              showAlert("⚰️ Une erreur est survenue!");
+            }
           }
         }
         catch (error) {
@@ -1015,7 +1024,12 @@ updateCategoryForm.addEventListener('submit', async (event) => {
             updateCategoryInput.value = '';
           }
           else {
-            // Do something notif/alert
+            if (Notification.permission === 'granted') {
+              createNotification('unexpected-error');
+            }
+            else {
+              showAlert("⚰️ Une erreur est survenue!");
+            }
           }
         }
         catch (error) {
