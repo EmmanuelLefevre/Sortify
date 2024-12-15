@@ -8,9 +8,9 @@
  * Pour plus de détails, consultez le fichier LICENSE.md
 */
 
-// ############################### //
-// ########## Constante ########## //
-// ############################### //
+// ######################################## //
+// ########## Constante Endpoint ########## //
+// ######################################## //
 const apiBaseUrl = 'http://localhost:5000/api/';
 
 // ################################## //
@@ -49,7 +49,9 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
 
             // Vérifier si réponse OK, sinon passer l'erreur à handleApiError()
             if (!response.ok) {
-              handleApiError({ message: `Erreur HTTP: ${response.status}`, response }, sendResponse);
+              handleApiError({message: `Erreur HTTP: ${response.status}`,
+                response
+              }, sendResponse);
               return;
             }
 
@@ -88,7 +90,10 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
         const response = await fetch(`${apiBaseUrl}categories`);
 
         if (!response.ok) {
-          handleApiError({ message: `Erreur HTTP: ${response.status}`, response }, sendResponse);
+          handleApiError({
+            message: `Erreur HTTP: ${response.status}`,
+            response
+          }, sendResponse);
           return;
         }
 
@@ -124,7 +129,13 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
         });
 
         if (!response.ok) {
-          handleApiError({ message: `Erreur HTTP: ${response.status}`, response }, sendResponse);
+          const errorData = await response.json();
+
+          handleApiError({
+            message: `Erreur HTTP: ${response.status}`,
+            response,
+            errorData
+          }, sendResponse);
           return;
         }
 
@@ -160,7 +171,10 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
         });
 
         if (!response.ok) {
-          handleApiError({ message: `Erreur HTTP: ${response.status}`, response }, sendResponse);
+          handleApiError({
+            message: `Erreur HTTP: ${response.status}`,
+            response
+          }, sendResponse);
           return;
         }
 
@@ -182,6 +196,8 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
 // ########################################### //
 // ########## Fonction pour retourner les cas d'erreurs de l'api à popup.js ########## //
 function handleApiError(error, sendResponse) {
+  const { message, errorData } = error;
+
   if (error.response) {
     const status = error.response.status;
 
@@ -196,7 +212,12 @@ function handleApiError(error, sendResponse) {
         break;
 
       case status === 409:
-        sendResponse({ success: false, error: 'already-exists' });
+        if (errorData && errorData.type  === 'category') {
+          sendResponse({ success: false, error: 'already-exists', type: 'category' });
+        }
+        else if (errorData && errorData.type  === 'bookmark') {
+          sendResponse({ success: false, error: 'already-exists', type: 'bookmark' });
+        }
         break;
 
       case status >= 400 && status <= 499:
@@ -209,17 +230,17 @@ function handleApiError(error, sendResponse) {
     }
   }
   // Erreurs réseau
-  else if (error.message.includes('Failed to fetch')) {
+  else if (message.includes('Failed to fetch')) {
     switch (true) {
-      case error.message.includes('net::ERR_NAME_NOT_RESOLVED'):
+      case message.includes('net::ERR_NAME_NOT_RESOLVED'):
         sendResponse({ success: false, error: 'dns-error' });
         break;
 
-      case error.message.includes('net::ERR_CONNECTION_REFUSED'):
+      case message.includes('net::ERR_CONNECTION_REFUSED'):
         sendResponse({ success: false, error: 'forbidden' });
         break;
 
-      case error.message.includes('net::ERR_CONNECTION_TIMED_OUT'):
+      case message.includes('net::ERR_CONNECTION_TIMED_OUT'):
         sendResponse({ success: false, error: 'offline-server' });
         break;
 
@@ -232,7 +253,6 @@ function handleApiError(error, sendResponse) {
   else {
     sendResponse({ success: false, error: 'unexpected-error' });
   }
-  // console.log('Response sent to popup.js from handleApiError() in api.js: ', error);
 }
 
 // ########## Fonction pour créer le dossier de favori ########## //

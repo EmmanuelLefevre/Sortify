@@ -184,9 +184,21 @@ const createNotification = (type) => {
       icon = '../assets/logo/logo.png';
       break;
 
+    case 'bookmark-already-exists':
+      message = 'Sortify';
+      body = '⚠️ Le favori existe déjà!';
+      icon = '../assets/logo/logo.png';
+      break;
+
     case 'category':
       message = 'Sortify';
       body = '✔️ La catégorie a été ajoutée!';
+      icon = '../assets/logo/logo.png';
+      break;
+
+    case 'category-already-exists':
+      message = 'Sortify';
+      body = '⚠️ La catégorie existe déjà!';
       icon = '../assets/logo/logo.png';
       break;
 
@@ -484,6 +496,8 @@ function displayServiceWorkerError(notificationType, message) {
 function handleServiceWorkerError(error) {
   // Accéder directement à l'objet error (propriété 'error' ou objet entier)
   const errorType = error.error || error;
+  // Récupérer type (favori ou catégorie)
+  const errorSubtype = error.type || '';
 
   switch (errorType) {
     case 'offline-server':
@@ -516,6 +530,15 @@ function handleServiceWorkerError(error) {
 
     case 'network-error':
       displayServiceWorkerError('network-error', "🌩️ Une erreur réseau est survenue!");
+      break;
+
+    case 'already-exists':
+      if (errorSubtype === 'category') {
+        displayServiceWorkerError('category-already-exists', "⚠️ La catégorie existe déjà!");
+      }
+      else if (errorSubtype === 'bookmark') {
+        displayServiceWorkerError('bookmark-already-exists', "⚠️ Le favori existe déjà!");
+      }
       break;
 
     default:
