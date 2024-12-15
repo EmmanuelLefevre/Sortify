@@ -12,7 +12,14 @@
 // ########## Chrome extension ########## //
 // ###################################### //
 const isChromeExtension = () => {
+  if ((typeof chrome !== 'undefined' && typeof chrome.tabs !== 'undefined') || !chrome.runtime || !chrome.runtime.id) {
+    console.error("L'environnement n'est pas une extension Chrome valide !");
+  }
+  else {
+    console.log("Extension Chrome détectée avec succès !");
+  }
   return typeof chrome !== 'undefined' && typeof chrome.tabs !== 'undefined';
+  return typeof chrome !== 'undefined' && !!chrome.runtime && !!chrome.runtime.id;
 }
 
 // ################################################################ //
@@ -453,9 +460,6 @@ const validateInput = (value) => {
 async function sendMessageAsync(requestData) {
   return new Promise((resolve, reject) => {
     chrome.runtime.sendMessage(requestData , function(response) {
-
-      // console.log('Response in popup.js from handleApiError() in background.js:', response);
-
       if (response.success) {
         resolve(response);
       }
@@ -573,13 +577,18 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ##### Toggle liste des options ##### //
-updateCategorySelectButton.addEventListener('click', function() {
+updateCategorySelectButton.addEventListener('click', function(event) {
+  // Empêcher soumission du formulaire
+  event.preventDefault();
+  // Empêcher propagation de l'event
+  event.stopPropagation();
 
   // Basculer l'état de la liste déroulante
   const isOpen = updateCategorySelectContent.classList.toggle('open');
   // Vérifier si l'input est déjà affiché
   const isInputVisible = updateCategoryInputContainer.style.display === 'flex';
 
+  // Ne réinitialiser que si aucune catégorie sélectionnée + input n'est pas visible
   if (isOpen) {
     if (!isInputVisible) {
       // Liste ouverte, ajouter du padding si input masqué
@@ -588,7 +597,7 @@ updateCategorySelectButton.addEventListener('click', function() {
   }
   else {
     // Liste fermée => réinitialiser le padding
-    sortifyContent.style.setProperty('padding-bottom', '15px');
+    sortifyContent.style.setProperty('padding-bottom', isInputVisible ? '30px' : '15px');
   }
 });
 
@@ -597,6 +606,11 @@ let oldCategoryId = '';
 updateCategorySelectOptions.addEventListener('click', function(event) {
   // Vérifier si l'élément cliqué est bien une option
   if (event.target.tagName.toLowerCase() === 'li') {
+    // Empêcher soumission du formulaire
+    event.preventDefault();
+    // Empêcher propagation de l'event
+    event.stopPropagation();
+
     const item = event.target;
     const value = item.getAttribute('data-value');
     const inputText = item.textContent.trim();
@@ -620,6 +634,14 @@ updateCategorySelectOptions.addEventListener('click', function(event) {
 
       // Réinitialiser oldCategoryId (si "Réinitialiser" est sélectionnée)
       oldCategoryId = '';
+
+      // Réinitialiser l'état de sélection
+      isUpdateCategorySelected = false;
+
+      // Réinitialiser l'input
+      updateCategoryInput.value = '';
+
+      toggleSubmitUpdateCategoryButtonState();
     }
     else {
       // Mise à jour du bouton et affichage de l'input
@@ -675,7 +697,7 @@ function closeSelectOptions(event) {
     // Fermer les options si le clic est en dehors du sélecteur
     updateCategorySelectContent.classList.remove('open');
     // Liste fermée => réinitialiser le padding
-    sortifyContent.style.setProperty('padding-bottom', '30px');
+    sortifyContent.style.setProperty('padding-bottom', '15px');
   }
 }
 // Ecouteur d'événements sur le document entier
@@ -896,6 +918,38 @@ submitUpdateCategoryButton.disabled = true;
 // ##### Vérifier si utilisateur a déjà saisi ##### //
 let updateCategoryHasTyped = false;
 
+// ##### État de la catégorie sélectionnée ##### //
+let isUpdateCategorySelected = false;
+let selectedCategoryId = null;
+
+// ##### Vérifier si une catégorie a été sélectionnée ##### //
+updateCategorySelectOptions.addEventListener('click', (event) => {
+  const selectedOption = event.target;
+
+  // Empêcher la propagation de l'événement pour ne pas soumettre le formulaire
+  event.stopPropagation();
+
+  // Maj état de sélection
+  if (selectedOption.tagName.toLowerCase() === 'li' && selectedOption.dataset.value) {
+    // Récupérer l'ID ou valeur de l'option
+    selectedCategoryId = selectedOption.dataset.value;
+    isUpdateCategorySelected = true;
+
+    // Maj bouton de sélection
+    updateCategorySelectButton.textContent = selectedOption.textContent.trim();
+    updateCategorySelectContent.classList.remove('open');
+
+    // Initialiser la valeur du tooltip + bordure
+    spanUpdateCategoryTooltip.textContent = 'Modifier valeur';
+    spanUpdateCategoryBorder.classList.add('invalid');
+
+    // Désactiver bouton de soumission par défaut
+    submitUpdateCategoryButton.disabled = true;
+
+    toggleSubmitUpdateCategoryButtonState();
+  }
+});
+
 // ##### Injecter les contraintes de validation ##### //
 updateCategoryInput.setAttribute('required', true);
 updateCategoryInput.setAttribute('minlength', 3);
@@ -907,41 +961,66 @@ updateCategoryInputContainer.insertAdjacentElement('afterend', updateCategoryErr
 
 // ##### Activer / désactiver bouton soumission ##### //
 const toggleSubmitUpdateCategoryButtonState = () => {
-  submitUpdateCategoryButton.disabled = !updateCategoryInput.validity.valid;
+  const value = updateCategoryInput.value.trim();
+  const initialInjectedValue = updateCategorySelectButton.textContent.trim();
+  const isValueModified = value !== initialInjectedValue;
+
+  submitUpdateCategoryButton.disabled = !(isUpdateCategorySelected && isValueModified && updateCategoryInput.validity.valid);
 };
 
 // ##### Comportement de validation ##### //
 const updateCategoryValidationState = () => {
   const value = updateCategoryInput.value.trim();
+  const initialInjectedValue = updateCategorySelectButton.textContent.trim();
   const error = validateInput(value);
 
-  // Invalidité si erreur détectée
-  if (error) {
-    updateCategoryInput.setCustomValidity('invalid');
-    spanUpdateCategoryBorder.classList.add('invalid');
-    updateCategoryInput.classList.add('invalid');
-    updateCategoryInput.classList.add('headShake');
+  // Input visible + valeur modifiée
+  const isInputVisible = updateCategoryInputContainer.style.display === 'flex';
+  const isValueModified = value !== initialInjectedValue;
 
-    // Afficher message d'erreur
-    updateCategoryErrorMessage.textContent = error;
-    updateCategoryErrorMessage.classList.add('show');
+  // Ne valider que si input visible + valeur modifiée
+  if (isInputVisible && isValueModified) {
+    // Invalidité si erreur détectée
+    if (error) {
+      updateCategoryInput.setCustomValidity('invalid');
+      spanUpdateCategoryBorder.classList.add('invalid');
+      updateCategoryInput.classList.add('invalid');
+      updateCategoryInput.classList.add('headShake');
 
-    // Modifier texte tooltip
-    spanUpdateCategoryTooltip.textContent = 'Saisie invalide';
+      // Afficher message d'erreur
+      updateCategoryErrorMessage.textContent = error;
+      updateCategoryErrorMessage.classList.add('show');
+
+      // Modifier texte tooltip
+      spanUpdateCategoryTooltip.textContent = 'Saisie invalide';
+    }
+    else {
+      updateCategoryInput.setCustomValidity('');
+      spanUpdateCategoryBorder.classList.remove('invalid');
+      spanUpdateCategoryBorder.classList.add('valid');
+      updateCategoryInput.classList.remove('invalid');
+      updateCategoryInput.classList.remove('headShake');
+
+      // Effacer message d'erreur
+      updateCategoryErrorMessage.textContent = '';
+      updateCategoryErrorMessage.classList.remove('show');
+
+      // Modifier texte tooltip
+      spanUpdateCategoryTooltip.textContent = 'Modifier';
+    }
   }
   else {
+    // Réinitialiser état input si invisible et non modifié
     updateCategoryInput.setCustomValidity('');
     spanUpdateCategoryBorder.classList.remove('invalid');
-    spanUpdateCategoryBorder.classList.add('valid');
-    updateCategoryInput.classList.remove('invalid');
-    updateCategoryInput.classList.remove('headShake');
+    spanUpdateCategoryBorder.classList.remove('valid');
 
     // Effacer message d'erreur
     updateCategoryErrorMessage.textContent = '';
     updateCategoryErrorMessage.classList.remove('show');
 
     // Modifier texte tooltip
-    spanUpdateCategoryTooltip.textContent = 'Modifier';
+    spanUpdateCategoryTooltip.textContent = 'Saisir';
   }
 };
 
@@ -980,12 +1059,14 @@ updateCategoryInput.addEventListener('blur', () => {
 });
 
 // ##### Soumission formulaire ##### //
-updateCategoryForm.addEventListener('submit', async (event) => {
-  // Empêcher soumission classique du formulaire
+submitUpdateCategoryButton.addEventListener('click', async (event) => {
+  // Empêcher soumission du formulaire
   event.preventDefault();
+  // Empêcher propagation de l'event
+  event.stopPropagation();
 
-    // Vérifier validité de l'input
-    updateCategoryValidationState();
+  // Vérifier validité de l'input
+  updateCategoryValidationState();
 
   if(isChromeExtension()) {
     // Si formulaire valide
@@ -994,7 +1075,7 @@ updateCategoryForm.addEventListener('submit', async (event) => {
       // Nouvelle valeur saisie
       const newCategoryName = updateCategoryInput.value.trim();
 
-      if (oldCategoryId && newCategoryName) {
+      if (isUpdateCategorySelected && oldCategoryId && newCategoryName) {
         try {
           const response = await sendMessageAsync({
             action: 'updateCategory',
