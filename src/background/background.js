@@ -195,6 +195,10 @@ function handleApiError(error, sendResponse) {
         sendResponse({ success: false, error: 'not-found' });
         break;
 
+      case status === 409:
+        sendResponse({ success: false, error: 'already-exists' });
+        break;
+
       case status >= 400 && status <= 499:
         sendResponse({ success: false, error: 'client-error' });
         break;
