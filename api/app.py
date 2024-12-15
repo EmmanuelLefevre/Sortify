@@ -103,9 +103,9 @@ def post_data():
         data = request.get_json()
         category = data.get('name')
 
-        # Vérifier catégorie existe déjà
+        # Vérifier si catégorie existe déjà
         if category in DATAMODEL["categories"].values():
-            return jsonify({"error": "La catégorie existe déjà!"}), 409
+            return jsonify({"type": "category"}), 409
 
         # Créer nouvel UUID pour la catégorie
         category_uuid = str(uuid.uuid4())
