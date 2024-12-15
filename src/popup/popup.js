@@ -941,7 +941,7 @@ const updateCategoryValidationState = () => {
     updateCategoryErrorMessage.classList.remove('show');
 
     // Modifier texte tooltip
-    spanUpdateCategoryTooltip.textContent = 'Créer';
+    spanUpdateCategoryTooltip.textContent = 'Modifier';
   }
 };
 
