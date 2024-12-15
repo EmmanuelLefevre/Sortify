@@ -544,13 +544,13 @@ async function updateCategoriesSelectList() {
       updateCategoriesList.innerHTML = '';
 
       // Ajouter les catégories dans le select
-      for (const [id, name] of Object.entries(categories)) {
+      categories.forEach(([id, name]) => {
         const listItem = document.createElement('li');
         listItem.textContent = name;
         listItem.dataset.id = id;
         listItem.setAttribute('data-value', id);
         updateCategoriesList.appendChild(listItem);
-      }
+      });
     }
     catch (error) {
       handleServiceWorkerError(error);
