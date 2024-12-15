@@ -638,7 +638,9 @@ updateCategorySelectOptions.addEventListener('click', function(event) {
       // Réinitialiser l'état de sélection
       isUpdateCategorySelected = false;
 
-      // Réinitialiser l'input
+      // Reset formulaire
+      updateCategoryForm.reset();
+      // Reset input (par sécurité car déjà effectué par le reset formulaire)
       updateCategoryInput.value = '';
 
       toggleSubmitUpdateCategoryButtonState();
