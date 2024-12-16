@@ -17,9 +17,7 @@
         "233fb86c-6347-4f18-9e98-284ccd88e19c": "Domotique",
         "feeeb476-e4f6-444a-98e7-90163888c51c": "Math\u00e9matiques",
         "3e679485-d3e1-4cfd-8afb-b63e30b07ff0": "Emploi",
-        "0191055c-b092-46b9-86a6-bfa4ed337ad0": "Figma",
-        "baea54fc-f74b-424e-aa56-cf0f6132f458": "Roller",
-        "dddf57fa-feb8-4651-8a54-a1ccc3577b16": "Football"
+        "0191055c-b092-46b9-86a6-bfa4ed337ad0": "Figma"
     },
     "urls": {
         "f1772e9b-fe75-4396-b028-eedb77cfcd73": {
@@ -47,7 +45,7 @@
             "title": "Twitch",
             "category_id": "77f48bc2-a2b3-4ea0-8f58-59b9ed8f0ba1"
         },
-        "853b96b9-371d-4cd8-bb47-de6d49a14692": {
+        "ab7e3d45-152d-41b3-8316-eb8395883ff0": {
             "url": "https://www.emmanuellefevre.com/",
             "title": "Emmanuel Lefevre Portfolio",
             "category_id": "4bf563ec-34ff-4db7-9bbb-df0cc089b6a9"
