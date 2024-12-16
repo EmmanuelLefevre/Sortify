@@ -98,21 +98,9 @@ def post_process_label(label: str) -> str:
     Fonction permettant de nettoyer la sortie du LLM afin de s'assurer qu'elle correspond bien à une catégorie existante.
     """
     try:
-        # Rechercher le texte après "est : " ou "est :" tout en capturant la catégorie
-        match = re.search(r'est\s*:\s*(.+?)(?:\.|\n|$)', label, re.IGNORECASE)
-        if match:
-            label = match.group(1)
-
-        # Supprimer les espaces superflus et les caractères indésirables
-        label = label.strip()
-        label = label.rstrip('.')
+        label = label.split('\n')[-1]
+        label = label[:-1] if label[-1] == '.' else label
         label = label.replace("'", "")
-
-        # Normaliser les espaces et enlever les apostrophes
-        label = label.replace("'", "")
-
-        # Supprimer les espaces multiples
-        label = " ".join(label.split())
 
         return label
 
@@ -149,34 +137,20 @@ def process_url(url: str, user_agent: str, model: str = "llama3.2") -> tuple[dic
         label = response.json().get('response')
 
         # Nettoyer le label
-        # label = post_process_label(label)
-        label = label.strip()
-
-        # Debug : afficher le label et les catégories disponibles
-        print(f"Label reçu: {label}")
-        print(f"Catégories disponibles: {list(DATAMODEL.get('categories').values())}")
+        label = post_process_label(label).strip()
 
         # Vérifier que le label correspond à une catégorie existante
-        # label_id = [key for key, value in DATAMODEL.get("categories").items() if value == label]
-        # label_id = label_id[0] if label_id else "4bf563ec-34ff-4db7-9bbb-df0cc089b6a9"
-
-        # Vérifier que le label correspond à une catégorie existante
-        matching_keys = [key for key, value in DATAMODEL.get("categories").items() if value.strip().lower() == label.strip().lower()]
-
-        if not matching_keys:
-            return {"error": f"Label '{label}' non trouvé dans les catégories disponibles : {list(DATAMODEL.get('categories').values())}"}, 400
-
-        # Récupérer l'ID de la catégorie
-        label_id = matching_keys[0]
+        label_id = [key for key, value in DATAMODEL.get("categories").items() if value == label]
+        label_id = label_id[0] if label_id else "4bf563ec-34ff-4db7-9bbb-df0cc089b6a9"
 
         title = scraped_data.get('title')
 
         # Ajouter l'URL et ses informations au modèle
         DATAMODEL.get("urls")[str(uuid.uuid4())] = {
-                "url": url,
-                "title": title,
-                "category_id": label_id
-            }
+            "url": url,
+            "title": title,
+            "category_id": label_id
+        }
 
         # Sauvegarder les modifications dans le fichier
         with open(PATH_DATAMODEL, "w") as f:
