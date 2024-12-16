@@ -128,7 +128,8 @@ def process_url(url: str, user_agent: str, model: str = "llama3.2") -> tuple[dic
         "temperature": 0,
         "stream": False,
         "options": {
-            "seed": 42  # Fixed seed for reproducibility (temperature set at 0 doesn't seem to ensure a reproducible result for an indentical prompt)
+            # Fixed seed for reproducibility (temperature set at 0 doesn't seem to ensure a reproducible result for an indentical prompt)
+            "seed": 42
         }
     }
 
@@ -137,7 +138,7 @@ def process_url(url: str, user_agent: str, model: str = "llama3.2") -> tuple[dic
         label = response.json().get('response')
 
         # Nettoyer le label
-        label = post_process_label(label).strip()
+        label = post_process_label(label)
 
         # Vérifier que le label correspond à une catégorie existante
         label_id = [key for key, value in DATAMODEL.get("categories").items() if value == label]
