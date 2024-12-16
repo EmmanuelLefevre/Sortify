@@ -49,8 +49,12 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
 
             // Vérifier si réponse OK, sinon passer l'erreur à handleApiError()
             if (!response.ok) {
-              handleApiError({message: `Erreur HTTP: ${response.status}`,
-                response
+              const errorData = await response.json();
+
+              handleApiError({
+                message: `Erreur HTTP: ${response.status}`,
+                response,
+                errorData
               }, sendResponse);
               return;
             }
@@ -59,10 +63,6 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
 
             // Extraire les valeurs du JSON reçu
             const { label, title } = result;
-            if (!label || !title) {
-              sendResponse({ success: false, error: 'data' });
-              return;
-            }
 
             // Call fonction de création du favori
             handleBookmarkCreation(label, title, activeTab.url, sendResponse);
@@ -217,6 +217,9 @@ function handleApiError(error, sendResponse) {
         }
         else if (errorData && errorData.type  === 'bookmark') {
           sendResponse({ success: false, error: 'already-exists', type: 'bookmark' });
+        }
+        else {
+          sendResponse({ success: false, error: 'unexpected-error' });
         }
         break;
 

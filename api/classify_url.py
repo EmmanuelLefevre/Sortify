@@ -44,11 +44,15 @@ def format_url(url: str) -> str:
     return domain_name
 
 
-def scrape_page(url: str) -> dict | None:
+def scrape_page(url: str, user_agent: str) -> dict | None:
     """
     Fonction scrapant une page web à partir de son url et récupérant des informations utiles pour la classifier.
     """
-    response = requests.get(url)
+    headers = {
+        "User-Agent": user_agent
+    }
+
+    response = requests.get(url, headers=headers)
     response.raise_for_status()
     soup = BeautifulSoup(response.content, 'html.parser')
     meta_tags = soup.find_all('meta')
@@ -82,7 +86,7 @@ def create_prompt(url: str, scraped_data: dict) -> str:
     if scraped_data.get('meta_info').get('keywords'):
         prompt += f"Meta keywords: {scraped_data.get('meta_info').get('keywords')}\n"
 
-    categories = list(DATAMODEL.get("categories").values())
+    categories = [value for value in DATAMODEL.get("categories").values() if value != "Autre"]
 
     prompt += f"Catégorise cette url selon les informations ci-dessus en choisissant la catégorie la plus appropriée dans la liste suivante : {categories}. Ta réponse ne doit être que l'une de celles contenues dans la liste des catégories."
     return prompt
@@ -92,13 +96,16 @@ def post_process_label(label: str) -> str:
     """
     Fonction permettant de nettoyer la sortie du LLM afin de s'assurer qu'elle correspond bien à une catégorie existante.
     """
-    label = label.split('\n')[-1]
-    label = label[:-1] if label[-1] == '.' else label
-    label = label.replace("'", "")
-    return label
+    try:
+        label = label.split('\n')[-1]
+        label = label[:-1] if label[-1] == '.' else label
+        label = label.replace("'", "")
+        return label
+    except Exception:
+        return ""
 
 
-def process_url(url: str, model: str = "llama3.2") -> tuple[dict, int]:
+def process_url(url: str, user_agent: str, model: str = "llama3.2") -> tuple[dict, int]:
 
     for _, val in DATAMODEL.get("urls").items():
         if url == val.get('url'):
@@ -108,7 +115,7 @@ def process_url(url: str, model: str = "llama3.2") -> tuple[dict, int]:
             return {"label": label, "title": title}, 200
 
     try:
-        scraped_data = scrape_page(url)
+        scraped_data = scrape_page(url, user_agent)
     except Exception as e:
         return {"error": f"url inaccessible : {e}"}, 500
 
@@ -125,14 +132,24 @@ def process_url(url: str, model: str = "llama3.2") -> tuple[dict, int]:
     try:
         response = requests.post(API_URL, json=query)
         label = response.json().get('response')
+
+        # Nettoyer le label
         label = post_process_label(label)
-        label_id = [key for key, value in DATAMODEL.get("categories").items() if value == label][0]
+
+        # Vérifier que le label correspond à une catégorie existante
+        label_id = [key for key, value in DATAMODEL.get("categories").items() if value == label]
+        label_id = label_id[0] if label_id else "4bf563ec-34ff-4db7-9bbb-df0cc089b6a9"
+
         title = scraped_data.get('title')
+
+        # Ajouter l'URL et ses informations au modèle
         DATAMODEL.get("urls")[str(uuid.uuid4())] = {
                 "url": url,
                 "title": title,
                 "category_id": label_id
             }
+
+        # Sauvegarder les modifications dans le fichier
         with open(PATH_DATAMODEL, "w") as f:
             json.dump(DATAMODEL, f, indent=4)
 
