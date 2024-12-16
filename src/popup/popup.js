@@ -493,6 +493,9 @@ function displayServiceWorkerError(notificationType, message) {
 }
 
 // ##### Gérer erreurs provenant du service worker ##### //
+// Variable pour suivre si une erreur API a eu lieu
+let apiErrorOccurred = false;
+
 function handleServiceWorkerError(error) {
   // Accéder directement à l'objet error (propriété 'error' ou objet entier)
   const errorType = error.error || error;
@@ -535,6 +538,12 @@ function handleServiceWorkerError(error) {
     case 'already-exists':
       if (errorSubtype === 'category') {
         displayServiceWorkerError('category-already-exists', "⚠️ La catégorie existe déjà!");
+        apiErrorOccurred = true;
+        submitCategoryButton.disabled = true;
+        spanCategoryTooltip.textContent = 'Rejoues';
+        categoryInput.classList.add('headShake');
+        spanCategoryBorder.classList.add('invalid');
+        categoryInput.classList.add('invalid');
       }
       else if (errorSubtype === 'bookmark') {
         displayServiceWorkerError('bookmark-already-exists', "⚠️ Le favori existe déjà!");
@@ -857,6 +866,20 @@ categoryInput.addEventListener('input', () => {
   }
 
   toggleSubmitButtonState();
+
+});
+
+// ##### Écouter événement focus après une erreur API ##### //
+categoryInput.addEventListener('focus', () => {
+  if (apiErrorOccurred) {
+    submitCategoryButton.disabled = false;
+    categoryInput.classList.remove('headShake');
+    categoryInput.classList.remove('invalid');
+    spanCategoryBorder.classList.remove('invalid');
+    spanCategoryTooltip.textContent = 'Créer';
+
+    apiErrorOccurred = false;
+  }
 });
 
 // ##### Input unfocus (masquer message d'erreur + retirer classe de validation si input vide) ##### //
