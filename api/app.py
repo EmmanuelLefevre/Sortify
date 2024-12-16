@@ -60,8 +60,15 @@ def fetch_data():
     if not user_agent:
         return jsonify({'error': 'User-Agent is required'}), 400
 
+    # Vérifier si URL existe déjà
+    existing_urls = [entry['url'] for entry in DATAMODEL.get('urls', {}).values()]
+    if url in existing_urls:
+        return jsonify({"type": "bookmark"}), 409
+
     try:
+        # Traiter URL
         response, status = process_url(url, user_agent)
+
         return jsonify(response), status
 
     except requests.exceptions.RequestException as e:
@@ -133,7 +140,7 @@ def patch_category(uuid):
         new_label = data.get('newCategoryName')
 
         # Vérifier si UUID fourni existe dans les catégories du modèle de données
-        if uuid in DATAMODEL["categories"]:
+        if uuid in DATAMODEL["categories"] and uuid != "4bf563ec-34ff-4db7-9bbb-df0cc089b6a9":
             # Si UUID existe => modifier la catégorie
             DATAMODEL["categories"][uuid] = new_label
 
@@ -156,7 +163,7 @@ def patch_category(uuid):
 def delete_category(uuid):
     try:
         # Vérifier si UUID fourni existe dans les catégories du modèle de données
-        if uuid in DATAMODEL["categories"]:
+        if uuid in DATAMODEL["categories"] and uuid != "4bf563ec-34ff-4db7-9bbb-df0cc089b6a9":
             # Si UUID existe => supprimer la catégorie
             del DATAMODEL["categories"][uuid]
 
