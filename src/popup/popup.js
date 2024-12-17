@@ -263,7 +263,7 @@ const createNotification = (type) => {
 
     case 'not-chrome-extension':
       message = 'Sortify';
-      body = '⚠️ L\'environnement n\'est pas une extension Chrome valide!';
+      body = '😱 L\'environnement n\'est pas une extension Chrome valide!';
       icon = '../assets/logo/logo.png';
       break;
 
