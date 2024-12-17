@@ -63,7 +63,7 @@ def fetch_data():
     url = data.get('url')
     user_agent = data.get('userAgent')
 
-    # Vérifier URL et User-Agent sont présents dans la requête
+    # Vérifier si URL et User-Agent sont présents dans la requête
     if not url:
         return jsonify({'error': 'URL is required'}), 400
     if not user_agent:
