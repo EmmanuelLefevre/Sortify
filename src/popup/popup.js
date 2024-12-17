@@ -185,7 +185,7 @@ const createNotification = (type) => {
 
     case 'bookmark-already-exists':
       message = 'Sortify';
-      body = '⚠️ Le favori existe déjà!';
+      body = '🖖 Le favori existe déjà!';
       icon = '../assets/logo/logo.png';
       break;
 
@@ -197,7 +197,7 @@ const createNotification = (type) => {
 
     case 'category-already-exists':
       message = 'Sortify';
-      body = '⚠️ La catégorie existe déjà!';
+      body = '🖖 La catégorie existe déjà!';
       icon = '../assets/logo/logo.png';
       break;
 
@@ -527,7 +527,7 @@ function handleServiceWorkerError(error) {
 
     case 'already-exists':
       if (errorSubtype === 'category') {
-        displayServiceWorkerError('category-already-exists', "⚠️ La catégorie existe déjà!");
+        displayServiceWorkerError('category-already-exists', "🖖 La catégorie existe déjà!");
         apiErrorOccurred = true;
         submitCategoryButton.disabled = true;
         spanCategoryTooltip.textContent = 'Rejoues';
@@ -536,7 +536,7 @@ function handleServiceWorkerError(error) {
         categoryInput.classList.add('invalid');
       }
       else if (errorSubtype === 'bookmark') {
-        displayServiceWorkerError('bookmark-already-exists', "⚠️ Le favori existe déjà!");
+        displayServiceWorkerError('bookmark-already-exists', "🖖 Le favori existe déjà!");
       }
       break;
 
