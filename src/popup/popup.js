@@ -12,14 +12,13 @@
 // ########## Chrome extension ########## //
 // ###################################### //
 const isChromeExtension = () => {
-  if ((typeof chrome !== 'undefined' && typeof chrome.tabs !== 'undefined') || !chrome.runtime || !chrome.runtime.id) {
-    console.error("L'environnement n'est pas une extension Chrome valide !");
+  if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.id) {
+    return true;
   }
   else {
-    console.log("Extension Chrome détectée avec succès !");
+    createNotification('not-chrome-extension');
+    return false;
   }
-  return typeof chrome !== 'undefined' && typeof chrome.tabs !== 'undefined';
-  return typeof chrome !== 'undefined' && !!chrome.runtime && !!chrome.runtime.id;
 }
 
 // ################################################################ //
@@ -262,9 +261,9 @@ const createNotification = (type) => {
       icon = '../assets/logo/logo.png';
       break;
 
-    case 'chrome':
+    case 'not-chrome-extension':
       message = 'Sortify';
-      body = '🛜 API Chrome non disponible!';
+      body = '⚠️ L\'environnement n\'est pas une extension Chrome valide!';
       icon = '../assets/logo/logo.png';
       break;
 
@@ -350,15 +349,6 @@ const handleNotificationButtonClick = () => {
   const notifsButton = document.getElementById("enable-notifs");
   const notifsContainer = document.querySelector('.notifs-border-container');
 
-  if (!notifsButton) {
-    console.error("Element with ID 'enable-notifs' was not found in the DOM.");
-    return;
-  }
-  if (!notifsContainer) {
-    console.error("Element with class 'notifs-border-container' was not found in the DOM.");
-    return;
-  }
-
   notifsButton.addEventListener('click', async (_event) => {
     try {
       if (isChromeExtension()) {
@@ -366,7 +356,7 @@ const handleNotificationButtonClick = () => {
         chrome.tabs.create({url:'chrome://settings/content/notifications'});
       }
       else {
-        console.error("You should execute this extension in a Chrome environment!");
+        createNotification('not-chrome-extension');
         return;
       }
 
@@ -778,7 +768,7 @@ bookmarkForm.addEventListener('submit', async function (event) {
     }
   }
   else {
-    console.error("You should execute this extension in a Chrome environment!");
+    createNotification('not-chrome-extension');
   }
 });
 
@@ -948,7 +938,7 @@ categoryForm.addEventListener('submit', async (event) => {
       }
     }
     else {
-      console.error("You should execute this extension in a Chrome environment!");
+      createNotification('not-chrome-extension');
     }
   }
 });
@@ -1167,7 +1157,7 @@ submitUpdateCategoryButton.addEventListener('click', async (event) => {
       }
     }
     else {
-      console.error("You should execute this extension in a Chrome environment!");
+      createNotification('not-chrome-extension');
     }
   }
 });
