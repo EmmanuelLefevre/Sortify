@@ -47,9 +47,18 @@ CORS(app, resources={
 })
 
 
+# Recharger le modèle de données depuis le fichier JSON à chaque requête
+def load_datamodel():
+    with open(PATH_DATAMODEL, 'r') as f:
+        return json.load(f)
+
+
 # Ajouter un favori
 @app.route('/api/bookmark', methods=['POST'])
 def fetch_data():
+    # Recharger le DATAMODEL depuis le fichier
+    DATAMODEL = load_datamodel()
+
     data = request.get_json()
     url = data.get('url')
     user_agent = data.get('userAgent')
