@@ -142,7 +142,11 @@ def process_url(url: str, user_agent: str, model: str = "llama3.2") -> tuple[dic
 
         # Vérifier que le label correspond à une catégorie existante
         label_id = [key for key, value in DATAMODEL.get("categories").items() if value == label]
-        label_id = label_id[0] if label_id else "4bf563ec-34ff-4db7-9bbb-df0cc089b6a9"
+        if label_id == []:
+            label_id = "4bf563ec-34ff-4db7-9bbb-df0cc089b6a9"
+            label = "Autre"
+        else:
+            label_id = label_id[0]
 
         title = scraped_data.get('title')
 
