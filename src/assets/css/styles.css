@@ -63,7 +63,7 @@
     --font-size-label: 14px;
     --font-size-label-focus: 9px;
     --font-size-p: 14px;
-    --font-size-select-option: 14px;
+    --font-size-select-option: 15px;
     --font-size-result: 14px;
     --font-size-select: 14px;
 
@@ -106,7 +106,7 @@
     --h1-shadow: 3px 3px 0px var(--h1-shadow-color);
     --icon-shadow: drop-shadow(2px 1px 0px var(--icon-shadow-color));
     --options-shadow: 0px 7px 6px -4px var(--options-shadow-color);
-    --select-shadow: 0px 7px 3px -6px var(--select-shadow-color);
+    --select-shadow: 0px 7px 6px -6px var(--select-shadow-color);
     --text-shadow: 0px 2px 2px var(--text-shadow-color);
 
     /*------Fonts------*/
@@ -406,22 +406,22 @@ button#update-category-btn:disabled img.update-category-icon {
 /*------Add Category------*/
 /*------Update Category------*/
 /* Content/Container */
-div.update-category-select-content {
-    position: relative;
-}
 div.update-category-container {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
 }
+div.update-category-select-content {
+    position: relative;
+}
 div.update-category-select-container {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 139px;
-    height: 37px;
+    width: 144px;
+    height: 42px;
     margin: 0px auto;
     border-radius: 4px;
     overflow: hidden;
@@ -432,7 +432,7 @@ div.update-category-input-container {
 }
 /* Border */
 .rotating-select-border-line {
-    width: 210px;
+    width: 250px;
     height: 19px;
     background: linear-gradient(90deg, var(--fourth-color), var(--fourth-color));
     rotate: -30deg;
@@ -445,9 +445,9 @@ button#update-category-select {
     /* text-align: left; */
     color: var(--primary-color);
     font-size: var(--font-size-select);
-    width: 135px;
-    height: 33px;
-    padding: 5px 6px;
+    width: 139px;
+    height: 38px;
+    padding: 10px 6px;
     top: 2px;
     border-radius: 4px;
     box-shadow: var(--select-shadow);
@@ -465,7 +465,7 @@ ul#update-category-select-options {
     position: absolute;
     font-size: var(--font-size-select-option);
     color: var(--primary-color);
-    width: 130px;
+    width: 138px;
     max-height: 90px;
     margin: 0;
     padding: 0;
