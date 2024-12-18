@@ -44,6 +44,11 @@
             "url": "https://www.twitch.tv",
             "title": "Twitch",
             "category_id": "77f48bc2-a2b3-4ea0-8f58-59b9ed8f0ba1"
+        },
+        "04d68121-c564-4075-aa97-00d3771b1aeb": {
+            "url": "https://www.emmanuellefevre.com/",
+            "title": "Emmanuel Lefevre Portfolio",
+            "category_id": "629e6151-2921-4997-916c-d1fc8cda3700"
         }
     }
 }
