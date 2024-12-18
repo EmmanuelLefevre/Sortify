@@ -1043,6 +1043,15 @@ const updateCategoryValidationState = () => {
       spanUpdateCategoryTooltip.textContent = 'Modifier';
     }
   }
+  else if (!isValueModified) {
+    spanUpdateCategoryTooltip.textContent = 'Modifier valeur';
+    spanUpdateCategoryBorder.classList.add('invalid');
+  }
+  else if (updateCategoryHasTyped && !isValueModified) {
+    updateCategoryInput.classList.add('invalid');
+    updateCategoryInput.classList.add('headShake');
+    spanUpdateCategoryBorder.classList.add('invalid');
+  }
   else {
     // Réinitialiser état input si invisible et non modifié
     updateCategoryInput.setCustomValidity('');
