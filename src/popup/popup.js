@@ -585,6 +585,7 @@ const updateCategorySelectItems = updateCategorySelectOptions.getElementsByTagNa
 const updateCategoryInputContainer = document.querySelector('.update-category-input-container');
 const rotatingSelectBorderLine = document.querySelector('.rotating-select-border-line');
 const sortifyContent = document.querySelector('.sortify-content');
+const notifsContainer = document.querySelector('.notifs-border-container');
 
 // ##### Chargement du DOM => masquer input + initialiser texte du bouton ##### //
 document.addEventListener('DOMContentLoaded', () => {
@@ -603,13 +604,13 @@ updateCategorySelectButton.addEventListener('click', function(event) {
   const isOpen = updateCategorySelectContent.classList.toggle('open');
   // Vérifier si l'input est déjà affiché
   const isInputVisible = updateCategoryInputContainer.style.display === 'flex';
+  // Vérifier si notif container est affiché
+  const isNotifsContainerVisible = notifsContainer.style.display !== 'none';
 
   // Ne réinitialiser que si aucune catégorie sélectionnée + input n'est pas visible
-  if (isOpen) {
-    if (!isInputVisible) {
-      // Liste ouverte, ajouter du padding si input masqué
-      sortifyContent.style.setProperty('padding-bottom', '105px');
-    }
+  if (isOpen && !isNotifsContainerVisible) {
+    // Liste ouverte, ajouter du padding si input masqué
+    sortifyContent.style.setProperty('padding-bottom', isInputVisible ? '0px' : '105px');
   }
   else {
     // Liste fermée => réinitialiser le padding
