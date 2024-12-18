@@ -75,10 +75,22 @@ def scrape_page(url: str, user_agent: str) -> dict | None:
     for tag in meta_tags:
         # Vérifier si la balise contient les attributs 'name' et 'content'
         if 'name' in tag.attrs and 'content' in tag.attrs:
-            # Filtrer uniquement les balises meta ayant 'name' parmi 'title', 'description' ou 'keywords'
-            if tag.attrs['name'] in ['title', 'description', 'keywords']:
-                # Ajouter info dans le dictionnaire (nom = clé, contenu = valeur)
-                meta_info[tag.attrs['name']] = tag.attrs['content']
+            # Filtrer uniquement les balises meta 'name' ayant 'description' ou 'keywords' pour valeur
+            if tag.attrs['name'] in ['description', 'keywords']:
+                # Ajouter info dans le dictionnaire seulement si la clé n'existe pas déjà
+                if tag.attrs['name'] not in meta_info:
+                    # Ajouter info dans le dictionnaire (nom = clé, contenu = valeur)
+                    meta_info[tag.attrs['name']] = tag.attrs['content']
+        # Vérifier si la balise contient les attributs 'property' et 'content'
+        if 'property' in tag.attrs and 'content' in tag.attrs:
+            # Filtrer uniquement les balises meta 'property' ayant 'og:title' ou 'og:description' pour valeur
+            if tag.attrs['property'] in ['og:title', 'og:description']:
+                # Ajouter info dans le dictionnaire seulement si la clé n'existe pas déjà
+                if tag.attrs['property'] not in meta_info:
+                    # Ajouter info dans le dictionnaire (nom = clé, contenu = valeur)
+                    meta_info[tag.attrs['property']] = tag.attrs['content']
+
+    print(f"{meta_info}")
 
     # Récupérer title à partir de la balise <title> si elle existe
     # Sinon, utiliser title extrait dans les balises meta
@@ -112,6 +124,14 @@ def create_prompt(url: str, scraped_data: dict) -> str:
     # Vérifier si meta keywords existent => ajouter au prompt
     if scraped_data.get('meta_info').get('keywords'):
         prompt += f"Meta keywords: {scraped_data.get('meta_info').get('keywords')}\n"
+
+    # Vérifier si meta og:title existent => ajouter au prompt
+    if scraped_data.get('meta_info').get('og:title'):
+        prompt += f"Meta og:title: {scraped_data.get('meta_info').get('og:title')}\n"
+
+    # Vérifier si meta og:description existent => ajouter au prompt
+    if scraped_data.get('meta_info').get('og:description'):
+        prompt += f"Meta og:description: {scraped_data.get('meta_info').get('og:description')}\n"
 
     # Récupérer liste des catégories disponibles, en excluant la catégorie "Autre"
     categories = [value for value in DATAMODEL.get("categories").values() if value != "Autre"]
@@ -166,7 +186,7 @@ def process_url(url: str, user_agent: str, model: str = "llama3.2") -> tuple[dic
 
     # Préparer paramètres => envoyer requête à l'API de catégorisation
     query = {
-        # Spécifier odèle à utiliser
+        # Spécifier modèle à utiliser
         "model": model,
         # Générer prompt à partir des données scrapées
         "prompt": create_prompt(url, scraped_data),
