@@ -617,8 +617,10 @@ updateCategorySelectButton.addEventListener('click', function(event) {
   }
 });
 
-// ##### Option sélectionnée = true => maj bouton + fermer la liste des options + écouteur d'événements ##### //
+// ##### Stocker id catégorie à modifier ##### //
 let oldCategoryId = '';
+
+// ##### Option sélectionnée = true => maj bouton + fermer la liste des options + écouteur d'événements ##### //
 updateCategorySelectOptions.addEventListener('click', function(event) {
   // Vérifier si l'élément cliqué est bien une option
   if (event.target.tagName.toLowerCase() === 'li') {
@@ -1169,3 +1171,30 @@ document.addEventListener('DOMContentLoaded', () => {
   toggleSubmitButtonState();
   addCapitalizationToInputs();
 });
+
+
+
+// const bouton = document.getElementById("bookmark-btn");
+
+// window.addEventListener("focus", () => {
+//   console.log("Focus retrouvé sur la popup.");
+
+//   if (bouton) {
+//     bouton.replaceWith(bouton.cloneNode(true));
+//     bouton.addEventListener("click", () => {
+//       console.log("Bouton cliqué après focus!");
+//     });
+//     console.log("Écouteur réinitialisé après focus.");
+//   }
+// });
+// document.addEventListener("DOMContentLoaded", () => {
+//   if (bouton) {
+//     bouton.addEventListener("click", () => {
+//       console.log("Bouton cliqué !");
+//     });
+//     console.log("Écouteur ajouté avec succès !");
+//   }
+//   else {
+//     console.error("Le bouton n'a pas été trouvé !");
+//   }
+// });
