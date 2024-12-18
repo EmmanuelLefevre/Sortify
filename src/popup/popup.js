@@ -276,7 +276,7 @@ const createNotification = (type) => {
     });
   }
   else {
-    showAlertOnce("unsupported_notifications", "💀💀💀 Les notifications ne sont pas supportées par ce navigateur!");
+    showAlertOnce("unsupported_notifications", "💀 Les notifications ne sont pas supportées par ce navigateur!");
   }
 };
 
@@ -346,13 +346,19 @@ const handleNotificationButtonClick = () => {
   notifsButton.addEventListener('click', async (_event) => {
     try {
       if (isChromeExtension()) {
-        // Ouvrir onglet paramètres de notifications de Chrome
-        chrome.tabs.create({url:'chrome://settings/content/notifications'});
-      }
-      else {
-        console.error("You should execute this extension in a Chrome environment!");
-        return;
-      }
+        chrome.permissions.request({
+          permissions: ["notifications"]
+        }, function (granted) {
+          if (granted) {
+            updateNotificationStatus(true);
+            updateNotifContainerVisibility(notifsContainer, false);
+            resetAlertStatus("default_notifications");
+          }
+          else {
+            console.warn("Permission de notification refusée!")
+          }
+        }
+      );
 
       // Vérifier si autorisation a changée
       const checkPermission = setInterval(() => {
@@ -366,6 +372,11 @@ const handleNotificationButtonClick = () => {
 
       // Arrêter vérification après 15 secondes si permission n'est pas accordée
       setTimeout(() => clearInterval(checkPermission), 15000);
+      }
+      else {
+        console.error("You should execute this extension in a Chrome environment!");
+        return;
+      }
     }
     catch (err) {
       createNotification('unexpected-error');
