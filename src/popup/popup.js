@@ -1053,19 +1053,6 @@ const updateCategoryValidationState = () => {
     spanUpdateCategoryTooltip.textContent = 'Modifier valeur';
     spanUpdateCategoryBorder.classList.add('invalid');
   }
-  else {
-    // Réinitialiser état input si invisible et non modifié
-    updateCategoryInput.setCustomValidity('');
-    spanUpdateCategoryBorder.classList.remove('invalid');
-    spanUpdateCategoryBorder.classList.remove('valid');
-
-    // Effacer message d'erreur
-    updateCategoryErrorMessage.textContent = '';
-    updateCategoryErrorMessage.classList.remove('show');
-
-    // Modifier texte tooltip
-    spanUpdateCategoryTooltip.textContent = 'Saisir';
-  }
 };
 
 // ##### Écouter événements changements d'état de l'input ##### //
@@ -1082,14 +1069,11 @@ updateCategoryInput.addEventListener('input', () => {
   if (updateCategoryHasTyped && value === '' && document.activeElement === updateCategoryInput) {
     spanUpdateCategoryTooltip.textContent = 'Rejoues';
   }
-  else if (value === '') {
-    spanUpdateCategoryTooltip.textContent = 'Saisir';
-  }
 
   toggleSubmitUpdateCategoryButtonState();
 });
 
-// ##### Input unfocus (masquer message d'erreur + retirer classe de validation si input vide) ##### //
+// ##### Input unfocus (masquer message d'erreur + retirer classe de validation) ##### //
 updateCategoryInput.addEventListener('blur', () => {
   if (!updateCategoryInput.validity.valid && updateCategoryInput.value.trim() === '') {
     spanUpdateCategoryBorder.classList.remove('invalid');
@@ -1097,7 +1081,6 @@ updateCategoryInput.addEventListener('blur', () => {
     updateCategoryInput.classList.remove('headShake');
     updateCategoryErrorMessage.textContent = '';
     updateCategoryErrorMessage.classList.remove('show');
-    spanUpdateCategoryTooltip.textContent = 'Saisir';
     updateCategoryHasTyped = false;
   }
 });
