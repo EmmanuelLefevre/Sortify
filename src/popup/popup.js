@@ -360,18 +360,18 @@ const handleNotificationButtonClick = () => {
         }
       );
 
-      // Vérifier si autorisation a changée
-      const checkPermission = setInterval(() => {
-        if (Notification.permission === 'granted') {
-          clearInterval(checkPermission);
-          updateNotificationStatus(true);
-          updateNotifContainerVisibility(notifsContainer, false);
-          resetAlertStatus("default_notifications");
-        }
-      }, 1000);
+        // Vérifier si autorisation a changée
+        const checkPermission = setInterval(() => {
+          if (Notification.permission === 'granted') {
+            clearInterval(checkPermission);
+            updateNotificationStatus(true);
+            updateNotifContainerVisibility(notifsContainer, false);
+            resetAlertStatus("default_notifications");
+          }
+        }, 1000);
 
-      // Arrêter vérification après 15 secondes si permission n'est pas accordée
-      setTimeout(() => clearInterval(checkPermission), 15000);
+        // Arrêter vérification après 15 secondes si permission n'est pas accordée
+        setTimeout(() => clearInterval(checkPermission), 15000);
       }
       else {
         console.error("You should execute this extension in a Chrome environment!");
@@ -805,7 +805,7 @@ categoryErrorMessage.id = 'category-error-message';
 categoryInputContainer.insertAdjacentElement('afterend', categoryErrorMessage);
 
 // ##### Activer/désactiver bouton soumission ##### //
-const toggleSubmitButtonState = () => {
+const toggleSubmitCategoryButtonState = () => {
   submitCategoryButton.disabled = !categoryInput.validity.valid;
 };
 
@@ -862,7 +862,7 @@ categoryInput.addEventListener('input', () => {
     spanCategoryTooltip.textContent = 'Saisir';
   }
 
-  toggleSubmitButtonState();
+  toggleSubmitCategoryButtonState();
 
 });
 
@@ -1172,7 +1172,6 @@ document.addEventListener('DOMContentLoaded', () => {
   addSelectUpdateCategoryAnimation();
   initializeNotificationPermissions();
   handleNotificationButtonClick();
-  toggleSubmitButtonState();
   addCapitalizationToInputs();
 });
 
