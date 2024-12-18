@@ -117,7 +117,7 @@ def create_prompt(url: str, scraped_data: dict) -> str:
     categories = [value for value in DATAMODEL.get("categories").values() if value != "Autre"]
 
     # Génération du prompt
-    prompt += f"Catégorise cette url selon les informations ci-dessus en choisissant la catégorie la plus appropriée dans la liste suivante : {categories}. Ta réponse ne doit être que l'une de celles contenues dans la liste des catégories."
+    prompt += f"Catégorise cette url selon les informations ci-dessus en choisissant la catégorie la plus appropriée dans la liste suivante : {categories}. Ta réponse doit consister uniquement de la catégorie."
 
     # Retourner le prompt final
     return prompt
