@@ -18,13 +18,10 @@
     5. Logo
     6. Form
         - Add bookmark
-        - Add category
-        - Get category
+        - Category Identical Settings
         - Update category
     7. Error Message
-        - Add category
     8. Notifications
-    9. Request result
 -------------------------------------
 =====================================
 */
@@ -522,7 +519,6 @@ ul#update-category-select-options::-webkit-scrollbar-thumb{
 }
 
 /*===============ERROR MESSAGE===============*/
-/*------Add Category------*/
 #category-error-message,
 #update-category-error-message {
     display: block;
@@ -598,12 +594,4 @@ button#enable-notifs {
 /*------Hover------*/
 button#enable-notifs:hover {
     text-decoration: underline;
-}
-
-/*===============REQUEST RESULT===============*/
-div.request-result {
-    display: none;
-    font-size: var(--font-size-result);
-    color: var(--text-result-color);
-    margin-top: 20px;
 }
