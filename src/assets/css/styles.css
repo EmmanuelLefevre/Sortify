@@ -169,6 +169,7 @@ img.sortify-logo {
     width: 135px;
     height: auto;
     margin-bottom: 25px;
+    animation: zoomIn 0.8s ease-out;
 }
 
 /*===============FORM===============*/
