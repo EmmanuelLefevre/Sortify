@@ -1043,13 +1043,14 @@ const updateCategoryValidationState = () => {
       spanUpdateCategoryTooltip.textContent = 'Modifier';
     }
   }
-  else if (!isValueModified) {
-    spanUpdateCategoryTooltip.textContent = 'Modifier valeur';
-    spanUpdateCategoryBorder.classList.add('invalid');
-  }
   else if (updateCategoryHasTyped && !isValueModified) {
+    spanUpdateCategoryTooltip.textContent = 'Modifier valeur';
     updateCategoryInput.classList.add('invalid');
     updateCategoryInput.classList.add('headShake');
+    spanUpdateCategoryBorder.classList.add('invalid');
+  }
+  else if (!isValueModified) {
+    spanUpdateCategoryTooltip.textContent = 'Modifier valeur';
     spanUpdateCategoryBorder.classList.add('invalid');
   }
   else {
