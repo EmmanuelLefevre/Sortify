@@ -73,6 +73,17 @@
   }
 }
 
+/*------Zoom In------*/
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
 /*------Ringing Bell------*/
 .ringingBell {
   animation: ringingBell 5s 1.3s ease-in-out infinite;
