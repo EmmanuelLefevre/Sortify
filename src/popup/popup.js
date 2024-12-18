@@ -346,37 +346,26 @@ const handleNotificationButtonClick = () => {
   notifsButton.addEventListener('click', async (_event) => {
     try {
       if (isChromeExtension()) {
-        chrome.permissions.request({
-          permissions: ["notifications"]
-        }, function (granted) {
-          if (granted) {
-            updateNotificationStatus(true);
-            updateNotifContainerVisibility(notifsContainer, false);
-            resetAlertStatus("default_notifications");
-          }
-          else {
-            console.warn("Permission de notification refusée!")
-          }
-        }
-      );
-
-        // Vérifier si autorisation a changée
-        const checkPermission = setInterval(() => {
-          if (Notification.permission === 'granted') {
-            clearInterval(checkPermission);
-            updateNotificationStatus(true);
-            updateNotifContainerVisibility(notifsContainer, false);
-            resetAlertStatus("default_notifications");
-          }
-        }, 1000);
-
-        // Arrêter vérification après 15 secondes si permission n'est pas accordée
-        setTimeout(() => clearInterval(checkPermission), 15000);
+        // Ouvrir onglet paramètres de notifications de Chrome
+        chrome.tabs.create({url:'chrome://settings/content/notifications'});
       }
       else {
         console.error("You should execute this extension in a Chrome environment!");
         return;
       }
+
+      // Vérifier si autorisation a changée
+      const checkPermission = setInterval(() => {
+        if (Notification.permission === 'granted') {
+          clearInterval(checkPermission);
+          updateNotificationStatus(true);
+          updateNotifContainerVisibility(notifsContainer, false);
+          resetAlertStatus("default_notifications");
+        }
+      }, 1000);
+
+      // Arrêter vérification après 15 secondes si permission n'est pas accordée
+      setTimeout(() => clearInterval(checkPermission), 15000);
     }
     catch (err) {
       createNotification('unexpected-error');
