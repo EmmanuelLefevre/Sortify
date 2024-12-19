@@ -733,6 +733,8 @@ function closeSelectOptions(event) {
     updateCategorySelectContent.classList.remove('open');
     // Liste fermée => réinitialiser le padding
     sortifyContent.style.setProperty('padding-bottom', '15px');
+    // Inverser chevron
+    spanChevron.style.transform = 'translateY(-50%) rotate(0deg)';
   }
 }
 // Ecouteur d'événements sur le document entier
