@@ -616,6 +616,17 @@ updateCategorySelectButton.addEventListener('click', function(event) {
     // Liste fermée => réinitialiser le padding
     sortifyContent.style.setProperty('padding-bottom', isInputVisible ? '30px' : '15px');
   }
+
+  // Inverser chevron au click de fermeture de la liste
+  const spanChevron = document.querySelector('.chevron');
+  if (isOpen) {
+    // Si liste ouverte => inverser chevron
+    spanChevron.style.transform = 'translateY(-50%) rotate(180deg)';
+  }
+  else {
+    // Si liste fermée => réinitialiser chevron
+    spanChevron.style.transform = 'translateY(-50%) rotate(0deg)';
+  }
 });
 
 // ##### Stocker id catégorie à modifier ##### //
