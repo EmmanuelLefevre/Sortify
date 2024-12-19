@@ -586,6 +586,7 @@ const updateCategoryInputContainer = document.querySelector('.update-category-in
 const rotatingSelectBorderLine = document.querySelector('.rotating-select-border-line');
 const sortifyContent = document.querySelector('.sortify-content');
 const notifsContainer = document.querySelector('.notifs-border-container');
+const spanChevron = document.querySelector('.chevron');
 
 // ##### Chargement du DOM => masquer input + initialiser texte du bouton ##### //
 document.addEventListener('DOMContentLoaded', () => {
@@ -618,7 +619,6 @@ updateCategorySelectButton.addEventListener('click', function(event) {
   }
 
   // Inverser chevron au click de fermeture de la liste
-  const spanChevron = document.querySelector('.chevron');
   if (isOpen) {
     // Si liste ouverte => inverser chevron
     spanChevron.style.transform = 'translateY(-50%) rotate(180deg)';
@@ -711,6 +711,9 @@ updateCategorySelectOptions.addEventListener('click', function(event) {
 
     // Fermer la liste des options
     updateCategorySelectContent.classList.remove('open');
+
+    // Inverser chevron
+    spanChevron.style.transform = 'translateY(-50%) rotate(0deg)';
   }
 });
 
