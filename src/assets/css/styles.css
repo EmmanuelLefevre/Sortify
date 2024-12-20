@@ -486,13 +486,13 @@ ul#update-category-select-options {
     margin: 0;
     padding: 0;
     top: 100%;
+    left: 5px;
     list-style: none;
     border: var(--border-width1) var(--border-solid) var(--primary-color);
     border-top: none;
     background-color: var(--background-color);
     z-index: 7500;
-    left: 50%;
-    transform: translateX(-50%);
+    transform-origin: top;
     box-shadow: var(--options-shadow);
     overflow-y: auto;
 }
