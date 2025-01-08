@@ -47,11 +47,11 @@ chrome-extension://mphajpdnlknfhohmjkdkljjjkgdfello
 ### Installer Python
 [Télécharger Python 3.13.1](https://www.python.org/downloads/)
 
-- Checker l'installation de Python
+- Vérifier l'installation de Python
 ```bash
 python --version
 ```
-- Checker l'installation de Pip
+- Vérifier l'installation de Pip
 ```bash
 pip --version
 ```
@@ -59,7 +59,7 @@ pip --version
 ### Installer Ollama
 [Télécharger Ollama](https://ollama.com/download)
 
-- Checker l'installation de Ollama
+- Vérifier l'installation de Ollama
 ```bash
 ollama --version
 ```
