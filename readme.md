@@ -65,9 +65,10 @@ ollama --version
 ```
 ### Requirements
 - Flask
+- Flask-cors
 - Beautifulsoup4
 - Requests
-- Dotenv
+- Python-dotenv
 
 ### Procedure
 1. Installer les librairies (en local dans python)
