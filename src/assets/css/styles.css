@@ -115,7 +115,7 @@
 
 /*===============APP===============*/
 div.sortify-app {
-    font-family: var(--font-size-body) var(--text-serif);
+    font-family: var(--text) var(--text-serif);
     font-size: var(--font-size-body);
     font-weight: var(--text-weight-regular);
     background-color: var(--background-color);
