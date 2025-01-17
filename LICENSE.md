@@ -112,7 +112,7 @@ Les données collectées peuvent être utilisées pour:
 - e. Effectuer des transactions commerciales impliquant des données agrégées et anonymisées.  
 - f. Proposer des publicités adaptées ou des liens d'affiliation.  
 
-**Vente de données non personelles**  
+**Vente de données non personnelles**  
 Les données non personnelles collectées pourront être revendues à des tiers dans le respect des lois applicables, notamment le RGPD. Aucune donnée permettant d'identifier directement ou indirectement un utilisateur ne sera partagée ou vendue sans consentement explicite.  
 
 **Consentement et transfert de données**  
@@ -165,7 +165,7 @@ L'auteur met en oeuvre des mesures de sécurité pour protéger les données col
 Le logiciel peut inclure des composants sous licences tierces. L'utilisateur s'engage à respecter, le cas échéant, les termes de toutes les licences applicables à ces composants. La liste complète des composants tiers et de leurs licences est fournie dans la documentation du logiciel dans le cas où une utilisation quelconque devait en être faite.  
 
 ### 28. **Non-concurrence**  
-L'utilisateur s'engage, pendant une période de 10 ans à compter de la première utilisation du logiciel, à ne pas développer, commercialiser, distribuer, ou promouvoir un produit ou service concurrent, ou tout logiciel qui soit similaire ou équivalent au logiciel objet de cette licence.  
+L'utilisateur s'engage, pendant toute la durée du contrat ainsi que 10 ans à compter de la dernière utilisation du logiciel, à ne pas développer, commercialiser, distribuer, ou promouvoir un produit ou service concurrent, ou tout logiciel qui soit similaire ou équivalent au logiciel objet de cette licence.  
 Cette interdiction inclut, sans s'y limiter, la création de logiciels, d'applications, de services ou de technologies qui utilisent des fonctionnalités identiques ou proches, ou qui sont basés sur une analyse substantielle du code source, de l'architecture ou des concepts sous-jacents du logiciel.  
 L'utilisateur s'engage également à ne pas collaborer, directement ou indirectement, avec des entreprises, entités ou individus développant des produits ou services concurrents. Cette clause vise à protéger l'investissement, la propriété intellectuelle et les droits de l'éditeur du logiciel, ainsi que la confidentialité des informations relatives à son développement et à ses utilisateurs.  
 En cas de violation de cette clause, l'utilisateur reconnaît que l'éditeur peut engager des actions légales pour faire respecter ses droits et demander des compensations financières pour les pertes résultant de cette violation.  
