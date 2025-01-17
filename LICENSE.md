@@ -112,6 +112,9 @@ Les données collectées peuvent être utilisées pour:
 - e. Effectuer des transactions commerciales impliquant des données agrégées et anonymisées.  
 - f. Proposer des publicités adaptées ou des liens d'affiliation.  
 
+**Vente de données non personelles**  
+Les données non personnelles collectées pourront être revendues à des tiers dans le respect des lois applicables, notamment le RGPD. Aucune donnée permettant d'identifier directement ou indirectement un utilisateur ne sera partagée ou vendue sans consentement explicite.  
+
 **Consentement et transfert de données**  
 L'utilisation du logiciel implique le consentement à la collecte et au traitement des données conformément aux termes de cette clause. Les données peuvent être transférées en dehors de l'Union européenne dans le respect des garanties adéquates prévues par le RGPD.  
 
