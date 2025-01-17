@@ -1,13 +1,13 @@
 # LICENCE PROPRIETAIRE SORTIFY
 
-## Copyright (c) Novembre 2024
+## Copyright/Droit d'auteur (c) Novembre 2024
 ## LEFEVRE Emmanuel
 ## Cod!ngT3kSolutions, SIRET: 50863331000026
 ## Tous droits réservés.
 
 ### 1. **Droits de l'auteur**  
 Le code source de ce projet Sortify est protégé par le droit d'auteur. L'auteur, LEFEVRE Emmanuel, conserve tous les droits relatifs au logiciel. L'utilisation du logiciel est soumise aux conditions suivantes.  
-En cas de violation de cette licence, l'auteur se réserve le droit de prendre toutes les mesures légales nécessaires pour faire respecter ses droits d'auteur, y compris des actions en justice pour dommages et intérêts.  
+En cas de violation de cette licence, l'auteur se réserve le droit de prendre toutes les mesures légales nécessaires pour faire respecter ses droits d'auteur, y compris des actions en justice pour dommages et intérêts, des actions en contrefaçon et en responsabilités.  
 
 ### 2. **Acceptation de la licence**  
 L'utilisation, l'installation ou l'accès au logiciel implique l'acceptation pleine et entière des termes de cette licence. En cas de désaccord, l'utilisateur doit immédiatement cesser toute utilisation du logiciel.  
@@ -20,8 +20,8 @@ L'utilisation, l'installation ou l'accès au logiciel implique l'acceptation ple
 - a. Il est interdit d'utiliser le logiciel pour créer un projet propriétaire similaire ou dérivé à des fins commerciales.  
 - b. Toute tentative de modification du code source ou de décompilation sans autorisation est strictement interdite.  
 
-### 5. **Aucune garantie**  
-Le logiciel est fourni "tel quel", sans aucune garantie explicite ou implicite, y compris mais sans s'y limiter, les garanties de qualité marchande ou d'adaptabilité à un usage particulier. L'utilisateur utilise le logiciel à ses propres risques.  
+### 5. **Exonération de responsabilité**  
+Le logiciel est fourni "en l'état", sans aucune garantie explicite ou implicite, y compris mais sans s'y limiter, les garanties de qualité marchande ou d'adaptabilité à un usage particulier. L'utilisateur utilise le logiciel à ses propres risques.  
 Aucune responsabilité ne pourra être engagée en cas de dommages directs, indirects, spéciaux, accessoires ou punitifs résultant de l'utilisation du logiciel, même si l'auteur a été informé de la possibilité de tels dommages.  
 
 ### 6. **Responsabilité**  
@@ -53,7 +53,7 @@ Tous les droits non expressément accordés dans cette licence sont réservés p
 - f. Si le contributeur souhaite soumettre une contribution sans céder ses droits, un accord préalable écrit doit être conclu avec l'auteur.  
 
 ### 13. **Mise à jour et Maintenance**  
-L'auteur n'est pas responsable de la fourniture de mises à jour, de correctifs ou de maintenance pour le logiciel. Le logiciel est fourni "tel quel" et l'auteur n'a aucune obligation de maintenir ou de mettre à jour le projet.  
+L'auteur n'est pas responsable de la fourniture de mises à jour, de correctifs ou de maintenance pour le logiciel. Le logiciel est fourni "en l'état" et l'auteur n'a aucune obligation de maintenir ou de mettre à jour le projet.  
 
 ### 14. **Indemnisation**  
 L'utilisateur accepte d'indemniser, de défendre et de dégager de toute responsabilité l'auteur du logiciel Sortify, ainsi que ses collaborateurs, représentants et partenaires, contre toute réclamation, perte, dommage, litige, réclamation, responsabilité, coût ou dépense (y compris, mais sans s'y limiter, les honoraires d'avocat raisonnables ou les frais juridiques) découlant directement ou indirectement de:  
@@ -70,7 +70,7 @@ Cette licence peut être révoquée à tout moment si l'utilisateur ne respecte 
 En cas de révocation, l'utilisateur dispose d'un délai maximum de 7 jours pour supprimer toutes les copies du logiciel et mettre fin à toute utilisation. L'auteur se réserve le droit de prendre des mesures légales en cas de non-respect de ce délai.  
 
 ### 16. **Clause d'audit**  
-En cas de suspicion d'utilisation non conforme, l'auteur se réserve le droit de demander un audit des pratiques de l'utilisateur (aux frais de l'utilisateur lui-même) liées au logiciel afin de s'assurer que les termes de cette licence sont respectés. L'audit peut être effectué à tout moment, sous préavis raisonnable.  
+En cas de suspicion d'utilisation non conforme, l'auteur se réserve le droit de demander un audit des pratiques de l'utilisateur liées au logiciel afin de s'assurer que les termes de cette licence sont respectés. L'audit peut être effectué à tout moment, sous préavis raisonnable.  
 
 ### 17. **Loi applicable et juridiction compétente**  
 Cette licence est régie et interprétée conformément au droit français, indépendamment des principes de conflits de lois.  
@@ -112,9 +112,6 @@ Les données collectées peuvent être utilisées pour:
 - e. Effectuer des transactions commerciales impliquant des données agrégées et anonymisées.  
 - f. Proposer des publicités adaptées ou des liens d'affiliation.  
 
-**Vente de données anonymisées**  
-Les données anonymisées collectées pourront être revendues à des tiers dans le respect des lois applicables, notamment le RGPD. Aucune donnée permettant d'identifier directement ou indirectement un utilisateur ne sera partagée ou vendue sans consentement explicite.  
-
 **Consentement et transfert de données**  
 L'utilisation du logiciel implique le consentement à la collecte et au traitement des données conformément aux termes de cette clause. Les données peuvent être transférées en dehors de l'Union européenne dans le respect des garanties adéquates prévues par le RGPD.  
 
@@ -127,7 +124,7 @@ Conformément au RGPD, les utilisateurs disposent des droits suivants:
 
 L'utilisateur sera informé, dès l'installation, des données collectées et de leurs finalités via une politique de confidentialité accessible et détaillée. Pour toute question relative aux données collectées ou pour exercer vos droits, veuillez contacter : EmmanuelLefevre@protonmail.com.  
 
-### 22. **Monétisation et publicité**  
+### 22. **Publicité et extension**  
 **Publicités**  
 L'extension peut afficher des publicités via des réseaux tiers, tels que Google AdSense ou des plateformes similaires, afin de financer son développement et sa maintenance. L'auteur s'engage à intégrer ces publicités de manière à ne pas nuire à l'expérience utilisateur, conformément aux exigences des plateformes publicitaires concernées.  
 
@@ -164,19 +161,19 @@ L'auteur met en oeuvre des mesures de sécurité pour protéger les données col
 ### 27. **Composants tiers**  
 Le logiciel peut inclure des composants sous licences tierces. L'utilisateur s'engage à respecter, le cas échéant, les termes de toutes les licences applicables à ces composants. La liste complète des composants tiers et de leurs licences est fournie dans la documentation du logiciel dans le cas où une utilisation quelconque devait en être faite.  
 
-### 27. **Non-concurrence**  
+### 28. **Non-concurrence**  
 L'utilisateur s'engage, pendant une période de 10 ans à compter de la première utilisation du logiciel, à ne pas développer, commercialiser, distribuer, ou promouvoir un produit ou service concurrent, ou tout logiciel qui soit similaire ou équivalent au logiciel objet de cette licence.  
 Cette interdiction inclut, sans s'y limiter, la création de logiciels, d'applications, de services ou de technologies qui utilisent des fonctionnalités identiques ou proches, ou qui sont basés sur une analyse substantielle du code source, de l'architecture ou des concepts sous-jacents du logiciel.  
 L'utilisateur s'engage également à ne pas collaborer, directement ou indirectement, avec des entreprises, entités ou individus développant des produits ou services concurrents. Cette clause vise à protéger l'investissement, la propriété intellectuelle et les droits de l'éditeur du logiciel, ainsi que la confidentialité des informations relatives à son développement et à ses utilisateurs.  
 En cas de violation de cette clause, l'utilisateur reconnaît que l'éditeur peut engager des actions légales pour faire respecter ses droits et demander des compensations financières pour les pertes résultant de cette violation.  
 
-### 28. **Résolution des conflits**  
+### 29. **Résolution des conflits**  
 En cas de conflit découlant de l'application de cette licence, les parties conviennent d'abord de tenter de résoudre le conflit par médiation. Si la médiation échoue, le différend sera soumis à l'arbitrage conformément aux règles du Centre de Médiation et d'Arbitrage de Paris (CMAP).  
 En cas d'arbitrage ou de médiation, les frais associés et potentiels seront à la charge exclusive de l'utilisateur et non de l'auteur.  
 Si aucune solution amiable ou arbitrale n'est trouvée, des poursuites judiciaires pourront être engagées devant les juridictions compétentes.  
 
-### 29. **Respect des lois sur la cybersécurité**  
-L'utilisateur s'engage à respecter toutes les lois et régulations applicables en matière de cybersécurité, y compris celles relatives à la protection des données personnelles et à la gestion des vulnérabilités de sécurité.  
+### 30. **Respect des lois sur la cybersécurité**  
+L'utilisateur s'engage à respecter toutes les lois et régulations applicables en matière de cybersécurité, y compris celles relatives à la gestion des vulnérabilités de sécurité.  
 Toute utilisation du logiciel à des fins malveillantes ou illégales est strictement interdite.  
 L'auteur ne peut-être tenu reponsable de tels agissements et seul la responsabilité de l'utilisateur pourra être engagée.  
 
