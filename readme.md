@@ -48,15 +48,15 @@ chrome-extension://mphajpdnlknfhohmjkdkljjjkgdfello
 [Télécharger Python 3.13.1](https://www.python.org/downloads/)  
 
 ⚠️ "Customize installation" > Cocher les options =>  
-"pip"  
-"tcl/tk and IDLE"  
-"py launcher"  
+- "pip"  
+- "tcl/tk and IDLE"  
+- "py launcher"  
 
 ![Installation Python 1](https://github.com/EmmanuelLefevre/MarkdownImg/blob/main/py_install.png)  
 
 Puis dans la seconde fenêtre =>  
-"Associate files with Python"  
-"Add Python to environment variables".  
+- "Associate files with Python"  
+- "Add Python to environment variables".  
 
 ![Installation Python 2](https://github.com/EmmanuelLefevre/MarkdownImg/blob/main/py_install_2.png)  
 
