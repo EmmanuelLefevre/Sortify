@@ -51,6 +51,7 @@ chrome-extension://mphajpdnlknfhohmjkdkljjjkgdfello
 "pip"  
 "tcl/tk and IDLE"  
 "py launcher"  
+
 ![Installation Python 1](https://github.com/EmmanuelLefevre/MarkdownImg/blob/main/py_install.png)  
 
 Puis dans la seconde fenêtre =>  
