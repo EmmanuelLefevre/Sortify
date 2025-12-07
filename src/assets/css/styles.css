@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Novembre 2024
+ * Copyright/Droit d'auteur (c) Novembre 2024
  * LEFEVRE Emmanuel
  * Cod!ngT3kSolutions, SIRET: 50863331000026
  * Tous droits réservés.
@@ -115,7 +115,7 @@
 
 /*===============APP===============*/
 div.sortify-app {
-    font-family: var(--font-size-body) var(--text-serif);
+    font-family: var(--text) var(--text-serif);
     font-size: var(--font-size-body);
     font-weight: var(--text-weight-regular);
     background-color: var(--background-color);
@@ -486,13 +486,13 @@ ul#update-category-select-options {
     margin: 0;
     padding: 0;
     top: 100%;
+    left: 5px;
     list-style: none;
     border: var(--border-width1) var(--border-solid) var(--primary-color);
     border-top: none;
     background-color: var(--background-color);
     z-index: 7500;
-    left: 50%;
-    transform: translateX(-50%);
+    transform-origin: top;
     box-shadow: var(--options-shadow);
     overflow-y: auto;
 }

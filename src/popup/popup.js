@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Novembre 2024
+ * Copyright/Droit d'auteur (c) Novembre 2024
  * LEFEVRE Emmanuel
  * Cod!ngT3kSolutions, SIRET: 50863331000026
  * Tous droits réservés.
@@ -615,17 +615,32 @@ updateCategorySelectButton.addEventListener('click', function(event) {
   }
   else {
     // Liste fermée => réinitialiser le padding
-    sortifyContent.style.setProperty('padding-bottom', isInputVisible ? '30px' : '15px');
+    setTimeout(() => {
+      sortifyContent.style.setProperty('padding-bottom', isInputVisible ? '30px' : '15px');
+    }, 300);
   }
 
-  // Inverser chevron au click de fermeture de la liste
+  // Inverser chevron
+  spanChevron.style.transform = isOpen ? 'translateY(-50%) rotate(180deg)' : 'translateY(-50%) rotate(0deg)';
+
+  // Animation ouverture/fermeture des options
   if (isOpen) {
-    // Si liste ouverte => inverser chevron
-    spanChevron.style.transform = 'translateY(-50%) rotate(180deg)';
+    // Retirer animation précédente
+    updateCategorySelectOptions.style.animation = 'none';
+    // Afficher les options
+    updateCategorySelectOptions.style.display = 'flex';
+    // Animation de fermeture
+    updateCategorySelectOptions.style.animation = 'growDown 300ms ease-in-out forwards';
   }
   else {
-    // Si liste fermée => réinitialiser chevron
-    spanChevron.style.transform = 'translateY(-50%) rotate(0deg)';
+    // Retirer animation précédente
+    updateCategorySelectOptions.style.animation = 'none';
+    // Animation d'ouverture
+    updateCategorySelectOptions.style.animation = 'growUp 300ms ease-in-out forwards';
+    // Masquer les options après la fin de l'animation
+    setTimeout(() => {
+      updateCategorySelectOptions.style.display = 'none';
+    }, 300);
   }
 });
 
@@ -732,9 +747,19 @@ function closeSelectOptions(event) {
     // Fermer les options si le clic est en dehors du sélecteur
     updateCategorySelectContent.classList.remove('open');
     // Liste fermée => réinitialiser le padding
-    sortifyContent.style.setProperty('padding-bottom', '15px');
+    setTimeout(() => {
+      sortifyContent.style.setProperty('padding-bottom', '15px');
+    }, 300);
     // Inverser chevron
     spanChevron.style.transform = 'translateY(-50%) rotate(0deg)';
+    // Retirer animation précédente
+    updateCategorySelectOptions.style.animation = 'none';
+    // Animation d'ouverture
+    updateCategorySelectOptions.style.animation = 'growUp 300ms ease-in-out forwards';
+    // Masquer les options après la fin de l'animation
+    setTimeout(() => {
+      updateCategorySelectOptions.style.display = 'none';
+    }, 300);
   }
 }
 // Ecouteur d'événements sur le document entier

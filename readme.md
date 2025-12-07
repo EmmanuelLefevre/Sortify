@@ -45,12 +45,27 @@ chrome-extension://mphajpdnlknfhohmjkdkljjjkgdfello
 
 ## API
 ### Installer Python
-[Télécharger Python 3.13.1](https://www.python.org/downloads/)
+[Télécharger Python 3.13.1](https://www.python.org/downloads/)  
 
+⚠️ "Customize installation" > Cocher les options =>  
+- "pip"  
+- "tcl/tk and IDLE"  
+- "py launcher"  
+
+![Installation Python 1](https://github.com/EmmanuelLefevre/MarkdownImg/blob/main/py_install.png)  
+
+Puis dans la seconde fenêtre =>  
+- "Associate files with Python"  
+- "Add Python to environment variables".  
+
+![Installation Python 2](https://github.com/EmmanuelLefevre/MarkdownImg/blob/main/py_install_2.png)  
+
+- Vérifier l'installation de Python
 - Vérifier l'installation de Python
 ```bash
 python --version
 ```
+- Vérifier l'installation de Pip
 - Vérifier l'installation de Pip
 ```bash
 pip --version
@@ -60,14 +75,17 @@ pip --version
 [Télécharger Ollama](https://ollama.com/download)
 
 - Vérifier l'installation de Ollama
+- Vérifier l'installation de Ollama
 ```bash
 ollama --version
 ```
 ### Requirements
 - Flask
 - Flask-cors
+- Flask-cors
 - Beautifulsoup4
 - Requests
+- Python-dotenv
 - Python-dotenv
 
 ### Procedure
@@ -135,6 +153,10 @@ ssh-keygen -t ecdsa -b 521 -f "$env:USERPROFILE\.ssh\serveo_ecdsa"
 [Manifest documentation](https://developer.chrome.com/docs/extensions/reference/manifest?hl=fr)  
 
 [Chrome permission](https://developer.chrome.com/docs/extensions/reference/api/permissions?hl=fr)  
+
+***
+
+⭐⭐⭐ I hope you enjoy it, if so don't hesitate to leave a like on this repository and on the [Dotfiles](https://github.com/EmmanuelLefevre/Dotfiles) one (click on the "Star" button at the top right of the repository page). Thanks 🤗
 
 ***
 

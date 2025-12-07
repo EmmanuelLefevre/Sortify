@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Novembre 2024
+ * Copyright/Droit d'auteur (c) Novembre 2024
  * LEFEVRE Emmanuel
  * Cod!ngT3kSolutions, SIRET: 50863331000026
  * Tous droits réservés.
@@ -81,6 +81,32 @@
   }
   50% {
     opacity: 1;
+  }
+}
+
+/*------Grow Down------*/
+@keyframes growDown {
+  0% {
+    transform: scaleY(0)
+  }
+  80% {
+    transform: scaleY(1.1)
+  }
+  100% {
+    transform: scaleY(1)
+  }
+}
+
+/*------Grow Up------*/
+@keyframes growUp {
+  0% {
+    transform: scaleY(1);
+  }
+  20% {
+    transform: scaleY(1.1);
+  }
+  100% {
+    transform: scaleY(0);
   }
 }
 
